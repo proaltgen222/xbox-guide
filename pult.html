@@ -1033,6 +1033,61 @@
       justify-content: space-between;
     }
 
+    
+    .form-grid-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 640px) {
+      .form-grid-meta {
+        grid-template-columns: 1fr;
+      }
+    }
+    input[type="date"].input {
+      color-scheme: dark;
+      cursor: pointer;
+    }
+    .client-date-pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+    }
+    .date-filter-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .date-filter-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .filter-summary-pill {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: 1.2fr 0.85fr 1.3fr;
@@ -1045,7 +1100,62 @@
     }
 
     @media (max-width: 720px) {
-      .form-grid {
+      
+    .form-grid-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 640px) {
+      .form-grid-meta {
+        grid-template-columns: 1fr;
+      }
+    }
+    input[type="date"].input {
+      color-scheme: dark;
+      cursor: pointer;
+    }
+    .client-date-pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+    }
+    .date-filter-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .date-filter-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .filter-summary-pill {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      padding: 4px 10px;
+      border-radius: 7px;
+      font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -2201,10 +2311,16 @@
           </div>
 
           
+          <div class="form-grid-meta">
             <div>
               <label class="field-label" for="addAccountSelect">Профиль Xbox</label>
               <select class="select-input" id="addAccountSelect" style="width:100%;"></select>
             </div>
+            <div>
+              <label class="field-label" for="addDate">📅 Дата клиента / покупки</label>
+              <input type="date" class="input" id="addDate" style="width:100%;" />
+            </div>
+          </div>
 
           <div class="form-grid-url">
             <label class="field-label" for="addUrl">Ссылка на профиль / чат клиента (URL)</label>
@@ -2240,11 +2356,30 @@
             <button class="filter-pill" data-filter="paid">💳 Оплачено</button>
             <button class="filter-pill" data-filter="done">🟢 Завершено</button>
           </div>
+          <div class="date-filter-group" id="dateFilterGroup">
+            <span class="date-filter-label">📅 Дата:</span>
+            <select class="select-input" id="dateFilterPreset" style="width:auto; padding:5px 8px; font-size:12px; font-weight:600; border-radius:8px;">
+              <option value="all">Все даты</option>
+              <option value="today">Сегодня</option>
+              <option value="yesterday">Вчера</option>
+              <option value="7days">За 7 дней</option>
+              <option value="month">Этот месяц</option>
+              <option value="custom">Указать даты...</option>
+            </select>
+            <div id="customDateRangeWrap" style="display:none; align-items:center; gap:4px;">
+              <input type="date" class="input" id="filterDateFrom" title="С даты" style="width:auto; padding:4px 7px; font-size:11.5px; height:32px;" />
+              <span style="color:var(--text-muted); font-size:11px;">—</span>
+              <input type="date" class="input" id="filterDateTo" title="По дату" style="width:auto; padding:4px 7px; font-size:11.5px; height:32px;" />
+            </div>
+            <button type="button" class="btn-ghost" id="btnResetDateFilter" style="display:none; padding:4px 8px; font-size:11px; height:32px;" title="Сбросить фильтр дат">✕ Сброс</button>
+          </div>
+
           <select class="select-input" id="clientAccountFilter" style="width:auto; padding:5px 10px; font-size:12px; font-weight:700; border-radius:8px;" title="Фильтр списка клиентов по выбранному профилю Xbox">
             <option value="all">🎮 Все профили Xbox</option>
           </select>
-          <input type="text" class="input search-input" id="clientSearch" placeholder="🔍 Поиск по нику/коду..." />
+          <input type="text" class="input search-input" id="clientSearch" placeholder="🔍 Поиск по нику, коду или дате..." />
         </div>
+        <div id="filterSummaryBar" style="display:none; margin-bottom:10px;"></div>
 
         <div class="table-wrap">
           <table>
@@ -3108,6 +3243,82 @@ As long as our profile stays saved on your console, the game will launch without
       const btnPauseTimer = document.getElementById('btnPauseTimer');
       const btnResetTimer = document.getElementById('btnResetTimer');
       const btnTestSound = document.getElementById('btnTestSound');
+
+      const addDateEl = document.getElementById('addDate');
+      const dateFilterPresetEl = document.getElementById('dateFilterPreset');
+      const customDateRangeWrapEl = document.getElementById('customDateRangeWrap');
+      const filterDateFromEl = document.getElementById('filterDateFrom');
+      const filterDateToEl = document.getElementById('filterDateTo');
+      const btnResetDateFilterEl = document.getElementById('btnResetDateFilter');
+      const filterSummaryBarEl = document.getElementById('filterSummaryBar');
+
+      let activeDateFilter = 'all';
+      let customDateFrom = '';
+      let customDateTo = '';
+
+      function getTodayYMD() {
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
+
+      function getClientYMD(timestamp) {
+        if (!timestamp) return '';
+        const d = new Date(Number(timestamp));
+        if (isNaN(d.getTime())) return '';
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
+
+      function formatClientDate(timestamp) {
+        if (!timestamp) return '—';
+        const d = new Date(Number(timestamp));
+        if (isNaN(d.getTime())) return '—';
+        const day = String(d.getDate()).padStart(2, '0');
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const y = d.getFullYear();
+        return `${day}.${m}.${y}`;
+      }
+
+      function matchesDateFilter(timestamp) {
+        if (activeDateFilter === 'all' && !customDateFrom && !customDateTo) return true;
+        if (!timestamp) return false;
+        const clientYmd = getClientYMD(timestamp);
+        if (!clientYmd) return false;
+
+        const todayYmd = getTodayYMD();
+
+        if (activeDateFilter === 'today') {
+          return clientYmd === todayYmd;
+        }
+        if (activeDateFilter === 'yesterday') {
+          const yest = new Date();
+          yest.setDate(yest.getDate() - 1);
+          const yestYmd = getClientYMD(yest.getTime());
+          return clientYmd === yestYmd;
+        }
+        if (activeDateFilter === '7days') {
+          const d7 = new Date();
+          d7.setDate(d7.getDate() - 7);
+          const d7Ymd = getClientYMD(d7.getTime());
+          return clientYmd >= d7Ymd && clientYmd <= todayYmd;
+        }
+        if (activeDateFilter === 'month') {
+          const now = new Date();
+          const monthStart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+          return clientYmd >= monthStart && clientYmd <= todayYmd;
+        }
+        if (activeDateFilter === 'custom' || customDateFrom || customDateTo) {
+          if (customDateFrom && clientYmd < customDateFrom) return false;
+          if (customDateTo && clientYmd > customDateTo) return false;
+          return true;
+        }
+        return true;
+      }
 
       const quickAddForm = document.getElementById('quickAddForm');
       const addNameEl = document.getElementById('addName');
@@ -4420,12 +4631,37 @@ As long as our profile stays saved on your console, the game will launch without
             return false;
           }
           if (activeFilter !== 'all' && c.status !== activeFilter) return false;
+          if (!matchesDateFilter(c.createdAt)) return false;
           if (q) {
-            const hay = `${c.name} ${c.platform} ${c.comment || ''} ${c.url || ''}`.toLowerCase();
+            const dateStr = formatClientDate(c.createdAt);
+            const hay = `${c.name} ${c.platform} ${c.comment || ''} ${c.url || ''} ${dateStr}`.toLowerCase();
             if (!hay.includes(q)) return false;
           }
           return true;
         });
+
+        if (filterSummaryBarEl) {
+          const isFiltered = activeDateFilter !== 'all' || activeFilter !== 'all' || activeAccId !== 'all' || Boolean(q) || Boolean(customDateFrom) || Boolean(customDateTo);
+          if (isFiltered) {
+            filterSummaryBarEl.style.display = 'block';
+            const filteredSum = filtered.reduce((s, c) => s + (Number(c.amount) || 0), 0);
+            let filterLabel = '';
+            if (activeDateFilter === 'today') filterLabel = 'за сегодня';
+            else if (activeDateFilter === 'yesterday') filterLabel = 'за вчера';
+            else if (activeDateFilter === '7days') filterLabel = 'за 7 дней';
+            else if (activeDateFilter === 'month') filterLabel = 'за этот месяц';
+            else if (activeDateFilter === 'custom') filterLabel = `период ${customDateFrom || '...'} — ${customDateTo || '...'}`;
+            filterSummaryBarEl.innerHTML = `
+              <div class="filter-summary-pill">
+                <span>🔎 Клиентов в выборке: <strong>${filtered.length}</strong> из ${state.clients.length} ${filterLabel ? `(${filterLabel})` : ''}</span>
+                <span>·</span>
+                <span>💰 Сумма: <strong>${formatRub(filteredSum)}</strong></span>
+              </div>
+            `;
+          } else {
+            filterSummaryBarEl.style.display = 'none';
+          }
+        }
 
         clientsTableBodyEl.innerHTML = '';
 
@@ -4461,9 +4697,10 @@ As long as our profile stays saved on your console, the game will launch without
                   </select>
                   <input type="number" class="input js-edit-amount" value="${Number(client.amount) || 0}" min="0" step="1" placeholder="₽" />
                 </div>
-                <div class="edit-row-sub">
-                  <input type="text" class="input js-edit-comment" value="${escapeHtml(client.comment || '')}" placeholder="Время очереди / Консоль / Комментарий" />
-                  <input type="text" class="input js-edit-url" value="${escapeHtml(client.url || '')}" placeholder="Ссылка на профиль / чат (URL)" />
+                <div class="edit-row-sub" style="display:flex; gap:6px; flex-wrap:wrap;">
+                  <input type="text" class="input js-edit-comment" value="${escapeHtml(client.comment || '')}" placeholder="Время очереди / Консоль / Комментарий" style="flex:1; min-width:140px;" />
+                  <input type="text" class="input js-edit-url" value="${escapeHtml(client.url || '')}" placeholder="Ссылка на профиль / чат (URL)" style="flex:1; min-width:140px;" />
+                  <input type="date" class="input js-edit-date" value="${getClientYMD(client.createdAt)}" title="Дата клиента" style="width:130px; font-size:12px;" />
                 </div>
               </td>
               <td>
@@ -4486,6 +4723,13 @@ As long as our profile stays saved on your console, the game will launch without
               client.amount = Math.max(0, Number(tr.querySelector('.js-edit-amount').value) || 0);
               client.comment = tr.querySelector('.js-edit-comment').value.trim();
               client.url = normalizeSafeUrl(tr.querySelector('.js-edit-url').value);
+              const editDateVal = tr.querySelector('.js-edit-date')?.value;
+              if (editDateVal) {
+                const parts = editDateVal.split('-');
+                if (parts.length === 3) {
+                  client.createdAt = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 12, 0, 0).getTime();
+                }
+              }
               editingClientId = null;
               saveState();
               renderAllData();
@@ -4523,6 +4767,7 @@ As long as our profile stays saved on your console, the game will launch without
                   <span>${escapeHtml(client.name)}</span>
                   <span class="platform-badge plat-${escapeHtml(client.platform)}">${escapeHtml(client.platform)}</span>
                   ${accTagHtml}
+                  <span class="client-date-pill" title="Дата клиента: ${formatClientDate(client.createdAt)}">📅 ${formatClientDate(client.createdAt)}</span>
                   ${safeUrl ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" class="chat-link-btn" title="${escapeHtml(safeUrl)}">🔗 Чат / Профиль</a>` : ''}
                 </div>
                 ${client.comment ? `<div class="client-comment">${escapeHtml(client.comment)}</div>` : ''}
@@ -4846,6 +5091,22 @@ As long as our profile stays saved on your console, the game will launch without
         const accountId = (addAccountSelect && addAccountSelect.value)
           || (state.activeAccountId !== 'all' ? state.activeAccountId : state.accounts[0].id);
 
+        let clientCreatedAt = Date.now();
+        if (addDateEl && addDateEl.value) {
+          const parts = addDateEl.value.split('-');
+          if (parts.length === 3) {
+            const y = Number(parts[0]);
+            const m = Number(parts[1]) - 1;
+            const d = Number(parts[2]);
+            const now = new Date();
+            if (y === now.getFullYear() && m === now.getMonth() && d === now.getDate()) {
+              clientCreatedAt = now.getTime();
+            } else {
+              clientCreatedAt = new Date(y, m, d, 12, 0, 0).getTime();
+            }
+          }
+        }
+
         const newClient = {
           id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
           name,
@@ -4855,7 +5116,7 @@ As long as our profile stays saved on your console, the game will launch without
           comment,
           url,
           status: selectedAddStatus,
-          createdAt: Date.now()
+          createdAt: clientCreatedAt
         };
 
         state.clients.push(newClient);
@@ -4867,9 +5128,68 @@ As long as our profile stays saved on your console, the game will launch without
         addAmountEl.value = '';
         addCommentEl.value = '';
         addUrlEl.value = '';
+        if (addDateEl) addDateEl.value = getTodayYMD();
         addNameEl.focus();
         showToast(`Добавлен клиент: ${name}`);
       });
+
+      
+      // Initialize Date Input & Date Filters
+      if (addDateEl) {
+        addDateEl.value = getTodayYMD();
+      }
+
+      if (dateFilterPresetEl) {
+        dateFilterPresetEl.addEventListener('change', () => {
+          activeDateFilter = dateFilterPresetEl.value;
+          if (activeDateFilter === 'custom') {
+            if (customDateRangeWrapEl) customDateRangeWrapEl.style.display = 'inline-flex';
+            if (btnResetDateFilterEl) btnResetDateFilterEl.style.display = 'inline-flex';
+            if (filterDateFromEl && !filterDateFromEl.value) filterDateFromEl.value = getTodayYMD();
+            if (filterDateToEl && !filterDateToEl.value) filterDateToEl.value = getTodayYMD();
+            customDateFrom = filterDateFromEl ? filterDateFromEl.value : '';
+            customDateTo = filterDateToEl ? filterDateToEl.value : '';
+          } else {
+            if (customDateRangeWrapEl) customDateRangeWrapEl.style.display = 'none';
+            if (btnResetDateFilterEl) {
+              btnResetDateFilterEl.style.display = activeDateFilter === 'all' ? 'none' : 'inline-flex';
+            }
+            customDateFrom = '';
+            customDateTo = '';
+          }
+          renderClientsTable();
+        });
+      }
+
+      if (filterDateFromEl) {
+        filterDateFromEl.addEventListener('change', () => {
+          customDateFrom = filterDateFromEl.value;
+          if (btnResetDateFilterEl) btnResetDateFilterEl.style.display = 'inline-flex';
+          renderClientsTable();
+        });
+      }
+
+      if (filterDateToEl) {
+        filterDateToEl.addEventListener('change', () => {
+          customDateTo = filterDateToEl.value;
+          if (btnResetDateFilterEl) btnResetDateFilterEl.style.display = 'inline-flex';
+          renderClientsTable();
+        });
+      }
+
+      if (btnResetDateFilterEl) {
+        btnResetDateFilterEl.addEventListener('click', () => {
+          activeDateFilter = 'all';
+          customDateFrom = '';
+          customDateTo = '';
+          if (dateFilterPresetEl) dateFilterPresetEl.value = 'all';
+          if (filterDateFromEl) filterDateFromEl.value = '';
+          if (filterDateToEl) filterDateToEl.value = '';
+          if (customDateRangeWrapEl) customDateRangeWrapEl.style.display = 'none';
+          btnResetDateFilterEl.style.display = 'none';
+          renderClientsTable();
+        });
+      }
 
       // Wire Filters & Search
       document.querySelectorAll('#filterPills .filter-pill').forEach((btn) => {
