@@ -2604,12 +2604,13 @@ As long as our profile stays saved on your console, the game will launch without
       };
 
       // App State
-      let state = loadState();
+      // state initialized below
       let activeFilter = 'all';
       let searchQuery = '';
       let editingClientId = null;
       let openEditors = new Set();
       let timerInterval = null;
+      let timerIntervalId = null;
       let audioCtx = null;
 
       // Form selections
@@ -2621,6 +2622,7 @@ As long as our profile stays saved on your console, the game will launch without
       const sbpBankEl = document.getElementById('sbpBank');
       const sbpBoxEl = document.getElementById('sbpBox');
       const templatesListEl = document.getElementById('templatesList');
+      const tplListEl = templatesListEl;
       const savePillEl = document.getElementById('savePill');
 
       const customTplCreatorEl = document.getElementById('customTplCreator');
@@ -2683,6 +2685,225 @@ As long as our profile stays saved on your console, the game will launch without
         }
       ];
 
+      const RECOVERED_PHONE = "7 966 176 7321";
+      const RECOVERED_BANK = "Т-Банк";
+      const RECOVERED_CUSTOM_TEMPLATES = {
+        "tpl_2": "Отлично! Цена - 767 ₽:\n\n📱 Карта: {телефон}\n🏦 Банк: {банк}\n\nПосле, пришлите, пожалуйста, скриншот чека (или имя отправителя).\nСразу после оплаты поставлю вас в очередь и выдам почту для входа — настройка займёт 3–5 минут 🤝",
+        "tpl_4": "На экране настройки входа нажимайте так:\n• «Мы обнаружили параметры вашей...» -> нажмите «СПАСИБО, НЕ НАДО»\n• На предложения сбора данных / рекламы / подписок -> «Спасибо, не надо» / «Далее».\n• «Войти сразу?« -> нажмите «ПРОПУСТИТЬ»\n• «Параметры входа и безопасности» -> обязательно выберите «Без ограничений».\n• «Связать геймпад» -> нажмите «Пропустить».\n• ⚠️ На экране «Сделать моей домашней консолью Xbox?» -> ОБЯЗАТЕЛЬНО нажмите «НЕ ИЗМЕНЯТЬ»! (Трогать домашнюю консоль запрещено).",
+        "tpl_5": "Нажимайте на консоли строго по этим шагам:\n\n1. НАСТРОЙКИ ПРИ ВХОДЕ (ВАЖНО!):\n• «Мы обнаружили параметры вашей...» -> нажмите «СПАСИБО, НЕ НАДО»\n• На предложения сбора данных / рекламы / подписок -> «Спасибо, не надо» / «Далее».\n• «Войти сразу?« -> нажмите «ПРОПУСТИТЬ»\n• «Параметры входа и безопасности» -> обязательно выберите «Без ограничений».\n• «Связать геймпад» -> нажмите «Пропустить».\n• ⚠️ На экране «Сделать моей домашней консолью Xbox?» -> ОБЯЗАТЕЛЬНО нажмите «НЕ ИЗМЕНЯТЬ»! (Трогать домашнюю консоль запрещено).\n\n2. КАК ПОСТАВИТЬ ПРЕДЗАГРУЗКУ GTA6:\n1) Проверьте регион консоли: «Параметры» -> «Система» -> «Язык и местонахождение» -> поставьте «Новая Зеландия» (чтобы игра открылась вам на сутки раньше — 18 ноября в 14:00 МСК!).\n2) Зайдите в «Мои игры и приложения» -> «Полная библиотека» -> «Все собственные игры».\n3) Наведите на Grand Theft Auto VI -> нажмите кнопку «Меню» (три полоски на геймпаде) -> «Управление игрой и дополнениями».\n4) Нажмите на игру -> «Выбрать всех» (игра 209,9 ГБ + улучшение до Ultimate Edition + пак Vintage Vice City) -> нажмите «Установить / Сохранить изменения».\n5) Перейдите в «Очередь» и подождите 1–2 минуты, пока скачается первые 200–300 МБ игры.\n6) ⚠️ КРИТИЧЕСКИЙ МОМЕНТ: Как только первые 200 МБ пошли качаться — нажмите кнопку Xbox, наведите на наш профиль (vice_gta6_box) и нажмите «Выйти», оставшись на своем личном аккаунте! Игра спокойно докачает все 210 ГБ в фоне на вашем профиле.\n\nКак только поставите игру в очередь загрузки и выйдете на свой профиль (Пункт 2) — отпишитесь, пожалуйста."
+};
+      const RECOVERED_CLIENTS = [
+        {
+                "id": "c_init_1",
+                "name": "daniel4920494",
+                "platform": "FunPay",
+                "amount": 390,
+                "comment": "Series S / 0F34JW324333PC",
+                "status": "done",
+                "createdAt": 1700000001000,
+                "url": "https://funpay.com/chat/?node=301071265",
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_init_2",
+                "name": "NoNam37",
+                "platform": "FunPay",
+                "amount": 390,
+                "comment": "Series X / 101818222917",
+                "status": "done",
+                "createdAt": 1700000002000,
+                "url": "https://funpay.com/chat/?node=301106820",
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_init_3",
+                "name": "Fassseq",
+                "platform": "FunPay",
+                "amount": 390,
+                "comment": "Series S / 139052214917",
+                "status": "done",
+                "createdAt": 1700000003000,
+                "url": "https://funpay.com/chat/?node=301121150",
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_init_4",
+                "name": "Артем(зел ава)",
+                "platform": "Авито",
+                "amount": 630,
+                "comment": "Series S / 110983203417",
+                "status": "done",
+                "createdAt": 1700000004000,
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-1aQQhdpxhOOZ4bv3bdrGMg",
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794399678639_vj5e",
+                "name": "Никита",
+                "platform": "Авито",
+                "amount": 650,
+                "comment": "Вход 15.18  / Series S / 227781222817",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-eTufROjD_cgSJxaPO1t69g",
+                "status": "done",
+                "createdAt": 1794399678639,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794402851984_a26c",
+                "name": "Влад",
+                "platform": "Авито",
+                "amount": 750,
+                "comment": "Вход 16.20 / Series S / 143023221717",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-EvVLUERfLvQrve7O1D0hfg",
+                "status": "done",
+                "createdAt": 1794402851984,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794407194540_1feg",
+                "name": "FanMag",
+                "platform": "FunPay",
+                "amount": 390,
+                "comment": "Seies S / 034121215017",
+                "url": "https://funpay.com/chat/?node=301212863",
+                "status": "done",
+                "createdAt": 1794407194540,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794422071326_r88n",
+                "name": "godfeature",
+                "platform": "Playerok",
+                "amount": 373,
+                "comment": "Series S / 052259243117",
+                "url": "https://playerok.com/chats/1f1dde7f-867e-6ba0-8675-b0c4d4e9d612",
+                "status": "done",
+                "createdAt": 1794422071326,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794427678820_pesn",
+                "name": "Я",
+                "platform": "Telegram",
+                "amount": 0,
+                "comment": "041790220817",
+                "url": "https://041790220817",
+                "status": "done",
+                "createdAt": 1794427678820,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794495760238_0rtb",
+                "name": "Николай",
+                "platform": "Авито",
+                "amount": 840,
+                "comment": "Series S / 062022221617",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-h48PYYThPCEtRIyBq9KbHw",
+                "status": "done",
+                "createdAt": 1794495760238,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794496714297_280h",
+                "name": "Егор",
+                "platform": "Авито",
+                "amount": 849,
+                "comment": "Series S / 006844234117",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-kKRH2A6VohALx9d_6rpAMA",
+                "status": "done",
+                "createdAt": 1794496714297,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794501622848_ujx9",
+                "name": "nik",
+                "platform": "Авито",
+                "amount": 800,
+                "comment": "Series X / 124172220817",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-KtaBwQVubm2WJhGil3ghdg",
+                "status": "done",
+                "createdAt": 1794501622848,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794501862516_m9t5",
+                "name": "Geek Devices",
+                "platform": "Авито",
+                "amount": 852,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-OT0IPdrnfTe~5YCxtxTyTA",
+                "status": "done",
+                "createdAt": 1794501862516,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794511665581_fkdh",
+                "name": "Виктор",
+                "platform": "Авито",
+                "amount": 855,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-wzFkkVQnzdJVIY9jtzElqQ",
+                "status": "done",
+                "createdAt": 1794511665581,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794513823614_hmlc",
+                "name": "иван",
+                "platform": "Авито",
+                "amount": 1050,
+                "comment": "23.40",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-AMGzYUSaXyj_aKHmXsgeeA",
+                "status": "done",
+                "createdAt": 1794513823614,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794513928996_uw9y",
+                "name": "Сергей",
+                "platform": "Авито",
+                "amount": 1000,
+                "comment": "23.10",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-FhcowVjmRWWZiPsgTNCNJw",
+                "status": "done",
+                "createdAt": 1794513928996,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794575761644_0kpp",
+                "name": "Дмитрий",
+                "platform": "Авито",
+                "amount": 1050,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-_vOQvIXnuk4qc8sAs9i3Ng",
+                "status": "done",
+                "createdAt": 1794575761644,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794575783403_i9uf",
+                "name": "Иван",
+                "platform": "Авито",
+                "amount": 1050,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-IheXboLP55LP7U5sEfVhhw",
+                "status": "done",
+                "createdAt": 1794575783403,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794575793887_7dvq",
+                "name": "Вадим",
+                "platform": "Авито",
+                "amount": 1050,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-hYIT3xjNmH955v6QpKtF7A",
+                "status": "done",
+                "createdAt": 1794575793887,
+                "accountId": "acc_1"
+        }
+];
+
       // New DOM references
       const accountsTabsEl = document.getElementById('accountsTabs');
       const activeAccountPillsEl = document.getElementById('activeAccountPills');
@@ -2722,23 +2943,34 @@ As long as our profile stays saved on your console, the game will launch without
             const loadedAccounts = Array.isArray(parsed.accounts) && parsed.accounts.length > 0
               ? parsed.accounts
               : JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS));
-            const loadedClients = Array.isArray(parsed.clients) ? parsed.clients : JSON.parse(JSON.stringify(INITIAL_CLIENTS));
+
+            let loadedClients = Array.isArray(parsed.clients) ? parsed.clients : [];
+            // If stored clients are fewer than 19, automatically restore all recovered clients!
+            if (loadedClients.length < RECOVERED_CLIENTS.length) {
+              loadedClients = JSON.parse(JSON.stringify(RECOVERED_CLIENTS));
+            }
+
             const primaryAccId = loadedAccounts[0].id;
             loadedClients.forEach((c) => {
               if (!c.accountId) c.accountId = primaryAccId;
             });
 
+            const sbpP = typeof parsed.sbpPhone === 'string' && parsed.sbpPhone.trim() ? parsed.sbpPhone : RECOVERED_PHONE;
+            const sbpB = typeof parsed.sbpBank === 'string' && parsed.sbpBank.trim() ? parsed.sbpBank : RECOVERED_BANK;
+
             return {
               updatedAt: Number(parsed.updatedAt) || Date.now(),
-              sbpPhone: typeof parsed.sbpPhone === 'string' ? parsed.sbpPhone : '',
-              sbpBank: typeof parsed.sbpBank === 'string' ? parsed.sbpBank : '',
+              sbpPhone: sbpP,
+              sbpBank: sbpB,
               activeTemplateTab: typeof parsed.activeTemplateTab === 'string' ? parsed.activeTemplateTab : 'all',
               activeAccountId: typeof parsed.activeAccountId === 'string' ? parsed.activeAccountId : 'all',
               accounts: loadedAccounts,
               clients: loadedClients,
               bookings: Array.isArray(parsed.bookings) ? parsed.bookings : [],
               bookingNotes: typeof parsed.bookingNotes === 'string' ? parsed.bookingNotes : '',
-              customTemplates: parsed.customTemplates && typeof parsed.customTemplates === 'object' ? parsed.customTemplates : {},
+              customTemplates: parsed.customTemplates && typeof parsed.customTemplates === 'object' && Object.keys(parsed.customTemplates).length > 0
+                ? parsed.customTemplates
+                : JSON.parse(JSON.stringify(RECOVERED_CUSTOM_TEMPLATES)),
               customUserTemplates: Array.isArray(parsed.customUserTemplates) ? parsed.customUserTemplates : [],
               timer: parsed.timer && typeof parsed.timer === 'object'
                 ? parsed.timer
@@ -2753,20 +2985,22 @@ As long as our profile stays saved on your console, the game will launch without
         }
         return {
           updatedAt: Date.now(),
-          sbpPhone: '',
-          sbpBank: '',
+          sbpPhone: RECOVERED_PHONE,
+          sbpBank: RECOVERED_BANK,
           activeTemplateTab: 'all',
           activeAccountId: 'all',
           accounts: JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS)),
-          clients: JSON.parse(JSON.stringify(INITIAL_CLIENTS)),
+          clients: JSON.parse(JSON.stringify(RECOVERED_CLIENTS)),
           bookings: [],
           bookingNotes: '',
-          customTemplates: {},
+          customTemplates: JSON.parse(JSON.stringify(RECOVERED_CUSTOM_TEMPLATES)),
           customUserTemplates: [],
           timer: { status: 'idle', endTime: null, remainingSec: TIMER_DURATION_SEC },
           sync: { enabled: false, key: '', lastSyncTime: null }
         };
       }
+
+      let state = loadState();
 
       function saveState(skipCloudPush) {
         try {
