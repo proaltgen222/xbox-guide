@@ -3389,6 +3389,8 @@ As long as our profile stays saved on your console, the game will launch without
       const syncPhoneLinkInput = document.getElementById('syncPhoneLinkInput');
       const btnCopyPhoneLink = document.getElementById('btnCopyPhoneLink');
       const btnDisableSync = document.getElementById('btnDisableSync');
+      const btnSaveCloudSync = document.getElementById('btnSaveCloudSync');
+      const btnCloseCloudModal = document.getElementById('btnCloseCloudModal');
       const btnManualSyncNow = document.getElementById('btnManualSyncNow');
 
       function loadState() {
@@ -3920,9 +3922,7 @@ As long as our profile stays saved on your console, the game will launch without
         renderTemplateItemsOnly();
       }
 
-      function _legacyRenderTemplates() {
-        tplListEl.innerHTML = '';
-        const currentTab = state.activeTemplateTab || 'all';
+
 
       // ==========================================
       // MULTI-ACCOUNT SWITCHER & STATS
@@ -5646,7 +5646,6 @@ As long as our profile stays saved on your console, the game will launch without
         setCloudStatus('online', 'Облако: Онлайн');
         pullFromCloud(false);
       }
-    }
   })();
   </script>
 
