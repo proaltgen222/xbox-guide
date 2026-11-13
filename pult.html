@@ -1952,22 +1952,6 @@
 </head>
 <body>
 
-  <!-- PIN GATE OVERLAY -->
-  <div id="pinGateOverlay" style="position:fixed; inset:0; z-index:99999; background: #080b12; display:flex; align-items:center; justify-content:center; padding:20px;">
-    <div style="max-width:390px; width:100%; background:#101521; border:1px solid #243049; border-radius:18px; padding:32px 26px; text-align:center; box-shadow:0 25px 60px rgba(0,0,0,0.75);">
-      <div style="width:58px; height:58px; border-radius:14px; background:linear-gradient(135deg, #22c55e, #06b6d4); display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 18px; box-shadow:0 0 24px rgba(34,197,94,0.3);">🔐</div>
-      <h3 style="font-size:1.3rem; font-weight:800; color:#f1f5f9; margin-bottom:8px;">Пульт Продавца</h3>
-      <p style="font-size:0.88rem; color:#94a3b8; margin-bottom:20px;">Введите PIN-код для доступа к базе клиентов и кассе:</p>
-      <input id="pinInput" type="password" maxlength="8" inputmode="numeric" placeholder="••••" style="width:170px; text-align:center; font-size:26px; letter-spacing:8px; padding:10px 14px; background:#0b0f18; border:2px solid #334366; border-radius:10px; color:#fff; outline:none; margin-bottom:12px;" autofocus />
-      <div id="pinError" style="color:#ef4444; font-size:0.85rem; min-height:22px; margin-bottom:12px; font-weight:600;"></div>
-      <button id="pinSubmitBtn" style="width:100%; padding:13px; background:linear-gradient(135deg, #22c55e, #16a34a); border:none; border-radius:10px; color:#fff; font-weight:700; font-size:0.95rem; cursor:pointer;">Войти в Пульт</button>
-      <div style="margin-top:16px;">
-        <a href="index.html" style="font-size:0.84rem; color:#64748b; text-decoration:none;">← На сайт инструкции для покупателей</a>
-      </div>
-    </div>
-  </div>
-
-
   <!-- TOP HEADER -->
   <header class="topbar">
     <div class="brand">
@@ -1988,10 +1972,6 @@
       <button type="button" class="btn-sm" id="btnQuickCopyClientsOnly" style="background:#059669; color:#ffffff; font-weight:800; font-size:12.5px; padding:7px 12px; border-radius:8px; border:1px solid #34d399; cursor:pointer; box-shadow:0 0 10px rgba(5,150,105,0.35); display:inline-flex; align-items:center; gap:5px;" title="Скопировать только клиентов и кассу (ровно 1 сообщение в Telegram, не режется!)">👥 Только клиенты (1 соо в ТГ)</button>
       <button type="button" class="btn-sm" id="btnQuickPasteBase" style="background:#0284c7; color:#ffffff; font-weight:800; font-size:12.5px; padding:7px 12px; border-radius:8px; border:1px solid #38bdf8; cursor:pointer; box-shadow:0 0 10px rgba(2,132,199,0.35); display:inline-flex; align-items:center; gap:5px;" title="Вставить базу из буфера (умная склейка Telegram)">📥 Вставить базу</button>
       <button type="button" class="btn-ghost" id="btnQuickDownloadFile" style="font-weight:700; font-size:12.5px; padding:7px 12px;" title="Скачать базу файлом .json для отправки файлом в Telegram без разбиения">📁 Файл базы (.json)</button>
-      
-      <button class="btn-bookings js-open-bookings" title="Открыть расписание и список бронирований">
-        📅 Список бронирований (<span class="booking-count-badge js-bookings-count">0</span>)
-      </button>
       <span class="save-pill" id="savePill">💾 Сохранено в браузере</span>
       <button class="btn-ghost" id="btnExportJson"  title="Скачать резервную копию базы и шаблонов в JSON">📤 Экспорт JSON</button>
       <button class="btn-ghost" id="btnImportJson" title="Восстановить данные из JSON файла">📥 Импорт JSON</button>
@@ -2019,7 +1999,7 @@
         📋 Шаблоны ответов
       </button>
       <button type="button" class="view-tab-btn active" data-view="clients" id="tabBtnClients" role="tab" aria-selected="true">
-        📊 Статистика и клиенты <span class="tab-badge" id="tabClientsCount">0</span>
+        📊 Статистика и клиенты <span class="tab-badge" id="tabClientsCount">19</span>
       </button>
       <button type="button" class="view-tab-btn view-tab-both" data-view="both" id="tabBtnBoth" role="tab" aria-selected="false" title="Показать обе панели рядом на одном экране">
         🖥 Всё вместе (2 колонки)
@@ -2516,48 +2496,6 @@
     </div>
   </div>
 
-
-  <script>
-  (function initPinGate() {
-    var overlay = document.getElementById('pinGateOverlay');
-    var input = document.getElementById('pinInput');
-    var btn = document.getElementById('pinSubmitBtn');
-    var err = document.getElementById('pinError');
-    var DEFAULT_PIN = '7777';
-
-    if (sessionStorage.getItem('seller_pult_auth') === 'true') {
-      overlay.style.display = 'none';
-      return;
-    }
-
-    function verifyPin() {
-      var entered = (input.value || '').trim();
-      var savedPin = localStorage.getItem('seller_pult_pin') || DEFAULT_PIN;
-      if (entered === savedPin || entered === DEFAULT_PIN) {
-        sessionStorage.setItem('seller_pult_auth', 'true');
-        overlay.style.display = 'none';
-        err.textContent = '';
-      } else {
-        err.textContent = '✕ Неверный PIN-код';
-        input.value = '';
-        input.focus();
-        input.style.borderColor = '#ef4444';
-        setTimeout(function () { input.style.borderColor = '#334366'; }, 1000);
-      }
-    }
-
-    if (btn && input) {
-      btn.addEventListener('click', verifyPin);
-      input.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          verifyPin();
-        }
-      });
-    }
-  })();
-  </script>
-
   <script>
     (function () {
       'use strict';
@@ -2884,46 +2822,215 @@ As long as our profile stays saved on your console, the game will launch without
       // Initial clients imported directly from sell/client.txt
       const INITIAL_CLIENTS = [
         {
-          id: 'c_init_1',
-          name: 'daniel4920494',
-          platform: 'FunPay',
-          amount: 390,
-          comment: 'client1 · Series S / 0F34JW324333PC',
-          url: '',
-          status: 'done',
-          createdAt: 1700000001000
+                "id": "c_init_1",
+                "name": "daniel4920494",
+                "platform": "FunPay",
+                "amount": 390,
+                "comment": "Series S / 0F34JW324333PC",
+                "status": "done",
+                "createdAt": 1700000001000,
+                "url": "https://funpay.com/chat/?node=301071265",
+                "accountId": "acc_1"
         },
         {
-          id: 'c_init_2',
-          name: 'NoNam37',
-          platform: 'FunPay',
-          amount: 390,
-          comment: 'client2 · Series X / 101818222917',
-          url: '',
-          status: 'done',
-          createdAt: 1700000002000
+                "id": "c_init_2",
+                "name": "NoNam37",
+                "platform": "FunPay",
+                "amount": 390,
+                "comment": "Series X / 101818222917",
+                "status": "done",
+                "createdAt": 1700000002000,
+                "url": "https://funpay.com/chat/?node=301106820",
+                "accountId": "acc_1"
         },
         {
-          id: 'c_init_3',
-          name: 'Fassseq',
-          platform: 'FunPay',
-          amount: 390,
-          comment: 'client3 · Series S / 0F34JW324333PC',
-          url: '',
-          status: 'done',
-          createdAt: 1700000003000
+                "id": "c_init_3",
+                "name": "Fassseq",
+                "platform": "FunPay",
+                "amount": 390,
+                "comment": "Series S / 139052214917",
+                "status": "done",
+                "createdAt": 1700000003000,
+                "url": "https://funpay.com/chat/?node=301121150",
+                "accountId": "acc_1"
         },
         {
-          id: 'c_init_4',
-          name: 'Артем(зел ава)',
-          platform: 'Авито',
-          amount: 0,
-          comment: 'client4 · _ / _',
-          url: '',
-          status: 'waiting',
-          createdAt: 1700000004000
+                "id": "c_init_4",
+                "name": "Артем(зел ава)",
+                "platform": "Авито",
+                "amount": 630,
+                "comment": "Series S / 110983203417",
+                "status": "done",
+                "createdAt": 1700000004000,
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-1aQQhdpxhOOZ4bv3bdrGMg",
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794399678639_vj5e",
+                "name": "Никита",
+                "platform": "Авито",
+                "amount": 650,
+                "comment": "Вход 15.18  / Series S / 227781222817",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-eTufROjD_cgSJxaPO1t69g",
+                "status": "done",
+                "createdAt": 1794399678639,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794402851984_a26c",
+                "name": "Влад",
+                "platform": "Авито",
+                "amount": 750,
+                "comment": "Вход 16.20 / Series S / 143023221717",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-EvVLUERfLvQrve7O1D0hfg",
+                "status": "done",
+                "createdAt": 1794402851984,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794407194540_1feg",
+                "name": "FanMag",
+                "platform": "FunPay",
+                "amount": 390,
+                "comment": "Seies S / 034121215017",
+                "url": "https://funpay.com/chat/?node=301212863",
+                "status": "done",
+                "createdAt": 1794407194540,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794422071326_r88n",
+                "name": "godfeature",
+                "platform": "Playerok",
+                "amount": 373,
+                "comment": "Series S / 052259243117",
+                "url": "https://playerok.com/chats/1f1dde7f-867e-6ba0-8675-b0c4d4e9d612",
+                "status": "done",
+                "createdAt": 1794422071326,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794427678820_pesn",
+                "name": "Я",
+                "platform": "Telegram",
+                "amount": 0,
+                "comment": "041790220817",
+                "url": "https://041790220817",
+                "status": "done",
+                "createdAt": 1794427678820,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794495760238_0rtb",
+                "name": "Николай",
+                "platform": "Авито",
+                "amount": 840,
+                "comment": "Series S / 062022221617",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-h48PYYThPCEtRIyBq9KbHw",
+                "status": "done",
+                "createdAt": 1794495760238,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794496714297_280h",
+                "name": "Егор",
+                "platform": "Авито",
+                "amount": 849,
+                "comment": "Series S / 006844234117",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-kKRH2A6VohALx9d_6rpAMA",
+                "status": "done",
+                "createdAt": 1794496714297,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794501622848_ujx9",
+                "name": "nik",
+                "platform": "Авито",
+                "amount": 800,
+                "comment": "Series X / 124172220817",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-KtaBwQVubm2WJhGil3ghdg",
+                "status": "done",
+                "createdAt": 1794501622848,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794501862516_m9t5",
+                "name": "Geek Devices",
+                "platform": "Авито",
+                "amount": 852,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-OT0IPdrnfTe~5YCxtxTyTA",
+                "status": "done",
+                "createdAt": 1794501862516,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794511665581_fkdh",
+                "name": "Виктор",
+                "platform": "Авито",
+                "amount": 855,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-wzFkkVQnzdJVIY9jtzElqQ",
+                "status": "done",
+                "createdAt": 1794511665581,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794513823614_hmlc",
+                "name": "иван",
+                "platform": "Авито",
+                "amount": 1050,
+                "comment": "23.40",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-AMGzYUSaXyj_aKHmXsgeeA",
+                "status": "done",
+                "createdAt": 1794513823614,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794513928996_uw9y",
+                "name": "Сергей",
+                "platform": "Авито",
+                "amount": 1000,
+                "comment": "23.10",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-FhcowVjmRWWZiPsgTNCNJw",
+                "status": "done",
+                "createdAt": 1794513928996,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794575761644_0kpp",
+                "name": "Дмитрий",
+                "platform": "Авито",
+                "amount": 1050,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-_vOQvIXnuk4qc8sAs9i3Ng",
+                "status": "done",
+                "createdAt": 1794575761644,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794575783403_i9uf",
+                "name": "Иван",
+                "platform": "Авито",
+                "amount": 1050,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-IheXboLP55LP7U5sEfVhhw",
+                "status": "done",
+                "createdAt": 1794575783403,
+                "accountId": "acc_1"
+        },
+        {
+                "id": "c_1794575793887_7dvq",
+                "name": "Вадим",
+                "platform": "Авито",
+                "amount": 1050,
+                "comment": "",
+                "url": "https://www.avito.ru/profile/messenger/channel/u2i-hYIT3xjNmH955v6QpKtF7A",
+                "status": "done",
+                "createdAt": 1794575793887,
+                "accountId": "acc_1"
         }
-      ];
+];
 
       const STATUS_META = {
         queue: { icon: '⏳', short: 'В очереди', full: '⏳ В очереди' },
