@@ -2105,14 +2105,14 @@
     <!-- MAIN WORKSPACE VIEW TABS -->
   <div class="main-view-nav-wrap">
     <div class="main-view-tabs" id="mainViewTabs" role="tablist">
+      <button type="button" class="view-tab-btn active view-tab-both" data-view="both" id="tabBtnBoth" role="tab" aria-selected="true" title="Показать обе панели рядом на одном экране (Шаблоны + Клиенты)">
+        🖥 Всё вместе (2 колонки)
+      </button>
       <button type="button" class="view-tab-btn" data-view="templates" id="tabBtnTemplates" role="tab" aria-selected="false">
         📋 Шаблоны ответов
       </button>
-      <button type="button" class="view-tab-btn active" data-view="clients" id="tabBtnClients" role="tab" aria-selected="true">
+      <button type="button" class="view-tab-btn" data-view="clients" id="tabBtnClients" role="tab" aria-selected="false">
         📊 Статистика и клиенты <span class="tab-badge" id="tabClientsCount">19</span>
-      </button>
-      <button type="button" class="view-tab-btn view-tab-both" data-view="both" id="tabBtnBoth" role="tab" aria-selected="false" title="Показать обе панели рядом на одном экране">
-        🖥 Всё вместе (2 колонки)
       </button>
     </div>
   </div>
@@ -3196,6 +3196,7 @@ As long as our profile stays saved on your console, the game will launch without
 
       // App State
       // state initialized below
+      let pushDebounceTimer = null;
       let activeFilter = 'all';
       let searchQuery = '';
       let editingClientId = null;
@@ -3688,12 +3689,18 @@ As long as our profile stays saved on your console, the game will launch without
         try {
           state.updatedAt = Date.now();
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-          savePillEl.textContent = '💾 Сохранено ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          if (savePillEl) {
+            savePillEl.textContent = '💾 Сохранено ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          }
         } catch (e) {
-          showToast('Ошибка сохранения в localStorage!', 'warn');
+          console.warn('LocalStorage save error:', e);
         }
-        if (!skipCloudPush && state.sync && state.sync.enabled && state.sync.key) {
-          scheduleCloudPush();
+        try {
+          if (!skipCloudPush && state.sync && state.sync.enabled && state.sync.key) {
+            scheduleCloudPush();
+          }
+        } catch (e) {
+          console.warn('scheduleCloudPush error:', e);
         }
       }
 
@@ -3847,50 +3854,23 @@ As long as our profile stays saved on your console, the game will launch without
           if (tab.id === 'all') {
             btn.textContent = '📋 Все';
           } else {
-            btn.innerHTML = `<span>${tab.label}</span><span class="del-tab-icon" data-del-tab="${tab.id}" title="Удалить группу «${tab.label}»">✕</span>`;
+            const spanText = document.createElement('span');
+            spanText.textContent = tab.label;
+            btn.appendChild(spanText);
           }
+
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            state.activeTemplateTab = tab.id;
+            saveState();
+            tplTabsContainer.querySelectorAll('.tpl-tab-btn').forEach((b) => {
+              b.classList.toggle('active', b.dataset.tab === tab.id);
+            });
+            renderTemplateItemsOnly();
+          });
 
           tplTabsContainer.appendChild(btn);
-        });
-      }
-
-      // Delegate click on tplTabs container to avoid destroying clicked element mid-event
-      const tplTabsEl = document.getElementById('tplTabs');
-      if (tplTabsEl) {
-        tplTabsEl.addEventListener('click', (e) => {
-          const delTarget = e.target.closest('.del-tab-icon');
-          if (delTarget) {
-            e.stopPropagation();
-            const tabIdToDel = delTarget.dataset.delTab;
-            const tabObj = TEMPLATE_CATEGORY_TABS.find((x) => x.id === tabIdToDel);
-            const label = tabObj ? tabObj.label : tabIdToDel;
-            if (confirm(`Удалить группу шаблонов «${label}» и скрыть её шаблоны?`)) {
-              if (!state.deletedTemplateTabs.includes(tabIdToDel)) {
-                state.deletedTemplateTabs.push(tabIdToDel);
-              }
-              if (state.activeTemplateTab === tabIdToDel) {
-                state.activeTemplateTab = 'all';
-              }
-              saveState();
-              renderTemplates();
-              showToast(`Группа «${label}» удалена`);
-            }
-            return;
-          }
-
-          const tabBtn = e.target.closest('.tpl-tab-btn');
-          if (!tabBtn) return;
-          const targetTab = tabBtn.dataset.tab;
-          if (!targetTab) return;
-
-          state.activeTemplateTab = targetTab;
-          saveState();
-          // Update active class immediately on all tab buttons
-          tplTabsEl.querySelectorAll('.tpl-tab-btn').forEach((b) => {
-            b.classList.toggle('active', b.dataset.tab === targetTab);
-          });
-          // Re-render template list items
-          renderTemplateItemsOnly();
         });
       }
 
@@ -5240,11 +5220,15 @@ As long as our profile stays saved on your console, the game will launch without
       }
 
       function scheduleCloudPush() {
-        if (!state.sync || !state.sync.enabled || !state.sync.key) return;
-        clearTimeout(pushDebounceTimer);
-        pushDebounceTimer = setTimeout(() => {
-          pushToCloud();
-        }, 900);
+        try {
+          if (!state.sync || !state.sync.enabled || !state.sync.key) return;
+          if (pushDebounceTimer) clearTimeout(pushDebounceTimer);
+          pushDebounceTimer = setTimeout(() => {
+            pushToCloud().catch((err) => console.warn('Cloud push failed:', err));
+          }, 900);
+        } catch (e) {
+          console.warn('scheduleCloudPush internal error:', e);
+        }
       }
 
       async function pushToCloud() {
@@ -5948,7 +5932,7 @@ As long as our profile stays saved on your console, the game will launch without
       }
 
       // Initialize Main View Tabs (Templates vs Stats+Clients)
-      const savedMainView = localStorage.getItem('seller_pult_main_view') || 'clients';
+      const savedMainView = localStorage.getItem('seller_pult_main_view') || 'both';
       switchMainView(savedMainView);
       updateMainTabsBadges();
       const mainViewTabsEl = document.getElementById('mainViewTabs');
