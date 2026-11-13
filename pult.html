@@ -193,6 +193,85 @@
     }
 
     /* Main 2-column layout */
+    /* MAIN VIEW TABS (Шаблоны vs Статистика и клиенты) */
+    .main-view-nav-wrap {
+      max-width: 1640px;
+      margin: 14px auto 0;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .main-view-tabs {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 5px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .view-tab-btn {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid transparent;
+      border-radius: 9px;
+      padding: 8px 18px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .view-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .view-tab-btn.active {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: #ffffff;
+      border-color: rgba(96, 165, 250, 0.45);
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
+    }
+
+    .view-tab-btn .tab-badge {
+      background: rgba(0, 0, 0, 0.35);
+      color: #93c5fd;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+
+    .view-tab-btn.active .tab-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    @media (max-width: 640px) {
+      .main-view-tabs {
+        width: 100%;
+        display: flex;
+      }
+      .view-tab-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+      .view-tab-btn.view-tab-both {
+        display: none;
+      }
+    }
+
     .workspace {
       max-width: 1640px;
       margin: 18px auto 0;
@@ -1905,8 +1984,10 @@
     <div class="topbar-actions">
       <a href="index.html" class="btn-ghost" style="text-decoration:none; color:var(--cyan); border-color:var(--cyan); font-weight:700;" title="Вернуться к сайту инструкции">← Инструкция</a>
       <button type="button" class="cloud-pill" id="btnCloudSync" title="Облачная авто-синхронизация ПК ⇄ Телефон">☁️ <span id="cloudStatusLabel">Облако: Автономно</span></button>
-      <button type="button" class="btn-sm" id="btnQuickCopyBase" style="background:#16a34a; color:#ffffff; font-weight:800; font-size:13px; padding:8px 14px; border-radius:8px; border:1px solid #4ade80; cursor:pointer; box-shadow:0 0 12px rgba(34,197,94,0.4); display:inline-flex; align-items:center; gap:6px;" title="Скопировать базу клиентов и профилей в буфер для Telegram">📋 Скопировать базу</button>
-      <button type="button" class="btn-sm" id="btnQuickPasteBase" style="background:#0284c7; color:#ffffff; font-weight:800; font-size:13px; padding:8px 14px; border-radius:8px; border:1px solid #38bdf8; cursor:pointer; box-shadow:0 0 12px rgba(2,132,199,0.4); display:inline-flex; align-items:center; gap:6px;" title="Вставить базу клиентов и профилей из Telegram">📥 Вставить базу</button>
+      <button type="button" class="btn-sm" id="btnQuickCopyBase" style="background:#16a34a; color:#ffffff; font-weight:800; font-size:12.5px; padding:7px 12px; border-radius:8px; border:1px solid #4ade80; cursor:pointer; box-shadow:0 0 10px rgba(34,197,94,0.35); display:inline-flex; align-items:center; gap:5px;" title="Скопировать всю базу (клиенты + шаблоны)">📋 Скопировать базу</button>
+      <button type="button" class="btn-sm" id="btnQuickCopyClientsOnly" style="background:#059669; color:#ffffff; font-weight:800; font-size:12.5px; padding:7px 12px; border-radius:8px; border:1px solid #34d399; cursor:pointer; box-shadow:0 0 10px rgba(5,150,105,0.35); display:inline-flex; align-items:center; gap:5px;" title="Скопировать только клиентов и кассу (ровно 1 сообщение в Telegram, не режется!)">👥 Только клиенты (1 соо в ТГ)</button>
+      <button type="button" class="btn-sm" id="btnQuickPasteBase" style="background:#0284c7; color:#ffffff; font-weight:800; font-size:12.5px; padding:7px 12px; border-radius:8px; border:1px solid #38bdf8; cursor:pointer; box-shadow:0 0 10px rgba(2,132,199,0.35); display:inline-flex; align-items:center; gap:5px;" title="Вставить базу из буфера (умная склейка Telegram)">📥 Вставить базу</button>
+      <button type="button" class="btn-ghost" id="btnQuickDownloadFile" style="font-weight:700; font-size:12.5px; padding:7px 12px;" title="Скачать базу файлом .json для отправки файлом в Telegram без разбиения">📁 Файл базы (.json)</button>
       
       <button class="btn-bookings js-open-bookings" title="Открыть расписание и список бронирований">
         📅 Список бронирований (<span class="booking-count-badge js-bookings-count">0</span>)
@@ -1931,10 +2012,25 @@
     <div class="accounts-bar-right" id="activeAccountPills"></div>
   </section>
 
-  <main class="workspace">
+    <!-- MAIN WORKSPACE VIEW TABS -->
+  <div class="main-view-nav-wrap">
+    <div class="main-view-tabs" id="mainViewTabs" role="tablist">
+      <button type="button" class="view-tab-btn" data-view="templates" id="tabBtnTemplates" role="tab" aria-selected="false">
+        📋 Шаблоны ответов
+      </button>
+      <button type="button" class="view-tab-btn active" data-view="clients" id="tabBtnClients" role="tab" aria-selected="true">
+        📊 Статистика и клиенты <span class="tab-badge" id="tabClientsCount">0</span>
+      </button>
+      <button type="button" class="view-tab-btn view-tab-both" data-view="both" id="tabBtnBoth" role="tab" aria-selected="false" title="Показать обе панели рядом на одном экране">
+        🖥 Всё вместе (2 колонки)
+      </button>
+    </div>
+  </div>
+
+  <main class="workspace" id="mainWorkspace">
 
     <!-- LEFT COLUMN: QUICK REPLY TEMPLATES -->
-    <section class="column-panel">
+    <section class="column-panel" id="panelTemplates">
       <div class="section-header">
         <div>
           <div class="section-title">📋 Шаблоны ответов (копирование в 1 клик)</div>
@@ -2026,7 +2122,7 @@
     </section>
 
     <!-- RIGHT COLUMN: STATS, 20-MIN TIMER, CLIENT QUEUE & TABLE -->
-    <section class="column-panel right-stack">
+    <section class="column-panel right-stack" id="panelClientsStats">
 
       <!-- 1. TOP STATS DASHBOARD -->
       <div>
@@ -2326,58 +2422,97 @@
         <div class="modal-title">☁️ Авто-синхронизация (ПК ⇄ Телефон)</div>
         <button type="button" class="modal-close-btn js-close-cloud-modal">✕</button>
       </div>
-      <div class="modal-body">
-        <!-- 100% RELIABLE INSTANT TELEGRAM TRANSFER (NOW PROPERLY INSIDE CLOUD MODAL) -->
-        <div style="background:rgba(34,197,94,0.12); border:2px solid #22c55e; border-radius:12px; padding:16px; margin-bottom:16px;">
-          <div style="font-size:14px; font-weight:800; color:#4ade80; margin-bottom:6px;">⚡ САМЫЙ ПРОСТОЙ СПОСОБ: перенос базы через Telegram</div>
-          <div style="font-size:12.5px; color:#cbd5e1; line-height:1.45; margin-bottom:12px;">
-            1. На ПК нажмите зелёную кнопку <strong>«Скопировать базу»</strong>.<br />
-            2. Отправьте скопированный текст себе в Telegram («Избранное»).<br />
-            3. На телефоне скопируйте это сообщение и нажмите синюю кнопку <strong>«Вставить базу»</strong>.
+            <div class="modal-body" style="max-height: 85vh; overflow-y: auto;">
+        <!-- TELEGRAM TRANSFER OPTIONS -->
+        <div style="background: rgba(15, 23, 42, 0.75); border: 2px solid #22c55e; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+          <div style="font-size: 14.5px; font-weight: 800; color: #4ade80; margin-bottom: 4px; display:flex; align-items:center; gap:6px;">
+            ⚡ Синхронизация ПК ⇄ Телефон через Telegram
           </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
-            <button type="button" class="btn-sm" id="btnCopyEntireBase" style="background:#16a34a; color:#fff; font-weight:800; padding:10px 16px; font-size:13px; border-radius:8px; border:none; cursor:pointer;">📋 1. Скопировать базу в буфер (на ПК)</button>
-            <button type="button" class="btn-sm" id="btnPasteEntireBase" style="background:#0284c7; color:#fff; font-weight:800; padding:10px 16px; font-size:13px; border-radius:8px; border:none; cursor:pointer;">📥 2. Вставить базу из буфера (на телефоне)</button>
+          <div style="font-size: 12px; color: #94a3b8; line-height: 1.4; margin-bottom: 14px;">
+            В Telegram текстовые сообщения длиннее 4096 знаков разбиваются на части. Выберите удобный для вас вариант переноса:
           </div>
-          <div>
-            <label class="field-label" style="color:#94a3b8; font-size:11.5px;">Или вручную вставьте скопированный текст базы сюда:</label>
-            <div style="display:flex; gap:6px;">
-              <input type="text" class="input" id="manualBaseInput" placeholder="Вставьте текст базы из Telegram..." style="font-size:12px; font-family:var(--font-mono);" />
-              <button type="button" class="btn-ghost primary" id="btnLoadManualBase" style="white-space:nowrap; font-weight:700;">Загрузить</button>
+
+          <!-- OPTION 1: FILE TRANSFER (BEST FOR FULL BASE) -->
+          <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+            <div style="font-size: 13px; font-weight: 800; color: #38bdf8; margin-bottom: 4px;">
+              📁 Вариант 1 (Самый надёжный): Перенос файлом (НЕ разбивается!)
+            </div>
+            <div style="font-size: 12px; color: #cbd5e1; line-height: 1.45; margin-bottom: 10px;">
+              1. На ПК нажмите кнопку ниже — скачается маленький файл <strong>pult_base.json</strong> (20 КБ).<br />
+              2. Перетащите этот файл в Telegram в «Избранное» (отправляется <strong>одним файлом</strong> без разбиения).<br />
+              3. На телефоне в Telegram нажмите на файл и сохраните, а в пульте нажмите «Загрузить файл на телефоне».
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn-sm" id="btnModalDownloadJson" style="background:#0284c7; color:#fff; font-weight:800; padding:8px 14px; font-size:12.5px; border-radius:8px; border:none; cursor:pointer;">💾 1. Скачать файл базы (.json)</button>
+              <button type="button" class="btn-sm" id="btnModalUploadJson" style="background:#0ea5e9; color:#fff; font-weight:800; padding:8px 14px; font-size:12.5px; border-radius:8px; border:none; cursor:pointer;">📥 2. Загрузить файл на телефоне</button>
+            </div>
+          </div>
+
+          <!-- OPTION 2: CLIENTS ONLY (EXACTLY 1 TELEGRAM MESSAGE) -->
+          <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(34, 197, 94, 0.35); border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+            <div style="font-size: 13px; font-weight: 800; color: #4ade80; margin-bottom: 4px;">
+              👥 Вариант 2: Только клиенты и касса (ровно 1 сообщение в Telegram)
+            </div>
+            <div style="font-size: 12px; color: #cbd5e1; line-height: 1.45; margin-bottom: 10px;">
+              Если шаблоны инструкций на телефоне уже есть — перенесите только клиентов, статусы и кассу.<br />
+              Этот текст весит всего ~2 000 знаков и <strong>гарантированно укладывается в 1 сообщение Telegram</strong>.
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn-sm" id="btnModalCopyClientsOnly" style="background:#16a34a; color:#fff; font-weight:800; padding:8px 14px; font-size:12.5px; border-radius:8px; border:none; cursor:pointer;">📋 Скопировать клиентов (1 сообщение)</button>
+              <button type="button" class="btn-sm" id="btnModalPasteClientsOnly" style="background:#10b981; color:#fff; font-weight:800; padding:8px 14px; font-size:12.5px; border-radius:8px; border:none; cursor:pointer;">📥 Вставить клиентов из Telegram</button>
+            </div>
+          </div>
+
+          <!-- OPTION 3: FULL BASE WITH AUTO-GLUE OF 3 PARTS -->
+          <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 10px; padding: 12px;">
+            <div style="font-size: 13px; font-weight: 800; color: #c084fc; margin-bottom: 4px;">
+              🧩 Вариант 3: Полная база текстом (склейка 3-х сообщений)
+            </div>
+            <div style="font-size: 12px; color: #cbd5e1; line-height: 1.45; margin-bottom: 10px;">
+              Если Telegram уже разбил базу на 3 сообщения:<br />
+              • <strong>Способ «всё сразу»:</strong> выделите в Telegram все 3 сообщения сразу, нажмите «Копировать» и нажмите синюю кнопку <strong>«Вставить из буфера»</strong> (пульт сам уберёт заголовки времени и склеит сообщения).<br />
+              • <strong>Или по частям:</strong> скопируйте каждое из 3 сообщений в поля ниже и нажмите «Склеить 3 части»:
+            </div>
+            <div style="display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+              <button type="button" class="btn-sm" id="btnCopyEntireBase" style="background:#7c3aed; color:#fff; font-weight:800; padding:8px 14px; font-size:12.5px; border-radius:8px; border:none; cursor:pointer;">📋 Скопировать всю базу в буфер</button>
+              <button type="button" class="btn-sm" id="btnPasteEntireBase" style="background:#a855f7; color:#fff; font-weight:800; padding:8px 14px; font-size:12.5px; border-radius:8px; border:none; cursor:pointer;">📥 Вставить из буфера (со склейкой)</button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+              <input type="text" class="input" id="gluePart1" placeholder="Часть 1 (первое сообщение из Telegram)..." style="font-size:11.5px; font-family:var(--font-mono); padding:6px 10px;" />
+              <input type="text" class="input" id="gluePart2" placeholder="Часть 2 (второе сообщение из Telegram)..." style="font-size:11.5px; font-family:var(--font-mono); padding:6px 10px;" />
+              <input type="text" class="input" id="gluePart3" placeholder="Часть 3 (третье сообщение из Telegram)..." style="font-size:11.5px; font-family:var(--font-mono); padding:6px 10px;" />
+              <button type="button" class="btn-sm primary" id="btnGlueParts" style="font-weight:800; padding:8px 14px; align-self:flex-start; margin-top:4px;">🧩 Склеить 3 части и загрузить в базу</button>
             </div>
           </div>
         </div>
+
+        <!-- CLOUD STATUS BOX -->
         <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:14px; font-size:13px; line-height:1.5;">
-          <div style="font-weight:800; color:#67e8f9; margin-bottom:4px;">✨ Вариант 1: Облачный JSON-ящик</div>
-          <div>Изменения базы клиентов, кассы и статусов сохраняются в защищенном облаке в реальном времени. При изменении на ПК — телефон сразу видит обновление, и наоборот!</div>
-        </div>
-
-        <div>
-          <label class="field-label" for="syncKeyInput">Секретный ключ синхронизации (Sync Key)</label>
-          <div style="display:flex; gap:8px;">
-            <input type="text" class="input" id="syncKeyInput" placeholder="Придумайте ключ (напр. vice_777) или нажмите Создать" style="font-family:var(--font-mono); font-size:13px;" />
-            <button type="button" class="btn-ghost primary" id="btnGenSyncKey" style="white-space:nowrap; font-weight:700;">⚡ Создать ключ в 1 клик</button>
+          <div style="font-weight:700; margin-bottom:8px; color:var(--text-primary);">Автоматическая облачная связь</div>
+          <div style="color:var(--text-secondary); margin-bottom:12px; font-size:12.5px;">
+            Статус: <strong id="cloudModalStatusText" style="color:#4ade80;">Автономно (локально)</strong>
           </div>
-          <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;">Бесплатное безопасное облако KeyVal REST (без регистрации и без паролей).</div>
-        </div>
-
-        <div id="syncPhoneLinkBox" style="background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.3); border-radius:10px; padding:12px;">
-          <div style="font-size:12px; font-weight:700; color:#67e8f9; margin-bottom:4px;">📱 Ссылка для телефона (откройте на смартфоне):</div>
-          <div style="display:flex; gap:6px;">
-            <input type="text" class="input" id="syncPhoneLinkInput" readonly style="font-size:11.5px; color:#cbd5e1; font-family:var(--font-mono);" />
-            <button type="button" class="btn-ghost" id="btnCopyPhoneLink" style="white-space:nowrap;">📋 Скопировать</button>
+          <div style="display:flex; gap:8px; margin-bottom:8px;">
+            <input type="text" class="input" id="syncKeyInput" placeholder="Секретный ключ (например: gta6_vip_seller)" style="font-family:var(--font-mono);" />
+            <button type="button" class="btn-ghost" id="btnGenSyncKey" style="white-space:nowrap;">🎲 Сгенерировать</button>
           </div>
-          <div style="font-size:11px; color:#94a3b8; margin-top:4px;">Откройте эту ссылку на телефоне — и он мгновенно подключится к вашей базе без ручного ввода ключа!</div>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); flex-wrap:wrap; gap:8px;">
-          <button type="button" class="btn-ghost danger" id="btnDisableSync">✕ Отключить синхронизацию</button>
-          <div style="display:flex; gap:8px; margin-left:auto;">
-            <button type="button" class="btn-ghost" id="btnManualSyncNow">🔄 Синхронизировать сейчас</button>
-            <button type="button" class="btn-sm primary" id="btnSaveCloudSync">💾 Включить авто-синхронизацию</button>
+          <div style="display:none;" id="syncPhoneLinkBox">
+            <label class="field-label" style="color:var(--cyan); font-weight:700;">Прямая ссылка для телефона:</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" class="input" id="syncPhoneLinkInput" readonly style="font-size:12px; font-family:var(--font-mono);" />
+              <button type="button" class="btn-ghost" id="btnCopyPhoneLink" style="white-space:nowrap;">📋 Скопировать</button>
+            </div>
+            <div style="font-size:11px; color:#94a3b8; margin-top:4px;">Откройте эту ссылку на телефоне — и он мгновенно подключится к вашей базе без ручного ввода ключа!</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); flex-wrap:wrap; gap:8px;">
+            <button type="button" class="btn-ghost danger" id="btnDisableSync">✕ Отключить синхронизацию</button>
+            <div style="display:flex; gap:8px; margin-left:auto;">
+              <button type="button" class="btn-ghost" id="btnManualSyncNow">🔄 Синхронизировать сейчас</button>
+              <button type="button" class="btn-sm primary" id="btnSaveCloudSync">💾 Включить авто-синхронизацию</button>
+            </div>
           </div>
         </div>
-      </div>
+      </div></div>
     </div>
   </div>
 
@@ -3395,33 +3530,47 @@ As long as our profile stays saved on your console, the game will launch without
             btn.innerHTML = `<span>${tab.label}</span><span class="del-tab-icon" data-del-tab="${tab.id}" title="Удалить группу «${tab.label}»">✕</span>`;
           }
 
-          btn.addEventListener('click', (e) => {
-            const delTarget = e.target.closest('.del-tab-icon');
-            if (delTarget) {
-              e.stopPropagation();
-              const tabIdToDel = delTarget.dataset.delTab;
-              const tabObj = TEMPLATE_CATEGORY_TABS.find((x) => x.id === tabIdToDel);
-              const label = tabObj ? tabObj.label : tabIdToDel;
-              if (confirm(`Удалить группу шаблонов «${label}» и скрыть её шаблоны?`)) {
-                if (!state.deletedTemplateTabs.includes(tabIdToDel)) {
-                  state.deletedTemplateTabs.push(tabIdToDel);
-                }
-                if (state.activeTemplateTab === tabIdToDel) {
-                  state.activeTemplateTab = 'all';
-                }
-                saveState();
-                renderTemplates();
-                showToast(`Группа «${label}» удалена`);
-              }
-              return;
-            }
-
-            state.activeTemplateTab = tab.id;
-            saveState();
-            renderTemplates();
-          });
-
           tplTabsContainer.appendChild(btn);
+        });
+      }
+
+      // Delegate click on tplTabs container to avoid destroying clicked element mid-event
+      const tplTabsEl = document.getElementById('tplTabs');
+      if (tplTabsEl) {
+        tplTabsEl.addEventListener('click', (e) => {
+          const delTarget = e.target.closest('.del-tab-icon');
+          if (delTarget) {
+            e.stopPropagation();
+            const tabIdToDel = delTarget.dataset.delTab;
+            const tabObj = TEMPLATE_CATEGORY_TABS.find((x) => x.id === tabIdToDel);
+            const label = tabObj ? tabObj.label : tabIdToDel;
+            if (confirm(`Удалить группу шаблонов «${label}» и скрыть её шаблоны?`)) {
+              if (!state.deletedTemplateTabs.includes(tabIdToDel)) {
+                state.deletedTemplateTabs.push(tabIdToDel);
+              }
+              if (state.activeTemplateTab === tabIdToDel) {
+                state.activeTemplateTab = 'all';
+              }
+              saveState();
+              renderTemplates();
+              showToast(`Группа «${label}» удалена`);
+            }
+            return;
+          }
+
+          const tabBtn = e.target.closest('.tpl-tab-btn');
+          if (!tabBtn) return;
+          const targetTab = tabBtn.dataset.tab;
+          if (!targetTab) return;
+
+          state.activeTemplateTab = targetTab;
+          saveState();
+          // Update active class immediately on all tab buttons
+          tplTabsEl.querySelectorAll('.tpl-tab-btn').forEach((b) => {
+            b.classList.toggle('active', b.dataset.tab === targetTab);
+          });
+          // Re-render template list items
+          renderTemplateItemsOnly();
         });
       }
 
@@ -3588,8 +3737,8 @@ As long as our profile stays saved on your console, the game will launch without
         return rowWrap;
       }
 
-      function renderTemplates() {
-        updateTemplateTabsUI();
+      function renderTemplateItemsOnly() {
+        if (!tplListEl) return;
         tplListEl.innerHTML = '';
         const currentTab = state.activeTemplateTab || 'all';
 
@@ -3598,7 +3747,6 @@ As long as our profile stays saved on your console, the game will launch without
 
         const filteredBuiltins = DEFAULT_TEMPLATES.filter((tpl) => {
           if (state.deletedTemplateIds.includes(tpl.id)) return false;
-          // Hide if all its tabs are deleted
           if (tpl.tabs && tpl.tabs.every((t) => state.deletedTemplateTabs.includes(t))) return false;
           if (currentTab === 'all') return true;
           return tpl.tabs && tpl.tabs.includes(currentTab);
@@ -3625,13 +3773,12 @@ As long as our profile stays saved on your console, the game will launch without
           const cardHeader = document.createElement('div');
           cardHeader.className = 'tpl-card-header';
           cardHeader.innerHTML = `
-            <div class="tpl-card-title">${escapeHtml(meta.cardTitle || meta.title)}</div>
-            ${meta.cardBadge ? `<span class="tpl-badge ${meta.cardBadgeClass || ''}">${escapeHtml(meta.cardBadge)}</span>` : ''}
+            <div class="tpl-card-title">${escapeHtml(meta.groupTitle || meta.title)}</div>
+            ${meta.groupSub ? `<div class="tpl-card-sub">${escapeHtml(meta.groupSub)}</div>` : ''}
           `;
           card.appendChild(cardHeader);
 
-          items.forEach((item, idx) => {
-            item.isSecondInCard = idx > 0;
+          items.forEach((item) => {
             card.appendChild(renderSingleTemplateRow(item));
           });
 
@@ -3643,8 +3790,8 @@ As long as our profile stays saved on your console, the game will launch without
           customCard.className = 'tpl-card';
           customCard.innerHTML = `
             <div class="tpl-card-header">
-              <div class="tpl-card-title">⭐ Ваши добавленные шаблоны</div>
-              <span class="tpl-badge" style="background:rgba(6,182,212,0.15); color:#67e8f9; border-color:rgba(6,182,212,0.3);">${filteredCustom.length} шт.</span>
+              <div class="tpl-card-title">✨ Ваши добавленные шаблоны</div>
+              <div class="tpl-card-sub">Пользовательские быстрые ответы</div>
             </div>
           `;
           filteredCustom.forEach((item) => {
@@ -3656,10 +3803,19 @@ As long as our profile stays saved on your console, the game will launch without
         if (filteredBuiltins.length === 0 && filteredCustom.length === 0) {
           const empty = document.createElement('div');
           empty.className = 'empty-state';
-          empty.textContent = 'В этой вкладке нет шаблонов. Переключитесь на «Все» или добавьте свой шаблон ниже.';
+          empty.textContent = 'Нет шаблонов в этой вкладке. Переключитесь на «Все» или добавьте свой шаблон ниже.';
           tplListEl.appendChild(empty);
         }
       }
+
+      function renderTemplates() {
+        updateTemplateTabsUI();
+        renderTemplateItemsOnly();
+      }
+
+      function _legacyRenderTemplates() {
+        tplListEl.innerHTML = '';
+        const currentTab = state.activeTemplateTab || 'all';
 
       // ==========================================
       // MULTI-ACCOUNT SWITCHER & STATS
@@ -4133,6 +4289,7 @@ As long as our profile stays saved on your console, the game will launch without
 
       // Render Clients Table
       function renderClientsTable() {
+        updateMainTabsBadges();
         const q = searchQuery.trim().toLowerCase();
         const activeAccId = state.activeAccountId || 'all';
 
@@ -4864,8 +5021,218 @@ As long as our profile stays saved on your console, the game will launch without
       });
 
       // ==========================================
-      // INSTANT TELEGRAM BASE TRANSFER (COPY & PASTE)
+      // MAIN WORKSPACE VIEW SWITCHER (Tabs vs Stats+Clients)
       // ==========================================
+      function updateMainTabsBadges() {
+        const badge = document.getElementById('tabClientsCount');
+        if (badge && state && Array.isArray(state.clients)) {
+          badge.textContent = state.clients.length;
+        }
+      }
+
+      function switchMainView(viewName) {
+        state.activeMainView = viewName;
+        try {
+          localStorage.setItem('seller_pult_main_view', viewName);
+        } catch (_) {}
+
+        const tabBtns = document.querySelectorAll('#mainViewTabs .view-tab-btn');
+        tabBtns.forEach((btn) => {
+          const isActive = btn.dataset.view === viewName;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        const panelTemplates = document.getElementById('panelTemplates');
+        const panelClientsStats = document.getElementById('panelClientsStats');
+        const workspaceEl = document.getElementById('mainWorkspace');
+
+        if (!panelTemplates || !panelClientsStats) return;
+
+        if (viewName === 'templates') {
+          panelTemplates.style.display = 'block';
+          panelClientsStats.style.display = 'none';
+          if (workspaceEl) {
+            workspaceEl.style.gridTemplateColumns = '1fr';
+            workspaceEl.style.maxWidth = '1100px';
+          }
+        } else if (viewName === 'clients') {
+          panelTemplates.style.display = 'none';
+          panelClientsStats.style.display = 'flex';
+          if (workspaceEl) {
+            workspaceEl.style.gridTemplateColumns = '1fr';
+            workspaceEl.style.maxWidth = '1300px';
+          }
+        } else {
+          // both
+          panelTemplates.style.display = 'block';
+          panelClientsStats.style.display = 'flex';
+          if (workspaceEl) {
+            workspaceEl.style.gridTemplateColumns = '';
+            workspaceEl.style.maxWidth = '1640px';
+          }
+        }
+      }
+
+      // ==========================================
+      // QUICK PRICE CHIPS & CUSTOM TEMPLATES LOGIC
+      // ==========================================
+      function renderQuickPriceChips() {
+        const wrap = document.getElementById('quickPriceChips');
+        const amountInput = document.getElementById('addAmount');
+        if (!wrap) return;
+        wrap.innerHTML = '';
+        state.quickPrices = Array.isArray(state.quickPrices) && state.quickPrices.length > 0 ? state.quickPrices : [767, 390];
+        state.quickPrices.forEach((price) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'chip-btn';
+          btn.dataset.price = String(price);
+          btn.textContent = `${price} ₽`;
+          btn.addEventListener('click', () => {
+            if (amountInput) {
+              amountInput.value = price;
+              amountInput.focus();
+            }
+          });
+          wrap.appendChild(btn);
+        });
+      }
+
+      const btnEditQuickPrices = document.getElementById('btnEditQuickPrices');
+      if (btnEditQuickPrices) {
+        btnEditQuickPrices.addEventListener('click', () => {
+          const current = (state.quickPrices || [767, 390]).join(', ');
+          const input = prompt('Введите суммы быстрых цен через запятую (например: 767, 390, 500, 1000):', current);
+          if (input !== null) {
+            const parsed = input.split(',').map((s) => parseInt(s.trim(), 10)).filter((n) => !isNaN(n) && n > 0);
+            if (parsed.length > 0) {
+              state.quickPrices = parsed;
+              saveState();
+              renderQuickPriceChips();
+              showToast('Кнопки быстрых цен обновлены!');
+            } else {
+              showToast('Некорректный ввод цен', 'warn');
+            }
+          }
+        });
+      }
+
+      // Custom Template Creator Toggle & Form Handling
+      const btnToggleCustomTpl = document.getElementById('btnToggleCustomTpl');
+      const customTplCreator = document.getElementById('customTplCreator');
+      const btnCancelCustomTpl = document.getElementById('btnCancelCustomTpl');
+      const btnSaveCustomTpl = document.getElementById('btnSaveCustomTpl');
+
+      if (btnToggleCustomTpl && customTplCreator) {
+        btnToggleCustomTpl.addEventListener('click', () => {
+          const isHidden = customTplCreator.style.display === 'none' || !customTplCreator.classList.contains('open');
+          if (isHidden) {
+            customTplCreator.style.display = 'block';
+            customTplCreator.classList.add('open');
+            const inp = document.getElementById('newTplTitle');
+            if (inp) inp.focus();
+          } else {
+            customTplCreator.style.display = 'none';
+            customTplCreator.classList.remove('open');
+          }
+        });
+      }
+
+      if (btnCancelCustomTpl && customTplCreator) {
+        btnCancelCustomTpl.addEventListener('click', () => {
+          customTplCreator.style.display = 'none';
+          customTplCreator.classList.remove('open');
+        });
+      }
+
+      if (btnSaveCustomTpl) {
+        btnSaveCustomTpl.addEventListener('click', () => {
+          const title = (document.getElementById('newTplTitle').value || '').trim();
+          const sub = (document.getElementById('newTplSub').value || '').trim();
+          const tab = (document.getElementById('newTplTab') && document.getElementById('newTplTab').value) || 'avito';
+          const theme = (document.getElementById('newTplTheme') && document.getElementById('newTplTheme').value) || 'theme-avito';
+          const icon = (document.getElementById('newTplIcon') && document.getElementById('newTplIcon').value || '💬').trim();
+          const text = (document.getElementById('newTplText').value || '').trim();
+
+          if (!title) {
+            showToast('Введите название кнопки шаблона!', 'warn');
+            document.getElementById('newTplTitle').focus();
+            return;
+          }
+          if (!text) {
+            showToast('Введите текст для шаблона!', 'warn');
+            document.getElementById('newTplText').focus();
+            return;
+          }
+
+          const newTpl = {
+            id: 'custom_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+            title,
+            sub,
+            tab,
+            theme,
+            icon,
+            text,
+            isUserCustom: true,
+            createdAt: Date.now()
+          };
+
+          state.customUserTemplates = Array.isArray(state.customUserTemplates) ? state.customUserTemplates : [];
+          state.customUserTemplates.push(newTpl);
+
+          document.getElementById('newTplTitle').value = '';
+          document.getElementById('newTplSub').value = '';
+          document.getElementById('newTplText').value = '';
+          if (customTplCreator) {
+            customTplCreator.style.display = 'none';
+            customTplCreator.classList.remove('open');
+          }
+
+          saveState();
+          renderTemplates();
+          showToast(`Шаблон «${title}» создан!`);
+        });
+      }
+
+      // ==========================================
+      // INSTANT TELEGRAM BASE TRANSFER (COPY, PASTE, GLUE & FILE)
+      // ==========================================
+      function cleanTelegramMultiPartText(rawText) {
+        if (!rawText) return '';
+        let str = String(rawText).trim();
+        // Remove Telegram message headers, timestamps and dates:
+        // [13.11.2026, 19:40:12] User:
+        // [19:40, 13.11.2026] User:
+        // User, [13.11.2026 19:40]:
+        // Forwarded from ...
+        str = str.replace(/\[\d{1,2}[\.\/]\d{1,2}[\.\/]?\d{0,4},?\s*\d{1,2}:\d{2}(?::\d{2})?\][^\n]*\n?/gi, '');
+        str = str.replace(/^[^\n]+,\s*\[\d{1,2}\.\d{1,2}\.\d{2,4}\s+\d{1,2}:\d{2}\]:?\n?/gmi, '');
+        str = str.replace(/Forwarded from [^\n]+\n?/gi, '');
+        str = str.replace(/Переслано от [^\n]+\n?/gi, '');
+        return str.trim();
+      }
+
+      function downloadBaseJsonFile() {
+        const payload = {
+          app: 'Pult_Prodavca_GTA6',
+          version: 3,
+          exportedAt: new Date().toISOString(),
+          data: state
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const dateStr = new Date().toISOString().slice(0, 10);
+        a.href = url;
+        a.download = `pult_base_${dateStr}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('📁 Файл pult_base.json скачан! Перетащите его в Telegram (в «Избранное»)');
+      }
+
       async function exportEntireBaseToClipboard() {
         const payload = {
           app: 'Pult_Prodavca_GTA6',
@@ -4876,7 +5243,7 @@ As long as our profile stays saved on your console, the game will launch without
         const jsonStr = JSON.stringify(payload);
         const ok = await copyTextToClipboard(jsonStr);
         if (ok) {
-          showToast('📋 База скопирована в буфер! Отправьте её себе в Telegram (в «Избранное»)');
+          showToast('📋 Вся база скопирована в буфер! (В Telegram текст разбивается на 3 части — на телефоне используйте склейку или перенос файлом)');
         } else {
           prompt('Скопируйте базу вручную (Ctrl+C):', jsonStr);
         }
@@ -4885,6 +5252,34 @@ As long as our profile stays saved on your console, the game will launch without
           if (el) {
             const orig = el.innerHTML;
             el.innerHTML = '✅ Скопировано в буфер!';
+            setTimeout(() => { el.innerHTML = orig; }, 3000);
+          }
+        });
+      }
+
+      async function exportClientsOnlyToClipboard() {
+        const payload = {
+          app: 'Pult_Prodavca_Clients',
+          version: 3,
+          exportedAt: new Date().toISOString(),
+          clients: state.clients,
+          cash: state.cash,
+          accounts: state.accounts,
+          sbpPhone: state.sbpPhone || '',
+          sbpBank: state.sbpBank || ''
+        };
+        const jsonStr = JSON.stringify(payload);
+        const ok = await copyTextToClipboard(jsonStr);
+        if (ok) {
+          showToast('👥 Список клиентов скопирован! Он весит ~2 000 знаков и укладывается ровно в 1 сообщение Telegram.');
+        } else {
+          prompt('Скопируйте клиентов вручную (Ctrl+C):', jsonStr);
+        }
+        ['btnQuickCopyClientsOnly', 'btnModalCopyClientsOnly'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            const orig = el.innerHTML;
+            el.innerHTML = '✅ Скопировано (1 соо)!';
             setTimeout(() => { el.innerHTML = orig; }, 3000);
           }
         });
@@ -4908,25 +5303,22 @@ As long as our profile stays saved on your console, the game will launch without
           showToast('Буфер обмена пуст или действие отменено', 'warn');
           return;
         }
+
+        const cleaned = cleanTelegramMultiPartText(text);
+
         try {
-          const parsed = JSON.parse(text.trim());
+          const parsed = JSON.parse(cleaned);
           const imported = parsed && parsed.data ? parsed.data : parsed;
-          if (!imported || !Array.isArray(imported.clients)) {
+          if (!imported || (!Array.isArray(imported.clients) && !Array.isArray(imported.accounts))) {
             throw new Error('Некорректный формат базы');
           }
-          state = {
-            updatedAt: Number(imported.updatedAt) || Date.now(),
-            sbpPhone: typeof imported.sbpPhone === 'string' ? imported.sbpPhone : (state.sbpPhone || ''),
-            sbpBank: typeof imported.sbpBank === 'string' ? imported.sbpBank : (state.sbpBank || ''),
-            activeTemplateTab: typeof imported.activeTemplateTab === 'string' ? imported.activeTemplateTab : 'all',
-            activeAccountId: typeof imported.activeAccountId === 'string' ? imported.activeAccountId : 'all',
-            accounts: Array.isArray(imported.accounts) && imported.accounts.length > 0 ? imported.accounts : (state.accounts || JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS))),
-            customTemplates: imported.customTemplates && typeof imported.customTemplates === 'object' ? imported.customTemplates : (state.customTemplates || {}),
-            customUserTemplates: Array.isArray(imported.customUserTemplates) ? imported.customUserTemplates : (state.customUserTemplates || []),
-            deletedTemplateIds: Array.isArray(imported.deletedTemplateIds) ? imported.deletedTemplateIds : (state.deletedTemplateIds || []),
-            quickPrices: Array.isArray(imported.quickPrices) ? imported.quickPrices : (state.quickPrices || [350, 400, 500, 600, 1000, 1200]),
-            sync: imported.sync && typeof imported.sync === 'object' ? imported.sync : (state.sync || { enabled: false, key: '', lastSyncTime: null }),
-            clients: imported.clients.map((c) => ({
+
+          if (Array.isArray(imported.accounts) && imported.accounts.length > 0) {
+            state.accounts = imported.accounts;
+          }
+
+          if (Array.isArray(imported.clients)) {
+            state.clients = imported.clients.map((c) => ({
               id: c.id || ('client_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)),
               name: c.name || '',
               phone: c.phone || '',
@@ -4938,18 +5330,40 @@ As long as our profile stays saved on your console, the game will launch without
               accountId: c.accountId || 'acc_1',
               createdAt: Number(c.createdAt) || Date.now(),
               bookedSlots: Array.isArray(c.bookedSlots) ? c.bookedSlots : []
-            })),
-            cash: Object.assign({ totalRevenue: 0, ordersCount: 0, initialInvestment: GAME_COST, paybackPercent: 0 }, imported.cash || {})
-          };
+            }));
+          }
+
+          if (imported.cash) {
+            state.cash = Object.assign({ totalRevenue: 0, ordersCount: 0, initialInvestment: GAME_COST, paybackPercent: 0 }, imported.cash);
+          }
+
+          if (typeof imported.sbpPhone === 'string' && imported.sbpPhone.trim()) {
+            state.sbpPhone = imported.sbpPhone;
+          }
+          if (typeof imported.sbpBank === 'string' && imported.sbpBank.trim()) {
+            state.sbpBank = imported.sbpBank;
+          }
+
+          if (Array.isArray(imported.customUserTemplates) && imported.customUserTemplates.length > 0) {
+            state.customUserTemplates = imported.customUserTemplates;
+          }
+          if (imported.customTemplates && typeof imported.customTemplates === 'object' && Object.keys(imported.customTemplates).length > 0) {
+            state.customTemplates = imported.customTemplates;
+          }
+          if (Array.isArray(imported.quickPrices) && imported.quickPrices.length > 0) {
+            state.quickPrices = imported.quickPrices;
+          }
+
+          state.updatedAt = Date.now();
           saveState(true);
-          recalcCash();
-          renderAccounts();
+          renderStats();
+          renderAccountsBar();
           renderClientsTable();
           renderTemplates();
-          updateQuickPriceButtons();
+          renderQuickPriceChips();
           if (typeof renderStats === 'function') renderStats();
           showToast(`✅ База успешно загружена! Клиентов: ${state.clients.length}`);
-          ['btnQuickPasteBase', 'btnPasteEntireBase'].forEach((id) => {
+          ['btnQuickPasteBase', 'btnPasteEntireBase', 'btnModalPasteClientsOnly'].forEach((id) => {
             const el = document.getElementById(id);
             if (el) {
               const orig = el.innerHTML;
@@ -4959,32 +5373,55 @@ As long as our profile stays saved on your console, the game will launch without
           });
           if (typeof closeCloudModal === 'function') closeCloudModal();
         } catch (err) {
-          alert('Ошибка при импорте базы: некорректный формат текста. Убедитесь, что скопировали полное сообщение целиком из Telegram.');
+          alert('Ошибка при импорте базы: некорректный формат текста. Если Telegram разбил текст на 3 части — используйте кнопку «Склеить 3 части» в окне «Облако / Telegram» или передайте файлом pult_base.json.');
         }
       }
 
+      function handleGlueThreeParts() {
+        const p1 = document.getElementById('gluePart1') ? document.getElementById('gluePart1').value : '';
+        const p2 = document.getElementById('gluePart2') ? document.getElementById('gluePart2').value : '';
+        const p3 = document.getElementById('gluePart3') ? document.getElementById('gluePart3').value : '';
+        if (!p1.trim() && !p2.trim() && !p3.trim()) {
+          showToast('Вставьте хотя бы одну часть из Telegram', 'warn');
+          return;
+        }
+        const glued = cleanTelegramMultiPartText(p1) + cleanTelegramMultiPartText(p2) + cleanTelegramMultiPartText(p3);
+        importEntireBaseFromClipboard(glued);
+      }
+
+      // Wire up all base buttons
       const btnQuickCopyBase = document.getElementById('btnQuickCopyBase');
+      const btnQuickCopyClientsOnly = document.getElementById('btnQuickCopyClientsOnly');
       const btnQuickPasteBase = document.getElementById('btnQuickPasteBase');
+      const btnQuickDownloadFile = document.getElementById('btnQuickDownloadFile');
+
+      const btnModalDownloadJson = document.getElementById('btnModalDownloadJson');
+      const btnModalUploadJson = document.getElementById('btnModalUploadJson');
+      const btnModalCopyClientsOnly = document.getElementById('btnModalCopyClientsOnly');
+      const btnModalPasteClientsOnly = document.getElementById('btnModalPasteClientsOnly');
       const btnCopyEntireBase = document.getElementById('btnCopyEntireBase');
       const btnPasteEntireBase = document.getElementById('btnPasteEntireBase');
-      const btnLoadManualBase = document.getElementById('btnLoadManualBase');
-      const manualBaseInput = document.getElementById('manualBaseInput');
+      const btnGlueParts = document.getElementById('btnGlueParts');
 
       if (btnQuickCopyBase) btnQuickCopyBase.addEventListener('click', exportEntireBaseToClipboard);
-      if (btnCopyEntireBase) btnCopyEntireBase.addEventListener('click', exportEntireBaseToClipboard);
+      if (btnQuickCopyClientsOnly) btnQuickCopyClientsOnly.addEventListener('click', exportClientsOnlyToClipboard);
       if (btnQuickPasteBase) btnQuickPasteBase.addEventListener('click', () => importEntireBaseFromClipboard());
-      if (btnPasteEntireBase) btnPasteEntireBase.addEventListener('click', () => importEntireBaseFromClipboard());
-      if (btnLoadManualBase && manualBaseInput) {
-        btnLoadManualBase.addEventListener('click', () => {
-          const val = manualBaseInput.value.trim();
-          if (val) {
-            importEntireBaseFromClipboard(val);
-            manualBaseInput.value = '';
-          } else {
-            showToast('Вставьте текст базы в поле', 'warn');
-          }
+      if (btnQuickDownloadFile) btnQuickDownloadFile.addEventListener('click', downloadBaseJsonFile);
+
+      if (btnModalDownloadJson) btnModalDownloadJson.addEventListener('click', downloadBaseJsonFile);
+      if (btnModalUploadJson) {
+        btnModalUploadJson.addEventListener('click', () => {
+          const fi = document.getElementById('importFileInput');
+          if (fi) { fi.value = ''; fi.click(); }
         });
       }
+      if (btnModalCopyClientsOnly) btnModalCopyClientsOnly.addEventListener('click', exportClientsOnlyToClipboard);
+      if (btnModalPasteClientsOnly) btnModalPasteClientsOnly.addEventListener('click', () => importEntireBaseFromClipboard());
+      if (btnCopyEntireBase) btnCopyEntireBase.addEventListener('click', exportEntireBaseToClipboard);
+      if (btnPasteEntireBase) btnPasteEntireBase.addEventListener('click', () => importEntireBaseFromClipboard());
+      if (btnGlueParts) btnGlueParts.addEventListener('click', handleGlueThreeParts);
+
+      
 
       // Export / Import JSON & Reset Templates
       document.getElementById('btnExportJson').addEventListener('click', () => {
@@ -5072,14 +5509,29 @@ As long as our profile stays saved on your console, the game will launch without
         }
       });
 
-      // Initialize App
+            // Initialize App
       saveState(true);
       renderTemplates();
       renderAccountsBar();
       renderAllData();
+      renderQuickPriceChips();
       updateTimerUI();
       if (state.timer.status === 'running') {
         startTimerLoop();
+      }
+
+      // Initialize Main View Tabs (Templates vs Stats+Clients)
+      const savedMainView = localStorage.getItem('seller_pult_main_view') || 'clients';
+      switchMainView(savedMainView);
+      updateMainTabsBadges();
+      const mainViewTabsEl = document.getElementById('mainViewTabs');
+      if (mainViewTabsEl) {
+        mainViewTabsEl.addEventListener('click', (e) => {
+          const btn = e.target.closest('.view-tab-btn');
+          if (btn && btn.dataset.view) {
+            switchMainView(btn.dataset.view);
+          }
+        });
       }
 
       // Initial Cloud Sync Check
@@ -5087,7 +5539,8 @@ As long as our profile stays saved on your console, the game will launch without
         setCloudStatus('online', 'Облако: Онлайн');
         pullFromCloud(false);
       }
-    })();
+    }
+  })();
   </script>
 
 
