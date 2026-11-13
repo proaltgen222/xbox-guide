@@ -1,0 +1,4542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Пульт Продавца — GTA VI Xbox Ultimate</title>
+  <style>
+    :root {
+      --bg-main: #080b12;
+      --bg-panel: #101521;
+      --bg-card: #161d2d;
+      --bg-card-hover: #1c2538;
+      --bg-input: #0b0f18;
+      --border: #243049;
+      --border-strong: #334366;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --green: #22c55e;
+      --green-dark: #15803d;
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --amber: #f59e0b;
+      --orange: #f97316;
+      --red: #ef4444;
+      --purple: #a855f7;
+      --pink: #ec4899;
+      --teal: #14b8a6;
+
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "Cascadia Code", "JetBrains Mono", Consolas, "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(168, 85, 247, 0.12), transparent 36%),
+        radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.12), transparent 38%),
+        var(--bg-main);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.45;
+      padding-bottom: 36px;
+    }
+
+    /* Header */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(10, 14, 23, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #22c55e, #06b6d4 55%, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.25);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost.danger:hover {
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #fca5a5;
+    }
+
+    .btn-bookings {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #ffffff;
+      border: 1px solid rgba(167, 139, 250, 0.55);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.32);
+      transition: transform 0.12s ease, filter 0.15s ease;
+    }
+
+    .btn-bookings:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-bookings .booking-count-badge {
+      background: rgba(0, 0, 0, 0.35);
+      color: #fde68a;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+    }
+
+    .save-pill {
+      font-size: 11.5px;
+      color: #86efac;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      padding: 5px 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Main 2-column layout */
+    .workspace {
+      max-width: 1640px;
+      margin: 18px auto 0;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: minmax(420px, 0.94fr) minmax(520px, 1.16fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 1120px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .column-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e2e8f0;
+    }
+
+    .section-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* SBP Requisites Box */
+    .sbp-box {
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.12), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(20, 184, 166, 0.35);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+
+    .sbp-box.warn-pulse {
+      animation: pulseWarn 0.8s ease;
+      border-color: var(--amber);
+    }
+
+    @keyframes pulseWarn {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+      50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.4); }
+    }
+
+    .sbp-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #5eead4;
+    }
+
+    .sbp-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 560px) {
+      .sbp-inputs {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      border-radius: var(--radius-sm);
+      padding: 8px 11px;
+      font-size: 13.5px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18);
+    }
+
+    .input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Template Tabs */
+    .tpl-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .tpl-tabs {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .tpl-tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 9px;
+      padding: 8px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .tpl-tab-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .tpl-tab-btn.active[data-tab="avito"] {
+      background: rgba(59, 130, 246, 0.22);
+      border-color: #3b82f6;
+      color: #93c5fd;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+    }
+
+    .tpl-tab-btn.active[data-tab="fp"] {
+      background: rgba(168, 85, 247, 0.22);
+      border-color: #a855f7;
+      color: #e9d5ff;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+    }
+
+    .tpl-tab-btn.active[data-tab="support"] {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: #06b6d4;
+      color: #a5f3fc;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.18);
+    }
+
+    .tpl-tab-btn.active[data-tab="all"] {
+      background: rgba(34, 197, 94, 0.18);
+      border-color: #22c55e;
+      color: #bbf7d0;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.18);
+    }
+
+    /* Template Cards */
+    .templates-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tpl-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px;
+      transition: border-color 0.15s ease;
+    }
+
+    .tpl-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .tpl-row {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .tpl-row + .tpl-row {
+      margin-top: 8px;
+    }
+
+    .tpl-copy-btn {
+      flex: 1;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      padding: 12px 14px;
+      text-align: left;
+      cursor: pointer;
+      color: #ffffff;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: transform 0.1s ease, filter 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tpl-copy-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .tpl-copy-btn:active {
+      transform: scale(0.99);
+    }
+
+    .tpl-btn-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .tpl-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 28px;
+      text-align: center;
+    }
+
+    .tpl-text-wrap {
+      min-width: 0;
+    }
+
+    .tpl-title {
+      font-size: 13.8px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #fff;
+    }
+
+    .tpl-sub {
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.78);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tpl-copy-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.28);
+      color: rgba(255, 255, 255, 0.9);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* Color Themes for Template Buttons */
+    .theme-avito {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      border-color: rgba(96, 165, 250, 0.35);
+    }
+    .theme-sbp {
+      background: linear-gradient(135deg, #0f766e, #0d9488);
+      border-color: rgba(45, 212, 191, 0.35);
+    }
+    .theme-key {
+      background: linear-gradient(135deg, #b45309, #d97706);
+      border-color: rgba(251, 191, 36, 0.35);
+    }
+    .theme-quick {
+      background: linear-gradient(135deg, #c2410c, #ea580c);
+      border-color: rgba(251, 146, 60, 0.35);
+    }
+    .theme-guide {
+      background: linear-gradient(135deg, #1e40af, #4338ca);
+      border-color: rgba(129, 140, 248, 0.35);
+    }
+    .theme-rules {
+      background: linear-gradient(135deg, #991b1b, #dc2626);
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+    .theme-review {
+      background: linear-gradient(135deg, #a16207, #ca8a04);
+      border-color: rgba(250, 204, 21, 0.35);
+    }
+    .theme-dns {
+      background: linear-gradient(135deg, #0e7490, #0891b2);
+      border-color: rgba(34, 211, 238, 0.35);
+    }
+    .theme-screentime {
+      background: linear-gradient(135deg, #6d28d9, #7c3aed);
+      border-color: rgba(192, 132, 252, 0.35);
+    }
+    .theme-eng-short {
+      background: linear-gradient(135deg, #047857, #059669);
+      border-color: rgba(52, 211, 153, 0.35);
+    }
+    .theme-eng-full {
+      background: linear-gradient(135deg, #334155, #475569);
+      border-color: rgba(148, 163, 184, 0.35);
+    }
+    .theme-fp {
+      background: linear-gradient(135deg, #7e22ce, #9333ea);
+      border-color: rgba(216, 180, 254, 0.35);
+    }
+
+    /* Copied green flash state */
+    .tpl-copy-btn.is-copied {
+      background: linear-gradient(135deg, #15803d, #22c55e) !important;
+      border-color: #86efac !important;
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.55) !important;
+    }
+
+    .tpl-copy-btn.is-copied .tpl-copy-badge {
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+    }
+
+    .tpl-edit-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 9px;
+      padding: 0 11px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      min-width: 78px;
+      transition: all 0.15s ease;
+    }
+
+    .tpl-edit-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .tpl-edit-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--cyan);
+      color: #67e8f9;
+    }
+
+    .edited-dot {
+      font-size: 9.5px;
+      color: #fbbf24;
+      font-weight: 700;
+    }
+
+    /* Inline Template Editor */
+    .tpl-editor {
+      display: none;
+      margin-top: 8px;
+      padding: 10px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-strong);
+      border-radius: 9px;
+    }
+
+    .tpl-editor.open {
+      display: block;
+    }
+
+    .tpl-textarea {
+      width: 100%;
+      min-height: 150px;
+      background: #06090f;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      padding: 10px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      font-family: inherit;
+      resize: vertical;
+      outline: none;
+    }
+
+    .tpl-textarea:focus {
+      border-color: var(--cyan);
+    }
+
+    .tpl-editor-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tpl-editor-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .tpl-editor-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-radius: 6px;
+      padding: 6px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .btn-sm:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .btn-sm.primary {
+      background: var(--green-dark);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .btn-sm.primary:hover {
+      background: #16a34a;
+    }
+
+    .btn-sm.danger {
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #fca5a5;
+    }
+
+    /* Add Custom Template Box */
+    .add-custom-tpl-wrap {
+      margin-top: 12px;
+    }
+
+    .btn-add-custom-tpl {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed var(--border-strong);
+      color: var(--text-secondary);
+      border-radius: var(--radius);
+      padding: 11px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .btn-add-custom-tpl:hover {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: var(--cyan);
+      color: #67e8f9;
+    }
+
+    .custom-tpl-creator {
+      display: none;
+      margin-top: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--cyan);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .custom-tpl-creator.open {
+      display: block;
+    }
+
+    .creator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 560px) {
+      .creator-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* RIGHT COLUMN */
+    .right-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 1. Top Stats Dashboard */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 680px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-sub {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stat-profit {
+      font-weight: 700;
+      color: #4ade80;
+    }
+
+    .stat-remain {
+      font-weight: 700;
+      color: #fbbf24;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--bg-input);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.35s ease, background 0.35s ease;
+    }
+
+    .mini-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 11px;
+    }
+
+    .mini-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    /* 2. Safety Timer */
+    .timer-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 16px;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .timer-card.state-running {
+      border-color: rgba(245, 158, 11, 0.65);
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.12);
+    }
+
+    .timer-card.state-done {
+      border-color: rgba(34, 197, 94, 0.85);
+      box-shadow: 0 0 26px rgba(34, 197, 94, 0.22);
+    }
+
+    .timer-status-banner {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .banner-free {
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+    }
+
+    .banner-wait {
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
+    }
+
+    .banner-paused {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fcd34d;
+    }
+
+    .timer-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .timer-clock-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .timer-clock {
+      font-family: var(--font-mono);
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+    }
+
+    .timer-clock.free {
+      color: #4ade80;
+    }
+
+    .timer-clock.wait {
+      color: #fbbf24;
+    }
+
+    .timer-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .btn-timer-start {
+      background: linear-gradient(135deg, #d97706, #ea580c);
+      color: #ffffff;
+      border: 1px solid rgba(251, 146, 60, 0.55);
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+      transition: transform 0.1s ease, filter 0.15s ease;
+    }
+
+    .btn-timer-start:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-timer-start:active {
+      transform: scale(0.98);
+    }
+
+    .timer-progress {
+      margin-top: 10px;
+      height: 6px;
+    }
+
+    /* 3. Quick Add Client Form */
+    .quick-form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .quick-form-title {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.85fr 1.3fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-grid-url {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 720px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .amount-wrap {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .chip-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 6px;
+      padding: 7px 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .chip-btn:hover {
+      border-color: var(--cyan);
+      color: #fff;
+    }
+
+    .form-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .seg-pill {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .seg-pill:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
+
+    .seg-pill.active[data-platform="Авито"] {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+    .seg-pill.active[data-platform="FunPay"] {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #d8b4fe;
+    }
+    .seg-pill.active[data-platform="Playerok"] {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: #06b6d4;
+      color: #67e8f9;
+    }
+    .seg-pill.active[data-platform="Telegram"] {
+      background: rgba(14, 165, 233, 0.2);
+      border-color: #0ea5e9;
+      color: #7dd3fc;
+    }
+
+    .seg-pill.active[data-status="waiting"] {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+    .seg-pill.active[data-status="downloading"] {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: #3b82f6;
+      color: #93c5fd;
+    }
+    .seg-pill.active[data-status="done"] {
+      background: rgba(34, 197, 94, 0.18);
+      border-color: #22c55e;
+      color: #86efac;
+    }
+    .seg-pill.active[data-status="review"] {
+      background: rgba(234, 179, 8, 0.22);
+      border-color: #eab308;
+      color: #fef08a;
+    }
+
+    .btn-add-client {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #ffffff;
+      border: 1px solid rgba(134, 239, 172, 0.45);
+      border-radius: 9px;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.1s ease, filter 0.15s ease;
+    }
+
+    .btn-add-client:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    /* 4. Live Client Table */
+    .table-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .table-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .filter-pill.active {
+      background: rgba(6, 182, 212, 0.18);
+      border-color: var(--cyan);
+      color: #67e8f9;
+    }
+
+    .search-input {
+      width: 190px;
+      padding: 6px 10px;
+      font-size: 12.5px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      padding: 8px 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(36, 48, 73, 0.65);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .slot-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .client-name {
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .platform-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+    }
+
+    .plat-Авито {
+      background: rgba(59, 130, 246, 0.18);
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+    .plat-FunPay {
+      background: rgba(168, 85, 247, 0.18);
+      color: #d8b4fe;
+      border-color: rgba(168, 85, 247, 0.35);
+    }
+    .plat-Playerok {
+      background: rgba(6, 182, 212, 0.18);
+      color: #67e8f9;
+      border-color: rgba(6, 182, 212, 0.35);
+    }
+    .plat-Telegram {
+      background: rgba(14, 165, 233, 0.18);
+      color: #7dd3fc;
+      border-color: rgba(14, 165, 233, 0.35);
+    }
+
+    .chat-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(6, 182, 212, 0.14);
+      border: 1px solid rgba(6, 182, 212, 0.45);
+      color: #67e8f9;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .chat-link-btn:hover {
+      background: rgba(6, 182, 212, 0.28);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .client-comment {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      word-break: break-word;
+    }
+
+    .amount-cell {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      white-space: nowrap;
+      color: #e2e8f0;
+    }
+
+    .amount-cell.zero {
+      color: var(--text-muted);
+    }
+
+    /* 1-click Status Switcher inside table */
+    .status-switcher {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(84px, auto));
+      gap: 4px;
+    }
+
+    .st-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 4px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .st-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .st-btn.active[data-st="waiting"] {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+    .st-btn.active[data-st="downloading"] {
+      background: rgba(59, 130, 246, 0.22);
+      border-color: #3b82f6;
+      color: #bfdbfe;
+    }
+    .st-btn.active[data-st="done"] {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: #22c55e;
+      color: #bbf7d0;
+    }
+    .st-btn.active[data-st="review"] {
+      background: rgba(234, 179, 8, 0.24);
+      border-color: #eab308;
+      color: #fef08a;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 4px;
+      justify-content: flex-end;
+    }
+
+    .icon-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      transition: all 0.12s ease;
+    }
+
+    .icon-btn:hover {
+      background: var(--bg-card-hover);
+      color: #fff;
+      border-color: var(--border-strong);
+    }
+
+    .icon-btn.del:hover {
+      border-color: rgba(239, 68, 68, 0.7);
+      color: #fca5a5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 26px 12px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* Inline edit row */
+    .edit-row-grid {
+      display: grid;
+      grid-template-columns: 1fr 110px 90px;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .edit-row-sub {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .edit-row-grid, .edit-row-sub {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .select-input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      border-radius: var(--radius-sm);
+      padding: 7px 8px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    /* BOOKINGS MODAL */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 13, 0.8);
+      backdrop-filter: blur(6px);
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: 100%;
+      max-width: 1080px;
+      max-height: 92vh;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 14px 20px;
+      background: #141a28;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .modal-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .booking-add-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .booking-add-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr 120px 100px 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .booking-add-bottom {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 820px) {
+      .booking-add-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .booking-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .booking-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .booking-item.st-paid {
+      border-left: 4px solid var(--green);
+    }
+
+    .booking-item.st-messaged {
+      border-left: 4px solid var(--cyan);
+    }
+
+    .booking-item.st-waiting_time {
+      border-left: 4px solid var(--amber);
+    }
+
+    .booking-inline-top {
+      display: grid;
+      grid-template-columns: 135px 1fr 125px 95px auto;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .booking-inline-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 7px;
+      align-items: center;
+    }
+
+    @media (max-width: 820px) {
+      .booking-inline-top,
+      .booking-inline-bottom {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .inline-input {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      border-radius: 6px;
+      padding: 6px 9px;
+      font-size: 12.5px;
+      font-family: inherit;
+      width: 100%;
+      outline: none;
+    }
+
+    .inline-input:focus {
+      border-color: var(--cyan);
+    }
+
+    .inline-input.time-input {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #fde68a;
+    }
+
+    .booking-status-pills {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .bk-st-btn {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .bk-st-btn.active[data-bkst="waiting_time"] {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+
+    .bk-st-btn.active[data-bkst="messaged"] {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: #06b6d4;
+      color: #a5f3fc;
+    }
+
+    .bk-st-btn.active[data-bkst="paid"] {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: #22c55e;
+      color: #86efac;
+    }
+
+    .btn-transfer {
+      background: linear-gradient(135deg, #15803d, #22c55e);
+      color: #fff;
+      border: 1px solid rgba(134, 239, 172, 0.5);
+      border-radius: 7px;
+      padding: 6px 11px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .btn-transfer:hover {
+      filter: brightness(1.08);
+    }
+
+    .notepad-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .notepad-textarea {
+      width: 100%;
+      min-height: 95px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      padding: 9px 11px;
+      font-size: 13px;
+      line-height: 1.45;
+      font-family: inherit;
+      resize: vertical;
+      outline: none;
+    }
+
+    .notepad-textarea:focus {
+      border-color: var(--cyan);
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 120;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #141c2b;
+      border: 1px solid var(--border-strong);
+      color: #f8fafc;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: slideIn 0.2s ease;
+    }
+
+    .toast.success {
+      border-color: rgba(34, 197, 94, 0.7);
+      background: #0f2419;
+      color: #86efac;
+    }
+
+    .toast.warn {
+      border-color: rgba(245, 158, 11, 0.7);
+      background: #271b0c;
+      color: #fde68a;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+    /* --- Multi-Account Switcher Bar --- */
+    .accounts-bar {
+      max-width: 1720px;
+      margin: 0 auto;
+      padding: 10px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: rgba(16, 21, 33, 0.95);
+      border-bottom: 1px solid var(--border);
+    }
+    .accounts-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .accounts-label {
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .accounts-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .accounts-tabs::-webkit-scrollbar { display: none; }
+    .acc-tab {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 6px 13px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .acc-tab:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+      background: var(--bg-card-hover);
+    }
+    .acc-tab.active {
+      background: rgba(6, 182, 212, 0.16);
+      border-color: var(--cyan);
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(6, 182, 212, 0.2);
+    }
+    .acc-tab-badge {
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .acc-tab.active .acc-tab-badge {
+      background: var(--cyan);
+      color: #041019;
+    }
+    .acc-tab.is-full .acc-tab-badge {
+      background: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .btn-add-account {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px dashed rgba(34, 197, 94, 0.5);
+      border-radius: var(--radius-sm);
+      color: #4ade80;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .btn-add-account:hover {
+      background: rgba(34, 197, 94, 0.22);
+      border-color: #4ade80;
+    }
+    .accounts-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 12px;
+    }
+    .acc-meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--text-secondary);
+    }
+    .acc-meta-pill strong { color: var(--text-primary); }
+
+    /* Client table account badge */
+    .acc-tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      white-space: nowrap;
+      margin-left: 6px;
+      display: inline-block;
+    }
+
+    /* Cloud Sync Pill */
+    .cloud-pill {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .cloud-pill:hover {
+      border-color: var(--cyan);
+      color: #ffffff;
+    }
+    .cloud-pill.online {
+      border-color: rgba(34, 197, 94, 0.45);
+      background: rgba(34, 197, 94, 0.14);
+      color: #4ade80;
+    }
+    .cloud-pill.syncing {
+      border-color: rgba(245, 158, 11, 0.45);
+      background: rgba(245, 158, 11, 0.14);
+      color: #fbbf24;
+    }
+    .cloud-pill.error {
+      border-color: rgba(239, 68, 68, 0.45);
+      background: rgba(239, 68, 68, 0.14);
+      color: #f87171;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- PIN GATE OVERLAY -->
+  <div id="pinGateOverlay" style="position:fixed; inset:0; z-index:99999; background: #080b12; display:flex; align-items:center; justify-content:center; padding:20px;">
+    <div style="max-width:390px; width:100%; background:#101521; border:1px solid #243049; border-radius:18px; padding:32px 26px; text-align:center; box-shadow:0 25px 60px rgba(0,0,0,0.75);">
+      <div style="width:58px; height:58px; border-radius:14px; background:linear-gradient(135deg, #22c55e, #06b6d4); display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 18px; box-shadow:0 0 24px rgba(34,197,94,0.3);">🔐</div>
+      <h3 style="font-size:1.3rem; font-weight:800; color:#f1f5f9; margin-bottom:8px;">Пульт Продавца</h3>
+      <p style="font-size:0.88rem; color:#94a3b8; margin-bottom:20px;">Введите PIN-код для доступа к базе клиентов и кассе:</p>
+      <input id="pinInput" type="password" maxlength="8" inputmode="numeric" placeholder="••••" style="width:170px; text-align:center; font-size:26px; letter-spacing:8px; padding:10px 14px; background:#0b0f18; border:2px solid #334366; border-radius:10px; color:#fff; outline:none; margin-bottom:12px;" autofocus />
+      <div id="pinError" style="color:#ef4444; font-size:0.85rem; min-height:22px; margin-bottom:12px; font-weight:600;"></div>
+      <button id="pinSubmitBtn" style="width:100%; padding:13px; background:linear-gradient(135deg, #22c55e, #16a34a); border:none; border-radius:10px; color:#fff; font-weight:700; font-size:0.95rem; cursor:pointer;">Войти в Пульт</button>
+      <div style="margin-top:16px;">
+        <a href="index.html" style="font-size:0.84rem; color:#64748b; text-decoration:none;">← На сайт инструкции для покупателей</a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- TOP HEADER -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">🎮</div>
+      <div>
+        <div class="brand-title">
+          Пульт Продавца — GTA VI Xbox
+          <span class="brand-badge">Ultimate Edition · 209,9 ГБ</span>
+        </div>
+        <div class="brand-sub">Почта: <strong style="color:#cbd5e1;">vice_gta6_box@outlook.com</strong> · Окупаемость: 8 198 ₽ · Макс: 25 слотов</div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <a href="index.html" class="btn-ghost" style="text-decoration:none; color:var(--cyan); border-color:var(--cyan); font-weight:700;" title="Вернуться к сайту инструкции">← Инструкция</a>
+      <button type="button" class="cloud-pill" id="btnCloudSync" title="Облачная авто-синхронизация ПК ⇄ Телефон">☁️ <span id="cloudStatusLabel">Облако: Автономно</span></button>
+      
+      <button class="btn-bookings js-open-bookings" title="Открыть расписание и список бронирований">
+        📅 Список бронирований (<span class="booking-count-badge js-bookings-count">0</span>)
+      </button>
+      <span class="save-pill" id="savePill">💾 Сохранено в браузере</span>
+      <button class="btn-ghost" id="btnExportJson" title="Скачать резервную копию базы и шаблонов в JSON">📤 Экспорт JSON</button>
+      <button class="btn-ghost" id="btnImportJson" title="Восстановить данные из JSON файла">📥 Импорт JSON</button>
+      <input type="file" id="importFileInput" accept=".json,application/json" style="display:none" />
+      <button class="btn-ghost danger" id="btnResetTemplates" title="Вернуть тексты встроенных шаблонов к исходным">↺ Сброс шаблонов</button>
+    </div>
+  </header>
+
+  <!-- MAIN 2-COLUMN WORKSPACE -->
+  
+  <!-- ACCOUNTS SWITCHER BAR -->
+  <section class="accounts-bar" id="accountsBar">
+    <div class="accounts-bar-left">
+      <div class="accounts-label">🎮 Профили Xbox:</div>
+      <div class="accounts-tabs" id="accountsTabs"></div>
+      <button type="button" class="btn-add-account" id="btnAddAccount" title="Добавить новый профиль Xbox">+ Профиль</button>
+    </div>
+    <div class="accounts-bar-right" id="activeAccountPills"></div>
+  </section>
+
+  <main class="workspace">
+
+    <!-- LEFT COLUMN: QUICK REPLY TEMPLATES -->
+    <section class="column-panel">
+      <div class="section-header">
+        <div>
+          <div class="section-title">📋 Шаблоны ответов (копирование в 1 клик)</div>
+          <div class="section-hint">Клик по кнопке мгновенно копирует текст в буфер обмена</div>
+        </div>
+      </div>
+
+      <!-- SBP Phone + Bank Settings -->
+      <div class="sbp-box" id="sbpBox">
+        <div class="sbp-box-header">
+          <span>💳 Ваши реквизиты СБП (подставляются в Шаблон СБП)</span>
+          <span style="font-size:11px; color:#94a3b8;">Автосохранение</span>
+        </div>
+        <div class="sbp-inputs">
+          <div>
+            <label class="field-label" for="sbpPhone">Номер телефона для СБП</label>
+            <input type="text" class="input" id="sbpPhone" placeholder="+7 999 123-45-67" />
+          </div>
+          <div>
+            <label class="field-label" for="sbpBank">Название банка</label>
+            <input type="text" class="input" id="sbpBank" placeholder="Т-Банк / Сбербанк / Озон" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Template Category Tabs -->
+      <div class="tpl-tabs" id="tplTabs">
+        <button type="button" class="tpl-tab-btn" data-tab="avito">🟦 Авито</button>
+        <button type="button" class="tpl-tab-btn" data-tab="fp">🟣 FunPay / Playerok</button>
+        <button type="button" class="tpl-tab-btn" data-tab="support">🛠 Настройка и Ошибки</button>
+        <button type="button" class="tpl-tab-btn" data-tab="all">📋 Все</button>
+      </div>
+
+      <!-- Templates List -->
+      <div class="templates-list" id="templatesList"></div>
+
+      <!-- Add Custom Template Button + Inline Form -->
+      <div class="add-custom-tpl-wrap">
+        <button type="button" class="btn-add-custom-tpl" id="btnToggleCustomTpl">+ Добавить свой шаблон</button>
+
+        <div class="custom-tpl-creator" id="customTplCreator">
+          <div style="font-size:12.5px; font-weight:800; color:#67e8f9; margin-bottom:8px;">✨ Новый шаблон быстрого ответа</div>
+          <div class="creator-grid">
+            <div>
+              <label class="field-label" for="newTplTitle">Название кнопки *</label>
+              <input type="text" class="input" id="newTplTitle" placeholder="Напр. Ответ про гарантию" />
+            </div>
+            <div>
+              <label class="field-label" for="newTplSub">Короткое описание</label>
+              <input type="text" class="input" id="newTplSub" placeholder="Отображается под названием" />
+            </div>
+            <div>
+              <label class="field-label" for="newTplTab">Вкладка</label>
+              <select class="select-input" id="newTplTab">
+                <option value="avito">🟦 Авито</option>
+                <option value="fp">🟣 FunPay / Playerok</option>
+                <option value="support">🛠 Настройка и Ошибки</option>
+                <option value="all">📋 Во всех вкладках</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="newTplTheme">Цвет кнопки</label>
+              <select class="select-input" id="newTplTheme">
+                <option value="theme-avito">Синий (Авито)</option>
+                <option value="theme-fp">Фиолетовый (FunPay)</option>
+                <option value="theme-sbp">Бирюзовый (СБП)</option>
+                <option value="theme-eng-short">Изумрудный (Зелёный)</option>
+                <option value="theme-key">Янтарный (Жёлтый)</option>
+                <option value="theme-quick">Оранжевый</option>
+                <option value="theme-rules">Красный</option>
+                <option value="theme-dns">Голубой (Тех)</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-bottom:8px;">
+            <label class="field-label" for="newTplIcon">Иконка (эмодзи)</label>
+            <input type="text" class="input" id="newTplIcon" value="💬" maxlength="6" style="max-width:90px;" />
+          </div>
+          <div style="margin-bottom:8px;">
+            <label class="field-label" for="newTplText">Текст для копирования *</label>
+            <textarea class="tpl-textarea" id="newTplText" style="min-height:110px;" placeholder="Введите текст шаблона... Можно использовать {телефон} и {банк}."></textarea>
+          </div>
+          <div style="display:flex; gap:6px; justify-content:flex-end;">
+            <button type="button" class="btn-sm" id="btnCancelCustomTpl">Отмена</button>
+            <button type="button" class="btn-sm primary" id="btnSaveCustomTpl">💾 Создать шаблон</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: STATS, 20-MIN TIMER, CLIENT QUEUE & TABLE -->
+    <section class="column-panel right-stack">
+
+      <!-- 1. TOP STATS DASHBOARD -->
+      <div>
+        <div class="section-header" style="margin-bottom: 12px;">
+          <div class="section-title">📊 Статистика, таймер и очередь клиентов</div>
+          <span class="section-hint">Все изменения сохраняются мгновенно</span>
+        </div>
+
+        <div class="stats-grid">
+          <!-- Account Slots Card -->
+          <div class="stat-card">
+            <div class="stat-label">
+              <span>👥 Заполнение аккаунта</span>
+              <span id="slotsPercentLabel">0%</span>
+            </div>
+            <div class="stat-value" id="slotsCounter">Занято слотов: 0 / 25</div>
+            <div class="progress-track">
+              <div class="progress-fill" id="slotsProgressBar" style="width: 0%; background: var(--green);"></div>
+            </div>
+            <div class="mini-pills" id="statusBreakdown"></div>
+          </div>
+
+          <!-- Finance & Payback Card -->
+          <div class="stat-card">
+            <div class="stat-label">
+              <span>💰 Касса и окупаемость</span>
+              <span id="paybackPercentLabel">0%</span>
+            </div>
+            <div class="stat-value" id="totalEarnedValue">0 ₽</div>
+            <div class="progress-track">
+              <div class="progress-fill" id="paybackProgressBar" style="width: 0%; background: var(--cyan);"></div>
+            </div>
+            <div class="stat-sub" id="paybackSubText"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 20-MINUTE SAFETY PAUSE TIMER -->
+      <div class="timer-card" id="timerCard">
+        <div class="timer-status-banner banner-free" id="timerBanner">
+          🟢 ЛИНИЯ СВОБОДНА — МОЖНО ВПУСКАТЬ СЛЕДУЮЩЕГО!
+        </div>
+
+        <div class="timer-body">
+          <div class="timer-clock-wrap">
+            <div class="timer-clock free" id="timerDisplay">20:00</div>
+            <div>
+              <div style="font-size:12px; font-weight:700; color:#cbd5e1;">Таймер паузы между входами</div>
+              <div style="font-size:11px; color:var(--text-muted);" id="timerSubHint">Нажмите кнопку после запуска клиента на Xbox</div>
+            </div>
+          </div>
+
+          <div class="timer-controls">
+            <button class="btn-timer-start" id="btnStartTimer">
+              ⏱ Запустить таймер безопасности 20:00
+            </button>
+            <button class="btn-bookings js-open-bookings" title="Открыть расписание и список бронирований">
+              📅 Список бронирований (<span class="booking-count-badge js-bookings-count">0</span>)
+            </button>
+            <button class="btn-ghost" id="btnPauseTimer" style="display:none;">⏸ Пауза</button>
+            <button class="btn-ghost" id="btnResetTimer" title="Сбросить таймер и освободить линию">↺ Сброс</button>
+            <button class="btn-ghost" id="btnTestSound" title="Проверить звуковой сигнал Web Audio">🔊</button>
+          </div>
+        </div>
+
+        <div class="progress-track timer-progress">
+          <div class="progress-fill" id="timerProgressBar" style="width: 100%; background: var(--green);"></div>
+        </div>
+      </div>
+
+      <!-- 3. QUICK ADD CLIENT FORM -->
+      <div class="quick-form-card">
+        <div class="quick-form-title">
+          <span>⚡ Быстрое добавление клиента</span>
+          <span style="font-size:11px; font-weight:500; color:var(--text-muted);">Enter — сразу добавить</span>
+        </div>
+
+        <form id="quickAddForm">
+          <div class="form-grid">
+            <div>
+              <label class="field-label" for="addName">Имя / Ник клиента *</label>
+              <input type="text" class="input" id="addName" placeholder="Напр. Илья / Gamer99" required />
+            </div>
+            <div>
+              <label class="field-label" for="addAmount">Сумма в ₽</label>
+              <div class="amount-wrap">
+                <input type="number" class="input" id="addAmount" placeholder="767" min="0" step="1" />
+                <button type="button" class="chip-btn" data-fill-amount="767">767</button>
+                <button type="button" class="chip-btn" data-fill-amount="390">390</button>
+              </div>
+            </div>
+            <div>
+              <label class="field-label" for="addComment">Время очереди / Консоль / Комментарий</label>
+              <input type="text" class="input" id="addComment" placeholder="Напр. 16:20 · Series X" />
+            </div>
+          </div>
+
+          
+            <div>
+              <label class="field-label" for="addAccountSelect">Профиль Xbox</label>
+              <select class="select-input" id="addAccountSelect" style="width:100%;"></select>
+            </div>
+
+          <div class="form-grid-url">
+            <label class="field-label" for="addUrl">Ссылка на профиль / чат клиента (URL)</label>
+            <input type="text" class="input" id="addUrl" placeholder="https://www.avito.ru/... или https://funpay.com/... или https://t.me/..." />
+          </div>
+
+          <div class="form-bottom-row">
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <div class="pill-group" id="addPlatformGroup">
+                <button type="button" class="seg-pill active" data-platform="Авито">Авито</button>
+                <button type="button" class="seg-pill" data-platform="FunPay">FunPay</button>
+                <button type="button" class="seg-pill" data-platform="Playerok">Playerok</button>
+                <button type="button" class="seg-pill" data-platform="Telegram">Telegram</button>
+              </div>
+              <div class="pill-group" id="addStatusGroup">
+                <button type="button" class="seg-pill active" data-status="waiting">🟡 В очереди</button>
+                <button type="button" class="seg-pill" data-status="downloading">🔵 Качает</button>
+                <button type="button" class="seg-pill" data-status="done">🟢 Завершен</button>
+                <button type="button" class="seg-pill" data-status="review">⭐ Отзыв</button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-add-client">+ Добавить клиента</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 4. LIVE CLIENTS TABLE -->
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div class="filter-pills" id="filterPills">
+            <button class="filter-pill active" data-filter="all">Все</button>
+            <button class="filter-pill" data-filter="waiting">🟡 В очереди</button>
+            <button class="filter-pill" data-filter="downloading">🔵 Качают</button>
+            <button class="filter-pill" data-filter="done">🟢 Завершены</button>
+            <button class="filter-pill" data-filter="review">⭐ Отзыв</button>
+          </div>
+          <input type="text" class="input search-input" id="clientSearch" placeholder="🔍 Поиск по нику/коду..." />
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px;">#</th>
+                <th>Клиент / Заметка / Ссылка</th>
+                <th style="width:82px;">Сумма</th>
+                <th style="width:200px;">Статус (1 клик)</th>
+                <th style="width:70px; text-align:right;">Действ.</th>
+              </tr>
+            </thead>
+            <tbody id="clientsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- BOOKINGS MODAL -->
+  <div class="modal-backdrop" id="bookingsModal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="bookingsModalTitle">
+      <div class="modal-header">
+        <div class="modal-title" id="bookingsModalTitle">
+          📅 Управление бронированиями и очередью по времени
+          <span class="brand-badge" style="background:rgba(124,58,237,0.2); color:#ddd6fe; border-color:rgba(167,139,250,0.45);">
+            Активных броней: <span class="js-bookings-count">0</span>
+          </span>
+        </div>
+        <button type="button" class="btn-ghost" id="btnCloseBookings">✕ Закрыть (Esc)</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Quick Add Booking -->
+        <div class="booking-add-card">
+          <div style="font-size:12px; font-weight:800; color:#cbd5e1; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">
+            ➕ Новое бронирование (на будущее время / дату)
+          </div>
+          <form id="bookingAddForm">
+            <div class="booking-add-grid">
+              <div>
+                <label class="field-label" for="bkTime">Время / Дата *</label>
+                <input type="text" class="input" id="bkTime" placeholder="15:00 / Завтра 18:00" required />
+              </div>
+              <div>
+                <label class="field-label" for="bkName">Имя клиента *</label>
+                <input type="text" class="input" id="bkName" placeholder="Напр. Максим" required />
+              </div>
+              <div>
+                <label class="field-label" for="bkPlatform">Площадка</label>
+                <select class="select-input" id="bkPlatform">
+                  <option value="Авито">Авито</option>
+                  <option value="FunPay">FunPay</option>
+                  <option value="Playerok">Playerok</option>
+                  <option value="Telegram">Telegram</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="bkAmount">Сумма ₽</label>
+                <input type="number" class="input" id="bkAmount" placeholder="767" min="0" step="1" />
+              </div>
+              <div>
+                <label class="field-label" for="bkUrl">Ссылка на чат (URL)</label>
+                <input type="text" class="input" id="bkUrl" placeholder="https://..." />
+              </div>
+            </div>
+
+            <div class="booking-add-bottom">
+              <div style="flex:1; min-width:220px;">
+                <input type="text" class="input" id="bkNote" placeholder="Заметка (консоль, договорённость, предоплата...)" />
+              </div>
+              <select class="select-input" id="bkStatus" style="width:auto; min-width:160px;">
+                <option value="waiting_time">⏳ Ждет времени</option>
+                <option value="messaged">🔔 Написал ему</option>
+                <option value="paid">✅ Оплатил</option>
+              </select>
+              <button type="submit" class="btn-add-client">+ Добавить бронь</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Inline Editable Bookings List -->
+        <div>
+          <div style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:8px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+            <span>✏️ Любое поле в списке редактируется прямо на месте (сохраняется автоматически)</span>
+            <span>Кнопка «➡ Перенести в клиенты» перенесёт бронь в основную таблицу</span>
+          </div>
+          <div class="booking-list" id="bookingsList"></div>
+        </div>
+
+        <!-- Quick Queue Notepad -->
+        <div class="notepad-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label class="field-label" for="bookingNotesTextarea" style="margin:0; font-size:12px; color:#cbd5e1; font-weight:700;">
+              📝 Быстрый блокнот очереди (свободные заметки)
+            </label>
+            <span style="font-size:11px; color:var(--text-muted);">Автосохранение</span>
+          </div>
+          <textarea class="notepad-textarea" id="bookingNotesTextarea" placeholder="Сюда можно быстро записывать любые заметки по очереди, переносам, обещаниям, датам..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const STORAGE_KEY = 'pult_prodavca_gta6_v1';
+      const GAME_COST = 8198;
+      const MAX_SLOTS = 25;
+      const TIMER_DURATION_SEC = 20 * 60;
+
+      // Built-in Templates with category tabs
+      const DEFAULT_TEMPLATES = [
+        {
+          id: 'tpl_1',
+          tabs: ['avito'],
+          icon: '🟦',
+          theme: 'theme-avito',
+          title: 'Авито: Первый ответ (Цена + 3 шага)',
+          sub: '767 ₽ за Ultimate Edition, схема в 3 шага и простое объяснение',
+          text:
+`Добрый день! Цена — 767 рублей (за максимальное издание Ultimate Edition со всеми 16 бонусами).
+
+Как это работает в 3 шага:
+1. Вы вводите логин на своей консоли, на экране ТВ появляется код подтверждения — я подтверждаю вход со своего телефона (без передачи паролей).
+2. Ставите предзагрузку 209,9 ГБ на свой Xbox прямо сейчас и выходите на свой личный профиль (игра спокойно качается в фоне).
+3. Играете строго со СВОЕГО личного профиля со своими сохранениями и достижениями (запуск в автономном режиме без вылетов).
+
+Если готовы подключить — напишите, скажу куда перевести по СБП и всё настроим 🤝
+
+Простыми словами — вы заходите на МОЙ аккаунт с игрой, начинаете установку, потом выходите (не удаляете) с МОЕГО аккаунта на своей консоли, входите в СВОЙ аккаунт, и игра у вас будет на вашем аккаунте, на нем вы ее и докачаете и будете играть (на МОЕМ аккаунте играть запрещено).
+Все достижения и сохранения будут ваши, в вашем аккаунте.`
+        },
+        {
+          id: 'tpl_2',
+          tabs: ['avito'],
+          icon: '💳',
+          theme: 'theme-sbp',
+          title: 'Авито: Реквизиты СБП + Бронь очереди',
+          sub: 'Автоподстановка телефона и банка из полей выше ({телефон}, {банк})',
+          usesSbp: true,
+          text:
+`Отлично! Для подключения и бронирования слота переведите 767 ₽ по СБП:
+
+📱 Номер: {телефон}
+🏦 Банк: {банк}
+
+После перевода пришлите, пожалуйста, скриншот чека (или имя отправителя).
+Сразу после оплаты поставлю вас в очередь и выдам почту для входа — настройка займёт 3–5 минут 🤝`
+        },
+        {
+          id: 'tpl_fp_preorder',
+          tabs: ['fp'],
+          icon: '🟣',
+          theme: 'theme-fp',
+          title: 'Ответ до покупки: БЕЗ экранного времени! Я на месте',
+          sub: 'Для FunPay / Playerok: без лимитов по времени, оформляйте заказ',
+          text:
+`Здравствуйте! У нас БЕЗ экранного времени! Я на месте, оформляйте заказ 🤝
+
+Вы играете строго со СВОЕГО личного профиля (через автономный режим или быстрое переключение сети по нашей инструкции), а не сидите в общем профиле:
+• Никаких табличек «Экранное время истекло» и вылетов НЕ будет.
+• Все сохранения и достижения остаются только на вашем аккаунте.
+
+После оплаты сразу выдам почту и помогу всё настроить за 3–5 минут! 🎮`
+        },
+        {
+          id: 'tpl_3',
+          tabs: ['avito', 'fp'],
+          icon: '🔑',
+          theme: 'theme-key',
+          title: 'Выдача почты (vice_gta6_box@outlook.com)',
+          sub: 'Почта для «Добавить новое» и запрос кода с экрана ТВ',
+          text:
+`Почта для входа на консоли:
+vice_gta6_box@outlook.com
+
+Вводите её на приставке («Добавить новое») и сразу пишите сюда двузначное число с экрана ТВ (или 8-значный код, если нажмете «Использовать другое устройство»)`
+        },
+        {
+          id: 'tpl_4',
+          tabs: ['support'],
+          icon: '🚫',
+          theme: 'theme-quick',
+          title: 'Быстрый ответ: Нажимай "Спасибо, не надо" и "Пропустить"!',
+          sub: 'Подсказка для покупателей на этапе первичной настройки входа',
+          text:
+`На экране настройки входа нажимайте так:
+
+• На первом экране «Привет, ...! Применить параметры?» -> «Спасибо, не надо».
+• На экранах данных издателям / улучшений -> «Далее» / «Нет, спасибо» (строго зелёные кнопки).
+• «Параметры входа и безопасности» -> обязательно выберите «Без ограничений».
+• «Связать геймпад» -> нажмите «Пропустить».
+• ⚠️ На экране «Сделать моей домашней консолью Xbox?» -> ОБЯЗАТЕЛЬНО нажмите «Пропустить / Не сейчас»! (Трогать домашнюю консоль запрещено).`
+        },
+        {
+          id: 'tpl_5',
+          tabs: ['avito'],
+          icon: '📘',
+          theme: 'theme-guide',
+          title: 'Полная Инструкция (Скачка 210 ГБ + 2 способа запуска)',
+          sub: 'Настройки входа + Новая Зеландия + 209,9 ГБ + 2 способа запуска',
+          text:
+`Потом нажимайте на консоли строго по этим шагам:
+
+1. НАСТРОЙКИ ПРИ ВХОДЕ (ВАЖНО!):
+• «Параметры входа и безопасности» -> выберите «Без ограничений».
+• «Связать геймпад» -> нажмите «Пропустить».
+• ⚠️ На экране «Сделать моей домашней консолью Xbox?» -> ОБЯЗАТЕЛЬНО нажмите «Пропустить / Не сейчас»! (Трогать домашнюю консоль запрещено).
+
+2. КАК ПОСТАВИТЬ ПРЕДЗАГРУЗКУ 209,9 ГБ И ВСЕ БОНУСЫ ULTIMATE:
+1) Проверьте регион консоли: «Параметры» -> «Система» -> «Язык и местонахождение» -> поставьте «Новая Зеландия» (чтобы игра открылась вам на сутки раньше — 18 ноября в 14:00 МСК!).
+2) Зайдите в «Мои игры и приложения» -> «Полная библиотека» -> «Все собственные игры».
+3) Наведите на Grand Theft Auto VI -> нажмите кнопку «Меню» (три полоски на геймпаде) -> «Управление игрой и дополнениями».
+4) Нажмите на игру -> «Выбрать всех» (игра 209,9 ГБ + улучшение до Ultimate Edition + пак Vintage Vice City) -> нажмите «Установить / Сохранить изменения».
+5) Перейдите в «Очередь» и подождите 1–2 минуты, пока скачается первые 200–300 МБ игры.
+6) ⚠️ КРИТИЧЕСКИЙ МОМЕНТ: Как только первые 200 МБ пошли качаться — нажмите кнопку Xbox, наведите на наш профиль (vice_gta6_box) и нажмите «Выйти», оставшись на своем личном аккаунте! Игра спокойно докачает все 210 ГБ в фоне на вашем профиле.
+
+Как только поставите игру в очередь загрузки и выйдете на свой профиль (Пункт 2) — отпишитесь, пожалуйста.
+
+3. КАК ИГРАТЬ 18 НОЯБРЯ В 14:00 МСК СО СВОЕГО ПРОФИЛЯ (2 способа на выбор):
+
+🔹 СПОСОБ 1 (С включенным интернетом и достижениями):
+• Войдите в свой профиль и в наш профиль -> запустите GTA 6 со своего профиля.
+• На первой заставке игры быстро откройте: «Параметры» -> «Параметры сети» -> нажмите «Перейти в автономный режим».
+• Подождите 3 секунды, ВЫЙДИТЕ из нашего профиля (оставив только свой личный), нажмите «Подключиться к сети» и сразу вернитесь в игру! (Если игра в меню попросит войти — еще раз войдите в наш профиль и сразу выйдите). Теперь вы играете на своем профиле с онлайном! Держите игру в Quick Resume, чтобы не повторять при следующем включении.
+
+🔹 СПОСОБ 2 (Полный Оффлайн — 0% вылетов хоть на весь день):
+• Запустите GTA 6 -> на первой заставке перейдите в «Параметры сети» -> нажмите «Перейти в автономный режим» (Отключить интернет) и играйте на своем личном профиле со своими сохранениями без ограничений!`
+        },
+        {
+          id: 'tpl_fp_guide',
+          tabs: ['fp'],
+          icon: '📘',
+          theme: 'theme-guide',
+          title: 'Полная Инструкция + подтверждение заказа после старта скачки',
+          sub: 'Гайд 209,9 ГБ + просьба подтвердить заказ на сайте сразу после старта загрузки',
+          text:
+`Потом нажимайте на консоли строго по этим шагам:
+
+1. НАСТРОЙКИ ПРИ ВХОДЕ (ВАЖНО!):
+• «Параметры входа и безопасности» -> выберите «Без ограничений».
+• «Связать геймпад» -> нажмите «Пропустить».
+• ⚠️ На экране «Сделать моей домашней консолью Xbox?» -> ОБЯЗАТЕЛЬНО нажмите «Пропустить / Не сейчас»! (Трогать домашнюю консоль запрещено).
+
+2. КАК ПОСТАВИТЬ ПРЕДЗАГРУЗКУ 209,9 ГБ И ВСЕ БОНУСЫ ULTIMATE:
+1) Проверьте регион консоли: «Параметры» -> «Система» -> «Язык и местонахождение» -> поставьте «Новая Зеландия» (чтобы игра открылась вам на сутки раньше — 18 ноября в 14:00 МСК!).
+2) Зайдите в «Мои игры и приложения» -> «Полная библиотека» -> «Все собственные игры».
+3) Наведите на Grand Theft Auto VI -> нажмите кнопку «Меню» (три полоски на геймпаде) -> «Управление игрой и дополнениями».
+4) Нажмите на игру -> «Выбрать всех» (игра 209,9 ГБ + улучшение до Ultimate Edition + пак Vintage Vice City) -> нажмите «Установить / Сохранить изменения».
+5) Перейдите в «Очередь» и подождите 1–2 минуты, пока скачается первые 200–300 МБ игры.
+6) ⚠️ КРИТИЧЕСКИЙ МОМЕНТ: Как только первые 200 МБ пошли качаться — нажмите кнопку Xbox, наведите на наш профиль (vice_gta6_box) и нажмите «Выйти», оставшись на своем личном аккаунте! Игра спокойно докачает все 210 ГБ в фоне на вашем профиле.
+
+Как только поставите игру в очередь загрузки и выйдете на свой профиль (Пункт 2) — отпишитесь, пожалуйста.
+
+Если игра уже добавлена в «Очередь» и пошли качаться первые мегабайты — можете спокойно подтверждать выполнение заказа на сайте, доступ выдан полностью! Дожидаться окончания всех 210 ГБ не нужно: консоль сама всё докачает в фоне.
+
+3. КАК ИГРАТЬ 18 НОЯБРЯ В 14:00 МСК СО СВОЕГО ПРОФИЛЯ (2 способа на выбор):
+
+🔹 СПОСОБ 1 (С включенным интернетом и достижениями):
+• Войдите в свой профиль и в наш профиль -> запустите GTA 6 со своего профиля.
+• На первой заставке игры быстро откройте: «Параметры» -> «Параметры сети» -> нажмите «Перейти в автономный режим».
+• Подождите 3 секунды, ВЫЙДИТЕ из нашего профиля (оставив только свой личный), нажмите «Подключиться к сети» и сразу вернитесь в игру! (Если игра в меню попросит войти — еще раз войдите в наш профиль и сразу выйдите). Теперь вы играете на своем профиле с онлайном! Держите игру в Quick Resume, чтобы не повторять при следующем включении.
+
+🔹 СПОСОБ 2 (Полный Оффлайн — 0% вылетов хоть на весь день):
+• Запустите GTA 6 -> на первой заставке перейдите в «Параметры сети» -> нажмите «Перейти в автономный режим» (Отключить интернет) и играйте на своем личном профиле со своими сохранениями без ограничений!
+
+И пожалуйста, оставьте отзыв и подтвердите выполнение заказа! 🤝`
+        },
+        {
+          id: 'tpl_6',
+          tabs: ['avito', 'fp'],
+          icon: '⚠️',
+          theme: 'theme-rules',
+          title: 'Памятка: 4 главных НЕЛЬЗЯ + подтверждение заказа',
+          sub: 'Запрет на удаление, домашнюю консоль, ПИН и онлайн-игру на профиле',
+          text:
+`Чего делать НЕЛЬЗЯ на консоли, чтобы всё работало стабильно и не слетело:
+
+❌ 1. НЕ удаляйте наш профиль с приставки (через настройки «Удалить учетные записи»). Профиль должен просто лежать в списке пользователей — при первом входе вы выбрали «Без ограничений», поэтому в дальнейшем при запуске игры консоль будет заходить в него за секунду в один клик БЕЗ повторного ввода кодов!
+❌ 2. НЕ нажимайте в настройках кнопку «Сделать моей домашней консолью» (иначе система безопасности расценит это как нарушение и доступ аннулируется).
+❌ 3. НЕ ставьте ПИН-коды на вход и не привязывайте к нашему профилю геймпад (авто-вход).
+❌ 4. НЕ играйте напрямую на нашем профиле с включенным интернетом (играем строго со СВОЕГО личного аккаунта по инструкции выше — либо в автономном режиме, либо через переключение сети).
+
+Пока наш профиль просто сохранен на вашей приставке — игра привязана к вашей консоли и 18 ноября запустится без проблем!
+
+Если игра уже добавлена в «Очередь» и пошли качаться первые мегабайты — можете спокойно подтверждать выполнение заказа и оставлять отзыв, доступ выдан полностью! Дожидаться окончания всех 210 ГБ не нужно: консоль сама всё докачает в фоне. 🤝 Приятной предзагрузки!`
+        },
+        {
+          id: 'tpl_7',
+          tabs: ['avito'],
+          icon: '⭐',
+          theme: 'theme-review',
+          title: 'Авито: Просьба оставить отзыв (без слова "аккаунт"!)',
+          sub: 'Безопасный текст для модерации Авито — без запрещённых слов',
+          text:
+`Супер, загрузка пошла, дальше консоль всё спокойно докачает в фоне! 🤝
+
+Если вам всё понравилось, буду очень благодарен за отзыв на Авито — мне это сильно поможет 🙏
+Можете просто написать своими словами, что помог быстро всё настроить и поставить предзагрузку игры (только без лишних технических деталей, чтобы модерация сразу пропустила отзыв).
+
+Приятной игры 18 ноября! Если появятся вопросы — смело пишите 🎮`
+        },
+        {
+          id: 'tpl_8',
+          tabs: ['support'],
+          icon: '🛠',
+          theme: 'theme-dns',
+          title: 'Решение ошибки 0x80a40401 (Смена DNS за 30 сек)',
+          sub: 'Рабочие DNS для Xbox (178.22.122.100 / 78.157.42.100) + перезагрузка',
+          text:
+`Ошибка 0x80a40401 — это стандартное региональное ограничение при входе на Xbox, решается за 30 секунд сменой DNS прямо на приставке:
+
+1) Откройте «Параметры» -> «Общие» -> «Параметры сети» -> «Дополнительные настройки» -> «Параметры DNS» -> выберите «Вручную».
+2) Введите Основной IPv4 DNS: 178.22.122.100
+   Дополнительный IPv4 DNS: 185.51.200.2 (или 0.0.0.0)
+   (Запасной вариант, если не пустит: 78.157.42.100 и 78.157.42.101)
+3) Обязательно перезагрузите консоль (полностью выключите и включите) и повторите вход.
+
+💡 После того как войдёте и запустите скачивание игры, DNS можно вернуть обратно на «Автоматически», чтобы все 210 ГБ качались на максимальной скорости!`
+        },
+        {
+          id: 'tpl_already_purchased',
+          tabs: ['support', 'all'],
+          icon: '❓',
+          theme: 'theme-guide',
+          title: 'Ответ на табличку: "Вы уже приобрели данную игру?"',
+          sub: 'Объяснение, почему видна табличка со своего профиля до релиза 18 ноября',
+          text:
+`Эта табличка показалась потому, что вы (всё верно по инструкции!) вышли из нашего профиля на время скачивания, и на приставке сейчас включен только ваш личный профиль.
+
+Смотрите, как это работает:
+1. Сейчас (до 18 ноября 14:00 МСК) игра еще официально не вышла — файлы уже скачаны и ждут часа старта.
+2. А 18 ноября в 14:00 МСК, когда будете запускать игру, вы просто в меню профилей дополнительно нажмете на наш сохраненный профиль (он войдет за 1 секунду без паролей и кодов) — тогда консоль сразу увидит лицензию и запустит игру на вашем профиле по нашей инструкции!
+
+(Если хотите убедиться прямо сейчас — можете на 10 секунд нажать вход в наш второй профиль и кликнуть на игру: вместо этой таблички сразу появится официальная надпись предзаказа «Вы слишком рано! Придется еще немного подождать». Только после проверки не забудьте снова нажать «Выйти» на нашем профиле до 18 ноября 🤝).`
+        },
+        {
+          id: 'tpl_9',
+          tabs: ['all'],
+          icon: '🕒',
+          theme: 'theme-screentime',
+          title: 'Общий ответ про "Экранное время" (БЕЗ ограничений)',
+          sub: 'Подробное объяснение, почему нет вылетов и лимита экранного времени',
+          text:
+`У нас БЕЗ экранного времени и без каких-либо ограничений по часам! 🙌
+
+Вы играете строго со СВОЕГО личного профиля (через автономный режим или быстрое переключение сети по нашей инструкции), а не сидите в общем профиле. Поэтому:
+• Никаких табличек «Экранное время истекло» и вылетов каждые 30–60 минут НЕ будет.
+• Все сохранения и достижения остаются только на вашем личном профиле.
+• Можно играть сколько угодно часов подряд в любое удобное время!`
+        },
+        {
+          id: 'tpl_10',
+          tabs: ['fp'],
+          icon: '🌍',
+          theme: 'theme-eng-short',
+          isGroupEng: true,
+          buttons: [
+            {
+              id: 'tpl_10_short',
+              theme: 'theme-eng-short',
+              icon: '💬',
+              title: 'ENG: Короткий ответ иностранцу',
+              sub: 'Quick intro: 209.9 GB Ultimate, no password, play on own profile',
+              text:
+`Hello! This is GTA VI Ultimate Edition (209.9 GB preload) for Xbox Series X|S.
+How it works:
+1. I give you the sign-in email -> you enter it on your Xbox and send me the 2-digit code from your TV screen (no password needed).
+2. You start downloading GTA VI (209.9 GB), then sign out of my profile and finish downloading/playing strictly on YOUR personal profile!
+3. No screen time limits — all saves & achievements stay on your own profile.
+
+Ready to start? Message me and I'll send the email right away! 🤝`
+            },
+            {
+              id: 'tpl_10_full',
+              theme: 'theme-eng-full',
+              icon: '📘',
+              title: 'ENG: Full English Guide',
+              sub: 'Email + Login steps + 210 GB Preload + 2 Launch Methods + 4 Rules',
+              text:
+`Sign-in email for your Xbox:
+vice_gta6_box@outlook.com
+
+Enter it on your console ("Add new") and immediately send me the 2-digit number shown on your TV (or the 8-character code if you select "Use another device").
+
+Then follow these exact steps on your Xbox:
+
+1. SIGN-IN SETTINGS (IMPORTANT!):
+• "Sign-in & security preferences" -> select "No barriers".
+• "Link controller" -> select "Skip".
+• ⚠️ "Make this my home Xbox?" -> MUST select "Skip / Not now" / "Maybe later"! (Never set as Home Xbox).
+
+2. HOW TO START THE 209.9 GB PRELOAD & ULTIMATE BONUSES:
+1) Check console region: Settings -> System -> Language & location -> set to "New Zealand" (unlocks 1 day early — Nov 18 at 14:00 MSK / 11:00 UTC!).
+2) Go to "My games & apps" -> "Full library" -> "All owned games".
+3) Highlight Grand Theft Auto VI -> press Menu button (three lines) -> "Manage game and add-ons".
+4) Click the game -> "Select all" (209.9 GB game + Ultimate Edition upgrade + Vintage Vice City pack) -> click "Install / Save changes".
+5) Open "Queue" and wait 1–2 minutes until the first 200–300 MB starts downloading.
+6) ⚠️ CRITICAL STEP: Once the download starts, press the Xbox button, go to Profile & system -> select our profile (vice_gta6_box) and click "Sign out", staying on YOUR personal profile! The console will finish downloading all 210 GB in the background.
+
+Please message me once the game is in the Queue and you've signed out of our profile! (No need to wait for all 210 GB to finish before confirming the order — access is fully delivered).
+
+3. HOW TO PLAY ON NOV 18 FROM YOUR OWN PROFILE (2 methods):
+
+🔹 METHOD 1 (With Internet & Achievements):
+• Sign into both your profile and our profile -> launch GTA 6 from your personal profile.
+• On the first splash screen, quickly open Settings -> Network settings -> click "Go offline".
+• Wait 3 seconds, SIGN OUT of our profile (keep only yours signed in), click "Go online", and return to the game! (If prompted again in menu, sign into our profile and immediately sign out). Keep the game in Quick Resume so you don't need to repeat this.
+
+🔹 METHOD 2 (Full Offline — 0% crashes all day):
+• Launch GTA 6 -> on the first splash screen open Settings -> Network settings -> click "Go offline" and play on your personal profile with all your saves!
+
+⚠️ 4 STRICT RULES (DO NOT DO THIS):
+❌ 1. DO NOT remove our profile from your console ("Remove accounts"). Keep it saved with "No barriers" so launching takes 1 click without codes.
+❌ 2. DO NOT set our profile as "Make this my home Xbox".
+❌ 3. DO NOT set a PIN or link a controller (auto sign-in) to our profile.
+❌ 4. DO NOT play directly on our profile while online (always play on YOUR personal profile using Method 1 or Method 2).
+
+As long as our profile stays saved on your console, the game will launch without issues on release! Enjoy the preload & please confirm the order and leave a review 🤝`
+            }
+          ]
+        }
+      ];
+
+      // Initial clients imported directly from sell/client.txt
+      const INITIAL_CLIENTS = [
+        {
+          id: 'c_init_1',
+          name: 'daniel4920494',
+          platform: 'FunPay',
+          amount: 390,
+          comment: 'client1 · Series S / 0F34JW324333PC',
+          url: '',
+          status: 'done',
+          createdAt: 1700000001000
+        },
+        {
+          id: 'c_init_2',
+          name: 'NoNam37',
+          platform: 'FunPay',
+          amount: 390,
+          comment: 'client2 · Series X / 101818222917',
+          url: '',
+          status: 'done',
+          createdAt: 1700000002000
+        },
+        {
+          id: 'c_init_3',
+          name: 'Fassseq',
+          platform: 'FunPay',
+          amount: 390,
+          comment: 'client3 · Series S / 0F34JW324333PC',
+          url: '',
+          status: 'done',
+          createdAt: 1700000003000
+        },
+        {
+          id: 'c_init_4',
+          name: 'Артем(зел ава)',
+          platform: 'Авито',
+          amount: 0,
+          comment: 'client4 · _ / _',
+          url: '',
+          status: 'waiting',
+          createdAt: 1700000004000
+        }
+      ];
+
+      const STATUS_META = {
+        waiting:     { icon: '🟡', short: 'Ждет',     full: '🟡 В очереди (Ждет)' },
+        downloading: { icon: '🔵', short: 'Качает',   full: '🔵 Качает (Внутри аккаунта)' },
+        done:        { icon: '🟢', short: 'Завершен', full: '🟢 Завершен (Вышел + Оплатил)' },
+        review:      { icon: '⭐', short: 'Отзыв',    full: '⭐ Отзыв оставлен' }
+      };
+
+      const BOOKING_STATUS_META = {
+        waiting_time: { icon: '⏳', label: '⏳ Ждет времени' },
+        messaged:     { icon: '🔔', label: '🔔 Написал ему' },
+        paid:         { icon: '✅', label: '✅ Оплатил' }
+      };
+
+      // App State
+      let state = loadState();
+      let activeFilter = 'all';
+      let searchQuery = '';
+      let editingClientId = null;
+      let openEditors = new Set();
+      let timerInterval = null;
+      let audioCtx = null;
+
+      // Form selections
+      let selectedAddPlatform = 'Авито';
+      let selectedAddStatus = 'waiting';
+
+      // DOM Refs
+      const sbpPhoneEl = document.getElementById('sbpPhone');
+      const sbpBankEl = document.getElementById('sbpBank');
+      const sbpBoxEl = document.getElementById('sbpBox');
+      const templatesListEl = document.getElementById('templatesList');
+      const savePillEl = document.getElementById('savePill');
+
+      const customTplCreatorEl = document.getElementById('customTplCreator');
+      const newTplTitleEl = document.getElementById('newTplTitle');
+      const newTplSubEl = document.getElementById('newTplSub');
+      const newTplTabEl = document.getElementById('newTplTab');
+      const newTplThemeEl = document.getElementById('newTplTheme');
+      const newTplIconEl = document.getElementById('newTplIcon');
+      const newTplTextEl = document.getElementById('newTplText');
+
+      const slotsCounterEl = document.getElementById('slotsCounter');
+      const slotsPercentLabelEl = document.getElementById('slotsPercentLabel');
+      const slotsProgressBarEl = document.getElementById('slotsProgressBar');
+      const statusBreakdownEl = document.getElementById('statusBreakdown');
+
+      const totalEarnedValueEl = document.getElementById('totalEarnedValue');
+      const paybackPercentLabelEl = document.getElementById('paybackPercentLabel');
+      const paybackProgressBarEl = document.getElementById('paybackProgressBar');
+      const paybackSubTextEl = document.getElementById('paybackSubText');
+
+      const timerCardEl = document.getElementById('timerCard');
+      const timerBannerEl = document.getElementById('timerBanner');
+      const timerDisplayEl = document.getElementById('timerDisplay');
+      const timerSubHintEl = document.getElementById('timerSubHint');
+      const timerProgressBarEl = document.getElementById('timerProgressBar');
+      const btnStartTimer = document.getElementById('btnStartTimer');
+      const btnPauseTimer = document.getElementById('btnPauseTimer');
+      const btnResetTimer = document.getElementById('btnResetTimer');
+      const btnTestSound = document.getElementById('btnTestSound');
+
+      const quickAddForm = document.getElementById('quickAddForm');
+      const addNameEl = document.getElementById('addName');
+      const addAmountEl = document.getElementById('addAmount');
+      const addCommentEl = document.getElementById('addComment');
+      const addUrlEl = document.getElementById('addUrl');
+      const clientsTableBodyEl = document.getElementById('clientsTableBody');
+      const clientSearchEl = document.getElementById('clientSearch');
+
+      const bookingsModalEl = document.getElementById('bookingsModal');
+      const bookingsListEl = document.getElementById('bookingsList');
+      const bookingAddForm = document.getElementById('bookingAddForm');
+      const bkTimeEl = document.getElementById('bkTime');
+      const bkNameEl = document.getElementById('bkName');
+      const bkPlatformEl = document.getElementById('bkPlatform');
+      const bkAmountEl = document.getElementById('bkAmount');
+      const bkUrlEl = document.getElementById('bkUrl');
+      const bkNoteEl = document.getElementById('bkNote');
+      const bkStatusEl = document.getElementById('bkStatus');
+      const bookingNotesTextareaEl = document.getElementById('bookingNotesTextarea');
+
+            // Load / Save State (with Multi-Account & Cloud Sync)
+      const DEFAULT_ACCOUNTS = [
+        {
+          id: 'acc_1',
+          name: 'Основной (ViceBeach)',
+          email: 'vice_gta6_box@outlook.com',
+          gamertag: 'ViceBeach#5506',
+          cost: 8198,
+          maxSlots: 25
+        }
+      ];
+
+      // New DOM references
+      const accountsTabsEl = document.getElementById('accountsTabs');
+      const activeAccountPillsEl = document.getElementById('activeAccountPills');
+      const btnAddAccount = document.getElementById('btnAddAccount');
+      const addAccountSelect = document.getElementById('addAccountSelect');
+
+      const accountModal = document.getElementById('accountModal');
+      const accountModalTitle = document.getElementById('accountModalTitle');
+      const accModalId = document.getElementById('accModalId');
+      const accModalName = document.getElementById('accModalName');
+      const accModalEmail = document.getElementById('accModalEmail');
+      const accModalGamertag = document.getElementById('accModalGamertag');
+      const accModalCost = document.getElementById('accModalCost');
+      const accModalSlots = document.getElementById('accModalSlots');
+      const btnDeleteAccount = document.getElementById('btnDeleteAccount');
+      const btnSaveAccount = document.getElementById('btnSaveAccount');
+
+      const btnCloudSync = document.getElementById('btnCloudSync');
+      const cloudStatusLabel = document.getElementById('cloudStatusLabel');
+      const cloudSyncModal = document.getElementById('cloudSyncModal');
+      const syncKeyInput = document.getElementById('syncKeyInput');
+      const btnGenSyncKey = document.getElementById('btnGenSyncKey');
+      const syncPhoneLinkBox = document.getElementById('syncPhoneLinkBox');
+      const syncPhoneLinkInput = document.getElementById('syncPhoneLinkInput');
+      const btnCopyPhoneLink = document.getElementById('btnCopyPhoneLink');
+      const btnDisableSync = document.getElementById('btnDisableSync');
+      const btnManualSyncNow = document.getElementById('btnManualSyncNow');
+      const btnSaveCloudSync = document.getElementById('btnSaveCloudSync');
+
+      let pushDebounceTimer = null;
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            const loadedAccounts = Array.isArray(parsed.accounts) && parsed.accounts.length > 0
+              ? parsed.accounts
+              : JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS));
+            const loadedClients = Array.isArray(parsed.clients) ? parsed.clients : JSON.parse(JSON.stringify(INITIAL_CLIENTS));
+            const primaryAccId = loadedAccounts[0].id;
+            loadedClients.forEach((c) => {
+              if (!c.accountId) c.accountId = primaryAccId;
+            });
+
+            return {
+              updatedAt: Number(parsed.updatedAt) || Date.now(),
+              sbpPhone: typeof parsed.sbpPhone === 'string' ? parsed.sbpPhone : '',
+              sbpBank: typeof parsed.sbpBank === 'string' ? parsed.sbpBank : '',
+              activeTemplateTab: typeof parsed.activeTemplateTab === 'string' ? parsed.activeTemplateTab : 'all',
+              activeAccountId: typeof parsed.activeAccountId === 'string' ? parsed.activeAccountId : 'all',
+              accounts: loadedAccounts,
+              clients: loadedClients,
+              bookings: Array.isArray(parsed.bookings) ? parsed.bookings : [],
+              bookingNotes: typeof parsed.bookingNotes === 'string' ? parsed.bookingNotes : '',
+              customTemplates: parsed.customTemplates && typeof parsed.customTemplates === 'object' ? parsed.customTemplates : {},
+              customUserTemplates: Array.isArray(parsed.customUserTemplates) ? parsed.customUserTemplates : [],
+              timer: parsed.timer && typeof parsed.timer === 'object'
+                ? parsed.timer
+                : { status: 'idle', endTime: null, remainingSec: TIMER_DURATION_SEC },
+              sync: parsed.sync && typeof parsed.sync === 'object'
+                ? parsed.sync
+                : { enabled: false, key: '', lastSyncTime: null }
+            };
+          }
+        } catch (e) {
+          console.error('Failed to read localStorage:', e);
+        }
+        return {
+          updatedAt: Date.now(),
+          sbpPhone: '',
+          sbpBank: '',
+          activeTemplateTab: 'all',
+          activeAccountId: 'all',
+          accounts: JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS)),
+          clients: JSON.parse(JSON.stringify(INITIAL_CLIENTS)),
+          bookings: [],
+          bookingNotes: '',
+          customTemplates: {},
+          customUserTemplates: [],
+          timer: { status: 'idle', endTime: null, remainingSec: TIMER_DURATION_SEC },
+          sync: { enabled: false, key: '', lastSyncTime: null }
+        };
+      }
+
+      function saveState(skipCloudPush) {
+        try {
+          state.updatedAt = Date.now();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          savePillEl.textContent = '💾 Сохранено ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        } catch (e) {
+          showToast('Ошибка сохранения в localStorage!', 'warn');
+        }
+        if (!skipCloudPush && state.sync && state.sync.enabled && state.sync.key) {
+          scheduleCloudPush();
+        }
+      }
+
+      function getActiveAccount() {
+        if (state.activeAccountId && state.activeAccountId !== 'all') {
+          const acc = state.accounts.find((a) => a.id === state.activeAccountId);
+          if (acc) return acc;
+        }
+        return state.accounts[0] || DEFAULT_ACCOUNTS[0];
+      }
+
+      // Utilities
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function normalizeSafeUrl(rawUrl) {
+        const u = String(rawUrl || '').trim();
+        if (!u) return '';
+        const lower = u.toLowerCase();
+        if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('vbscript:')) {
+          return '';
+        }
+        if (/^(https?:\/\/|tg:\/\/)/i.test(u)) {
+          return u;
+        }
+        return 'https://' + u;
+      }
+
+      function formatRub(num) {
+        const n = Number(num) || 0;
+        return n.toLocaleString('ru-RU') + ' ₽';
+      }
+
+      function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = (type === 'success' ? '✓ ' : '⚠ ') + message;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.25s ease';
+          setTimeout(() => toast.remove(), 260);
+        }, 2600);
+      }
+
+      async function copyTextToClipboard(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          try {
+            await navigator.clipboard.writeText(text);
+            return true;
+          } catch (_) {}
+        }
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        ta.style.top = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        let ok = false;
+        try {
+          ok = document.execCommand('copy');
+        } catch (_) {
+          ok = false;
+        }
+        document.body.removeChild(ta);
+        return ok;
+      }
+
+      function getTemplateText(tplId, defaultText) {
+        if (Object.prototype.hasOwnProperty.call(state.customTemplates, tplId)) {
+          return state.customTemplates[tplId];
+        }
+        return defaultText;
+      }
+
+      function resolveTemplateText(tplObj) {
+        let raw = tplObj.isUserCustom
+          ? tplObj.text
+          : getTemplateText(tplObj.id, tplObj.text);
+
+        const phone = state.sbpPhone.trim();
+        const bank = state.sbpBank.trim();
+        const acc = getActiveAccount();
+
+        // Dynamic Account Replacements
+        raw = raw
+          .replace(/\{почта\}|\{логин\}|\{EMAIL\}|\{LOGIN\}/gi, acc.email || '')
+          .replace(/\{геймтег\}|\{ник\}|\{GAMERTAG\}|\{NICK\}/gi, acc.gamertag || '');
+
+        const needsPhone = raw.includes('{телефон}') || raw.includes('{PHONE}');
+        const needsBank = raw.includes('{банк}') || raw.includes('{BANK}');
+
+        if (tplObj.usesSbp || needsPhone || needsBank) {
+          if ((needsPhone && !phone) || (needsBank && !bank)) {
+            sbpBoxEl.classList.remove('warn-pulse');
+            void sbpBoxEl.offsetWidth;
+            sbpBoxEl.classList.add('warn-pulse');
+            if (!phone) sbpPhoneEl.focus();
+            else sbpBankEl.focus();
+            showToast('Сначала впишите номер СБП и банк в поля выше!', 'warn');
+            return null;
+          }
+          raw = raw
+            .replace(/\{телефон\}|\{PHONE\}/gi, phone)
+            .replace(/\{банк\}|\{BANK\}/gi, bank);
+        }
+        return raw;
+      }
+
+      function flashButtonCopied(btnEl) {
+        const badge = btnEl.querySelector('.tpl-copy-badge');
+        const origBadgeText = badge ? badge.dataset.orig || badge.textContent : '';
+        if (badge && !badge.dataset.orig) {
+          badge.dataset.orig = origBadgeText;
+        }
+        btnEl.classList.add('is-copied');
+        if (badge) badge.textContent = '✓ Скопировано!';
+
+        if (btnEl._copyTimer) clearTimeout(btnEl._copyTimer);
+        btnEl._copyTimer = setTimeout(() => {
+          btnEl.classList.remove('is-copied');
+          if (badge) badge.textContent = badge.dataset.orig || 'Копировать';
+        }, 1500);
+      }
+
+      // Render Left Column Templates & Tabs
+      function updateTemplateTabsUI() {
+        const currentTab = state.activeTemplateTab || 'all';
+        document.querySelectorAll('#tplTabs .tpl-tab-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.tab === currentTab);
+        });
+      }
+
+      function renderSingleTemplateRow(item) {
+        const isUserCustom = Boolean(item.isUserCustom);
+        const isEdited = !isUserCustom && Object.prototype.hasOwnProperty.call(state.customTemplates, item.id);
+        const currentText = isUserCustom ? item.text : getTemplateText(item.id, item.text);
+        const isEditorOpen = openEditors.has(item.id);
+
+        const rowWrap = document.createElement('div');
+        rowWrap.style.marginTop = item.isSecondInCard ? '8px' : '0';
+
+        const row = document.createElement('div');
+        row.className = 'tpl-row';
+
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = `tpl-copy-btn ${item.theme || 'theme-avito'}`;
+        copyBtn.innerHTML = `
+          <div class="tpl-btn-main">
+            <span class="tpl-icon">${escapeHtml(item.icon || '💬')}</span>
+            <div class="tpl-text-wrap">
+              <div class="tpl-title">${item.displayNum ? `<span style="opacity:0.75;margin-right:5px;">${item.displayNum}.</span>` : ''}${escapeHtml(item.title)}</div>
+              ${item.sub ? `<div class="tpl-sub">${escapeHtml(item.sub)}</div>` : ''}
+            </div>
+          </div>
+          <span class="tpl-copy-badge">Копировать</span>
+        `;
+
+        copyBtn.addEventListener('click', async () => {
+          const finalText = resolveTemplateText(item);
+          if (finalText === null) return;
+          const ok = await copyTextToClipboard(finalText);
+          if (ok) {
+            flashButtonCopied(copyBtn);
+          } else {
+            showToast('Не удалось скопировать в буфер обмена', 'warn');
+          }
+        });
+
+        const editBtn = document.createElement('button');
+        editBtn.type = 'button';
+        editBtn.className = `tpl-edit-btn ${isEditorOpen ? 'active' : ''}`;
+        editBtn.title = 'Редактировать текст шаблона';
+        editBtn.innerHTML = `
+          <span>✏️</span>
+          <span>Ред. текст</span>
+          ${isEdited ? '<span class="edited-dot">• изменён</span>' : ''}
+          ${isUserCustom ? '<span class="edited-dot" style="color:#67e8f9;">• свой</span>' : ''}
+        `;
+
+        const editorBox = document.createElement('div');
+        editorBox.className = `tpl-editor ${isEditorOpen ? 'open' : ''}`;
+        editorBox.innerHTML = `
+          ${isUserCustom ? `
+            <div style="display:grid; grid-template-columns:1fr 140px; gap:6px; margin-bottom:6px;">
+              <input type="text" class="inline-input js-custom-title" value="${escapeHtml(item.title)}" placeholder="Название кнопки" />
+              <select class="select-input js-custom-tab" style="padding:5px 7px; font-size:12px;">
+                <option value="avito" ${item.tab === 'avito' ? 'selected' : ''}>🟦 Авито</option>
+                <option value="fp" ${item.tab === 'fp' ? 'selected' : ''}>🟣 FunPay/Playerok</option>
+                <option value="support" ${item.tab === 'support' ? 'selected' : ''}>🛠 Настройка</option>
+                <option value="all" ${item.tab === 'all' ? 'selected' : ''}>📋 Все вкладки</option>
+              </select>
+            </div>
+          ` : ''}
+          <textarea class="tpl-textarea">${escapeHtml(currentText)}</textarea>
+          <div class="tpl-editor-footer">
+            <span class="tpl-editor-hint">${item.usesSbp ? 'Плейсхолдеры: {телефон}, {банк}, {почта}, {геймтег}' : 'Плейсхолдеры: {почта}, {геймтег}, {телефон}, {банк}'}</span>
+            <div class="tpl-editor-actions">
+              ${isUserCustom
+                ? `<button type="button" class="btn-sm danger js-tpl-delete">🗑️ Удалить</button>`
+                : `<button type="button" class="btn-sm js-tpl-reset">↺ Оригинал</button>`
+              }
+              <button type="button" class="btn-sm primary js-tpl-save">💾 Сохранить</button>
+            </div>
+          </div>
+        `;
+
+        editBtn.addEventListener('click', () => {
+          if (openEditors.has(item.id)) {
+            openEditors.delete(item.id);
+            editorBox.classList.remove('open');
+            editBtn.classList.remove('active');
+          } else {
+            openEditors.add(item.id);
+            editorBox.classList.add('open');
+            editBtn.classList.add('active');
+            const ta = editorBox.querySelector('.tpl-textarea');
+            ta.focus();
+            ta.setSelectionRange(ta.value.length, ta.value.length);
+          }
+        });
+
+        const saveBtn = editorBox.querySelector('.js-tpl-save');
+        saveBtn.addEventListener('click', () => {
+          const newText = editorBox.querySelector('.tpl-textarea').value;
+          if (isUserCustom) {
+            const titleInput = editorBox.querySelector('.js-custom-title');
+            const tabSelect = editorBox.querySelector('.js-custom-tab');
+            const target = state.customUserTemplates.find((x) => x.id === item.id);
+            if (target) {
+              target.title = (titleInput && titleInput.value.trim()) || target.title;
+              target.tab = (tabSelect && tabSelect.value) || target.tab;
+              target.text = newText;
+            }
+          } else {
+            state.customTemplates[item.id] = newText;
+          }
+          openEditors.delete(item.id);
+          saveState();
+          renderTemplates();
+          showToast('Шаблон сохранён');
+        });
+
+        if (isUserCustom) {
+          const delBtn = editorBox.querySelector('.js-tpl-delete');
+          delBtn.addEventListener('click', () => {
+            if (confirm(`Удалить шаблон "${item.title}"?`)) {
+              state.customUserTemplates = state.customUserTemplates.filter((x) => x.id !== item.id);
+              openEditors.delete(item.id);
+              saveState();
+              renderTemplates();
+              showToast('Шаблон удалён');
+            }
+          });
+        } else {
+          const resetBtn = editorBox.querySelector('.js-tpl-reset');
+          resetBtn.addEventListener('click', () => {
+            delete state.customTemplates[item.id];
+            openEditors.delete(item.id);
+            saveState();
+            renderTemplates();
+            showToast('Текст возвращён к исходному');
+          });
+        }
+
+        row.appendChild(copyBtn);
+        row.appendChild(editBtn);
+        rowWrap.appendChild(row);
+        rowWrap.appendChild(editorBox);
+        return rowWrap;
+      }
+
+      function renderTemplates() {
+        updateTemplateTabsUI();
+        tplListEl.innerHTML = '';
+        const currentTab = state.activeTemplateTab || 'all';
+
+        const filteredBuiltins = DEFAULT_TEMPLATES.filter((tpl) => {
+          if (currentTab === 'all') return true;
+          return tpl.tabs && tpl.tabs.includes(currentTab);
+        });
+
+        const filteredCustom = (state.customUserTemplates || []).filter((tpl) => {
+          if (currentTab === 'all') return true;
+          return tpl.tab === currentTab || tpl.tab === 'all';
+        });
+
+        const cardsMap = new Map();
+        filteredBuiltins.forEach((tpl) => {
+          const cardId = tpl.cardId || ('single_' + tpl.id);
+          if (!cardsMap.has(cardId)) {
+            cardsMap.set(cardId, { meta: tpl, items: [] });
+          }
+          cardsMap.get(cardId).items.push(tpl);
+        });
+
+        cardsMap.forEach(({ meta, items }) => {
+          const card = document.createElement('div');
+          card.className = 'tpl-card';
+
+          const cardHeader = document.createElement('div');
+          cardHeader.className = 'tpl-card-header';
+          cardHeader.innerHTML = `
+            <div class="tpl-card-title">${escapeHtml(meta.cardTitle || meta.title)}</div>
+            ${meta.cardBadge ? `<span class="tpl-badge ${meta.cardBadgeClass || ''}">${escapeHtml(meta.cardBadge)}</span>` : ''}
+          `;
+          card.appendChild(cardHeader);
+
+          items.forEach((item, idx) => {
+            item.isSecondInCard = idx > 0;
+            card.appendChild(renderSingleTemplateRow(item));
+          });
+
+          tplListEl.appendChild(card);
+        });
+
+        if (filteredCustom.length > 0) {
+          const customCard = document.createElement('div');
+          customCard.className = 'tpl-card';
+          customCard.innerHTML = `
+            <div class="tpl-card-header">
+              <div class="tpl-card-title">⭐ Ваши добавленные шаблоны</div>
+              <span class="tpl-badge" style="background:rgba(6,182,212,0.15); color:#67e8f9; border-color:rgba(6,182,212,0.3);">${filteredCustom.length} шт.</span>
+            </div>
+          `;
+          filteredCustom.forEach((item) => {
+            customCard.appendChild(renderSingleTemplateRow(item));
+          });
+          tplListEl.appendChild(customCard);
+        }
+
+        if (filteredBuiltins.length === 0 && filteredCustom.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.textContent = 'В этой вкладке нет шаблонов. Переключитесь на «Все» или добавьте свой шаблон ниже.';
+          tplListEl.appendChild(empty);
+        }
+      }
+
+      // ==========================================
+      // MULTI-ACCOUNT SWITCHER & STATS
+      // ==========================================
+      function renderAccountsBar() {
+        if (!accountsTabsEl) return;
+        accountsTabsEl.innerHTML = '';
+
+        const activeAccId = state.activeAccountId || 'all';
+
+        // 1. "All Accounts" Tab
+        const allTab = document.createElement('button');
+        allTab.type = 'button';
+        allTab.className = `acc-tab ${activeAccId === 'all' ? 'active' : ''}`;
+        allTab.innerHTML = `
+          <span>🌐 Все аккаунты</span>
+          <span class="acc-tab-badge">${state.clients.length}</span>
+        `;
+        allTab.addEventListener('click', () => {
+          state.activeAccountId = 'all';
+          saveState(true);
+          renderAccountsBar();
+          renderStats();
+          renderClientsTable();
+        });
+        accountsTabsEl.appendChild(allTab);
+
+        // 2. Individual Account Tabs
+        state.accounts.forEach((acc) => {
+          const accClients = state.clients.filter((c) => (c.accountId || state.accounts[0].id) === acc.id);
+          const maxS = Number(acc.maxSlots) || 25;
+          const isFull = accClients.length >= maxS;
+
+          const tab = document.createElement('button');
+          tab.type = 'button';
+          tab.className = `acc-tab ${activeAccId === acc.id ? 'active' : ''} ${isFull ? 'is-full' : ''}`;
+          tab.innerHTML = `
+            <span>🎮 ${escapeHtml(acc.name)}</span>
+            <span class="acc-tab-badge">${accClients.length}/${maxS}</span>
+          `;
+          tab.addEventListener('click', () => {
+            state.activeAccountId = acc.id;
+            saveState(true);
+            renderAccountsBar();
+            renderStats();
+            renderClientsTable();
+            if (addAccountSelect) addAccountSelect.value = acc.id;
+          });
+          accountsTabsEl.appendChild(tab);
+        });
+
+        // 3. Right Info Pills
+        if (activeAccountPillsEl) {
+          activeAccountPillsEl.innerHTML = '';
+          if (activeAccId === 'all') {
+            const totalEarned = state.clients.reduce((s, c) => s + (Number(c.amount) || 0), 0);
+            const totalCost = state.accounts.reduce((s, a) => s + (Number(a.cost) || 8198), 0);
+            const totalMaxSlots = state.accounts.reduce((s, a) => s + (Number(a.maxSlots) || 25), 0);
+            const overallPct = totalCost > 0 ? Math.min(100, Math.round((totalEarned / totalCost) * 100)) : 0;
+
+            activeAccountPillsEl.innerHTML = `
+              <span class="acc-meta-pill">👥 Всего клиентов: <strong>${state.clients.length} / ${totalMaxSlots}</strong></span>
+              <span class="acc-meta-pill">💰 Общий доход: <strong>${formatRub(totalEarned)}</strong></span>
+              <span class="acc-meta-pill">📊 Окупаемость: <strong>${overallPct}%</strong> (из ${formatRub(totalCost)})</span>
+            `;
+          } else {
+            const acc = getActiveAccount();
+            const accClients = state.clients.filter((c) => (c.accountId || state.accounts[0].id) === acc.id);
+            const accEarned = accClients.reduce((s, c) => s + (Number(c.amount) || 0), 0);
+            const accCost = Number(acc.cost) || 8198;
+            const paybackPct = accCost > 0 ? Math.min(100, Math.round((accEarned / accCost) * 100)) : 0;
+
+            activeAccountPillsEl.innerHTML = `
+              <span class="acc-meta-pill">📧 <strong>${escapeHtml(acc.email)}</strong></span>
+              <span class="acc-meta-pill">🏷️ <strong>${escapeHtml(acc.gamertag || '—')}</strong></span>
+              <span class="acc-meta-pill">💰 <strong>${formatRub(accEarned)}</strong> (${paybackPct}%)</span>
+              <button type="button" class="btn-sm" id="btnEditActiveAccount" title="Изменить настройки этого профиля" style="padding:4px 9px; font-size:11.5px;">⚙️ Профиль</button>
+            `;
+
+            const btnEdit = activeAccountPillsEl.querySelector('#btnEditActiveAccount');
+            if (btnEdit) {
+              btnEdit.addEventListener('click', () => openAccountModal(acc));
+            }
+          }
+        }
+
+        // 4. Update Quick Add Dropdown
+        if (addAccountSelect) {
+          const curVal = addAccountSelect.value;
+          addAccountSelect.innerHTML = '';
+          state.accounts.forEach((acc) => {
+            const accClients = state.clients.filter((c) => (c.accountId || state.accounts[0].id) === acc.id);
+            const opt = document.createElement('option');
+            opt.value = acc.id;
+            opt.textContent = `${acc.name} (${accClients.length}/${acc.maxSlots || 25})`;
+            addAccountSelect.appendChild(opt);
+          });
+          if (activeAccId !== 'all') {
+            addAccountSelect.value = activeAccId;
+          } else if (curVal && state.accounts.some((a) => a.id === curVal)) {
+            addAccountSelect.value = curVal;
+          } else {
+            addAccountSelect.value = state.accounts[0].id;
+          }
+        }
+      }
+
+      function openAccountModal(accToEdit) {
+        if (!accountModal) return;
+        if (accToEdit) {
+          accountModalTitle.textContent = `⚙️ Настройка профиля: ${accToEdit.name}`;
+          accModalId.value = accToEdit.id;
+          accModalName.value = accToEdit.name || '';
+          accModalEmail.value = accToEdit.email || '';
+          accModalGamertag.value = accToEdit.gamertag || '';
+          accModalCost.value = accToEdit.cost || 8198;
+          accModalSlots.value = accToEdit.maxSlots || 25;
+          btnDeleteAccount.style.display = state.accounts.length > 1 ? 'inline-flex' : 'none';
+        } else {
+          accountModalTitle.textContent = '➕ Новый профиль Xbox';
+          accModalId.value = '';
+          accModalName.value = `Профиль #${state.accounts.length + 1}`;
+          accModalEmail.value = '';
+          accModalGamertag.value = '';
+          accModalCost.value = 8198;
+          accModalSlots.value = 25;
+          btnDeleteAccount.style.display = 'none';
+        }
+        accountModal.classList.add('open');
+        accountModal.setAttribute('aria-hidden', 'false');
+        accModalName.focus();
+      }
+
+      function closeAccountModal() {
+        if (!accountModal) return;
+        accountModal.classList.remove('open');
+        accountModal.setAttribute('aria-hidden', 'true');
+      }
+
+      if (btnAddAccount) {
+        btnAddAccount.addEventListener('click', () => openAccountModal(null));
+      }
+      document.querySelectorAll('.js-close-account-modal').forEach((btn) => {
+        btn.addEventListener('click', closeAccountModal);
+      });
+      if (accountModal) {
+        accountModal.addEventListener('click', (e) => {
+          if (e.target === accountModal) closeAccountModal();
+        });
+      }
+
+      if (btnSaveAccount) {
+        btnSaveAccount.addEventListener('click', () => {
+          const name = accModalName.value.trim();
+          const email = accModalEmail.value.trim();
+          if (!name || !email) {
+            showToast('Укажите название профиля и почту', 'warn');
+            return;
+          }
+          const id = accModalId.value;
+          const gamertag = accModalGamertag.value.trim();
+          const cost = Math.max(0, Number(accModalCost.value) || 8198);
+          const maxSlots = Math.max(1, Math.min(100, Number(accModalSlots.value) || 25));
+
+          if (id) {
+            const acc = state.accounts.find((a) => a.id === id);
+            if (acc) {
+              acc.name = name;
+              acc.email = email;
+              acc.gamertag = gamertag;
+              acc.cost = cost;
+              acc.maxSlots = maxSlots;
+            }
+          } else {
+            const newAcc = {
+              id: 'acc_' + Date.now(),
+              name,
+              email,
+              gamertag,
+              cost,
+              maxSlots
+            };
+            state.accounts.push(newAcc);
+            state.activeAccountId = newAcc.id;
+          }
+          closeAccountModal();
+          saveState();
+          renderAccountsBar();
+          renderAllData();
+          showToast(`Профиль "${name}" сохранён`);
+        });
+      }
+
+      if (btnDeleteAccount) {
+        btnDeleteAccount.addEventListener('click', () => {
+          const id = accModalId.value;
+          if (state.accounts.length <= 1) {
+            showToast('Нельзя удалить единственный профиль!', 'warn');
+            return;
+          }
+          const acc = state.accounts.find((a) => a.id === id);
+          if (!acc) return;
+          const clientsInAcc = state.clients.filter((c) => (c.accountId || state.accounts[0].id) === id);
+          const msg = clientsInAcc.length > 0
+            ? `Удалить профиль "${acc.name}"? ${clientsInAcc.length} клиентов будут перенесены в основной профиль.`
+            : `Удалить профиль "${acc.name}"?`;
+
+          if (confirm(msg)) {
+            const fallbackAccId = state.accounts.find((a) => a.id !== id).id;
+            state.clients.forEach((c) => {
+              if ((c.accountId || state.accounts[0].id) === id) {
+                c.accountId = fallbackAccId;
+              }
+            });
+            state.accounts = state.accounts.filter((a) => a.id !== id);
+            state.activeAccountId = 'all';
+            closeAccountModal();
+            saveState();
+            renderAccountsBar();
+            renderAllData();
+            showToast(`Профиль "${acc.name}" удалён`);
+          }
+        });
+      }
+
+      function renderStats() {
+        const isAll = (state.activeAccountId || 'all') === 'all';
+        const targetClients = isAll
+          ? state.clients
+          : state.clients.filter((c) => (c.accountId || state.accounts[0].id) === state.activeAccountId);
+
+        const totalSlots = targetClients.length;
+        const activeAcc = !isAll ? getActiveAccount() : null;
+        const maxSlots = isAll
+          ? state.accounts.reduce((s, a) => s + (Number(a.maxSlots) || 25), 0)
+          : Number(activeAcc.maxSlots) || 25;
+        const gameCost = isAll
+          ? state.accounts.reduce((s, a) => s + (Number(a.cost) || 8198), 0)
+          : Number(activeAcc.cost) || 8198;
+
+        const pctSlots = Math.min(100, Math.round((totalSlots / maxSlots) * 100));
+        slotsCounterEl.textContent = isAll
+          ? `Занято слотов: ${totalSlots} / ${maxSlots} (все профили)`
+          : `Занято слотов: ${totalSlots} / ${maxSlots} (${activeAcc.name})`;
+        slotsPercentLabelEl.textContent = `${pctSlots}% (свободно ${Math.max(0, maxSlots - totalSlots)})`;
+        slotsProgressBarEl.style.width = `${pctSlots}%`;
+
+        if (totalSlots >= maxSlots) {
+          slotsProgressBarEl.style.background = 'linear-gradient(90deg, #ef4444, #ec4899)';
+        } else if (totalSlots >= Math.max(1, maxSlots - 5)) {
+          slotsProgressBarEl.style.background = 'linear-gradient(90deg, #f59e0b, #ef4444)';
+        } else {
+          slotsProgressBarEl.style.background = 'linear-gradient(90deg, #22c55e, #06b6d4)';
+        }
+
+        const counts = { waiting: 0, downloading: 0, done: 0, review: 0 };
+        let totalEarned = 0;
+        let confirmedEarned = 0;
+        targetClients.forEach((c) => {
+          if (counts[c.status] !== undefined) counts[c.status]++;
+          const amt = Number(c.amount) || 0;
+          totalEarned += amt;
+          if (c.status === 'done' || c.status === 'review') {
+            confirmedEarned += amt;
+          }
+        });
+
+        statusBreakdownEl.innerHTML = `
+          <span class="mini-pill">🟡 Ждут: ${counts.waiting}</span>
+          <span class="mini-pill">🔵 Качают: ${counts.downloading}</span>
+          <span class="mini-pill">🟢 Завершены: ${counts.done}</span>
+          <span class="mini-pill">⭐ Отзывы: ${counts.review}</span>
+        `;
+
+        totalEarnedValueEl.textContent = isAll
+          ? `Всего заработано: ${formatRub(totalEarned)}`
+          : `Заработано с профиля: ${formatRub(totalEarned)}`;
+
+        const pctPayback = gameCost > 0 ? Math.min(100, Math.round((totalEarned / gameCost) * 100)) : 100;
+        paybackPercentLabelEl.textContent = `${pctPayback}% от ${gameCost.toLocaleString('ru-RU')} ₽`;
+        paybackProgressBarEl.style.width = `${pctPayback}%`;
+
+        if (totalEarned >= gameCost) {
+          const netProfit = totalEarned - gameCost;
+          paybackProgressBarEl.style.background = 'linear-gradient(90deg, #22c55e, #4ade80)';
+          paybackSubTextEl.innerHTML = `
+            <span class="stat-profit">✅ Игра окупилась! Чистая прибыль: +${formatRub(netProfit)}</span>
+            <span style="font-size:11px; color:var(--text-muted);">Закрытых (🟢/⭐): ${formatRub(confirmedEarned)}</span>
+          `;
+        } else {
+          const remaining = gameCost - totalEarned;
+          paybackProgressBarEl.style.background = 'linear-gradient(90deg, #06b6d4, #a855f7)';
+          paybackSubTextEl.innerHTML = `
+            <span class="stat-remain">Окупаемость (из ${formatRub(gameCost)}): осталось ${formatRub(remaining)}</span>
+            <span style="font-size:11px; color:var(--text-muted);">Закрытых (🟢/⭐): ${formatRub(confirmedEarned)}</span>
+          `;
+        }
+      }
+
+      // Web Audio API Sound Alert
+      function initAudio() {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return null;
+        if (!audioCtx) {
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(() => {});
+        }
+        return audioCtx;
+      }
+
+      function playAlarmChime() {
+        const ctx = initAudio();
+        if (!ctx) return;
+
+        const now = ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+
+        [0, 0.55].forEach((offset) => {
+          notes.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + offset + idx * 0.11);
+
+            gain.gain.setValueAtTime(0.001, now + offset + idx * 0.11);
+            gain.gain.exponentialRampToValueAtTime(0.26, now + offset + idx * 0.11 + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + idx * 0.11 + 0.42);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + offset + idx * 0.11);
+            osc.stop(now + offset + idx * 0.11 + 0.45);
+          });
+        });
+      }
+
+      // Safety 20:00 Timer Logic
+      function formatMMSS(totalSec) {
+        const s = Math.max(0, Math.ceil(totalSec));
+        const m = Math.floor(s / 60);
+        const rem = s % 60;
+        return `${String(m).padStart(2, '0')}:${String(rem).padStart(2, '0')}`;
+      }
+
+      function updateTimerUI() {
+        const t = state.timer;
+        let remSec = TIMER_DURATION_SEC;
+
+        if (t.status === 'running' && t.endTime) {
+          remSec = Math.max(0, Math.ceil((t.endTime - Date.now()) / 1000));
+          if (remSec <= 0) {
+            t.status = 'done';
+            t.endTime = null;
+            t.remainingSec = 0;
+            saveState();
+            stopTimerLoop();
+            playAlarmChime();
+            showToast('20 минут прошли! Линия свободна — можно впускать следующего!');
+          }
+        } else if (t.status === 'paused') {
+          remSec = Math.max(0, t.remainingSec || 0);
+        } else if (t.status === 'done') {
+          remSec = 0;
+        } else {
+          remSec = TIMER_DURATION_SEC;
+        }
+
+        const timeText = formatMMSS(remSec);
+        timerDisplayEl.textContent = timeText;
+        timerCardEl.classList.remove('state-running', 'state-done');
+        timerDisplayEl.classList.remove('free', 'wait');
+
+        if (t.status === 'running') {
+          timerCardEl.classList.add('state-running');
+          timerDisplayEl.classList.add('wait');
+          timerBannerEl.className = 'timer-status-banner banner-wait';
+          timerBannerEl.textContent = '🔴 ПАУЗА БЕЗОПАСНОСТИ — ПОДОЖДИТЕ, НЕ ВПУСКАЙТЕ СЛЕДУЮЩЕГО!';
+          timerSubHintEl.textContent = 'Обратный отсчёт активен (звуковой сигнал на 00:00)';
+          btnPauseTimer.style.display = 'inline-flex';
+          btnPauseTimer.textContent = '⏸ Пауза';
+          const pct = Math.max(0, Math.min(100, (remSec / TIMER_DURATION_SEC) * 100));
+          timerProgressBarEl.style.width = `${pct}%`;
+          timerProgressBarEl.style.background = 'linear-gradient(90deg, #ef4444, #f59e0b)';
+        } else if (t.status === 'paused') {
+          timerBannerEl.className = 'timer-status-banner banner-paused';
+          timerBannerEl.textContent = '⏸ ТАЙМЕР НА ПАУЗЕ';
+          timerSubHintEl.textContent = 'Нажмите «Продолжить», когда клиент продолжит вход';
+          btnPauseTimer.style.display = 'inline-flex';
+          btnPauseTimer.textContent = '▶ Продолжить';
+          const pct = Math.max(0, Math.min(100, (remSec / TIMER_DURATION_SEC) * 100));
+          timerProgressBarEl.style.width = `${pct}%`;
+          timerProgressBarEl.style.background = '#f59e0b';
+        } else if (t.status === 'done') {
+          timerCardEl.classList.add('state-done');
+          timerDisplayEl.classList.add('free');
+          timerBannerEl.className = 'timer-status-banner banner-free';
+          timerBannerEl.textContent = '🟢 ЛИНИЯ СВОБОДНА — МОЖНО ВПУСКАТЬ СЛЕДУЮЩЕГО!';
+          timerSubHintEl.textContent = '20 минут ожидания истекли — профиль готов к следующему логину';
+          btnPauseTimer.style.display = 'none';
+          timerProgressBarEl.style.width = '100%';
+          timerProgressBarEl.style.background = '#22c55e';
+        } else {
+          timerBannerEl.className = 'timer-status-banner banner-idle';
+          timerBannerEl.textContent = '⚪ ТАЙМЕР ГОТОВ К ЗАПУСКУ';
+          timerSubHintEl.textContent = 'Нажмите кнопку ниже, когда клиент ввел 8-значный код';
+          btnPauseTimer.style.display = 'none';
+          timerProgressBarEl.style.width = '0%';
+        }
+      }
+
+      function startTimerLoop() {
+        stopTimerLoop();
+        timerIntervalId = setInterval(updateTimerUI, 500);
+      }
+
+      function stopTimerLoop() {
+        if (timerIntervalId) {
+          clearInterval(timerIntervalId);
+          timerIntervalId = null;
+        }
+      }
+
+      btnStartTimer.addEventListener('click', () => {
+        initAudio();
+        state.timer = {
+          status: 'running',
+          endTime: Date.now() + TIMER_DURATION_SEC * 1000,
+          remainingSec: TIMER_DURATION_SEC
+        };
+        saveState();
+        updateTimerUI();
+        startTimerLoop();
+        showToast('Таймер 20 минут запущен!');
+      });
+
+      btnPauseTimer.addEventListener('click', () => {
+        const t = state.timer;
+        if (t.status === 'running') {
+          const rem = Math.max(0, Math.ceil((t.endTime - Date.now()) / 1000));
+          t.status = 'paused';
+          t.endTime = null;
+          t.remainingSec = rem;
+          stopTimerLoop();
+          showToast('Таймер приостановлен');
+        } else if (t.status === 'paused') {
+          t.status = 'running';
+          t.endTime = Date.now() + (t.remainingSec || TIMER_DURATION_SEC) * 1000;
+          startTimerLoop();
+          showToast('Таймер продолжен');
+        }
+        saveState();
+        updateTimerUI();
+      });
+
+      btnResetTimer.addEventListener('click', () => {
+        stopTimerLoop();
+        state.timer = { status: 'idle', endTime: null, remainingSec: TIMER_DURATION_SEC };
+        saveState();
+        updateTimerUI();
+        showToast('Таймер сброшен');
+      });
+
+      btnTestSound.addEventListener('click', () => {
+        initAudio();
+        playAlarmChime();
+        showToast('Звуковой тест колокольчика');
+      });
+
+      // Render Clients Table
+      function renderClientsTable() {
+        const q = searchQuery.trim().toLowerCase();
+        const activeAccId = state.activeAccountId || 'all';
+
+        const filtered = state.clients.filter((c) => {
+          if (activeAccId !== 'all' && (c.accountId || state.accounts[0].id) !== activeAccId) {
+            return false;
+          }
+          if (activeFilter !== 'all' && c.status !== activeFilter) return false;
+          if (q) {
+            const hay = `${c.name} ${c.platform} ${c.comment || ''} ${c.url || ''}`.toLowerCase();
+            if (!hay.includes(q)) return false;
+          }
+          return true;
+        });
+
+        clientsTableBodyEl.innerHTML = '';
+
+        if (filtered.length === 0) {
+          const tr = document.createElement('tr');
+          const emptyMsg = activeAccId !== 'all'
+            ? 'В этом профиле пока нет клиентов (добавьте нового выше или переключите профиль).'
+            : 'Клиенты не найдены (измените фильтр или добавьте клиента выше).';
+          tr.innerHTML = `<td colspan="5" class="empty-state">${emptyMsg}</td>`;
+          clientsTableBodyEl.appendChild(tr);
+          return;
+        }
+
+        filtered.forEach((client) => {
+          const slotIndex = state.clients.findIndex((x) => x.id === client.id) + 1;
+          const tr = document.createElement('tr');
+          const clientAcc = state.accounts.find((a) => a.id === (client.accountId || state.accounts[0].id)) || state.accounts[0];
+
+          if (editingClientId === client.id) {
+            tr.innerHTML = `
+              <td class="slot-num">#${slotIndex}</td>
+              <td colspan="3">
+                <div class="edit-row-grid">
+                  <input type="text" class="input js-edit-name" value="${escapeHtml(client.name)}" placeholder="Имя / Ник" />
+                  <select class="select-input js-edit-platform">
+                    <option value="Авито" ${client.platform === 'Авито' ? 'selected' : ''}>Авито</option>
+                    <option value="FunPay" ${client.platform === 'FunPay' ? 'selected' : ''}>FunPay</option>
+                    <option value="Playerok" ${client.platform === 'Playerok' ? 'selected' : ''}>Playerok</option>
+                    <option value="Telegram" ${client.platform === 'Telegram' ? 'selected' : ''}>Telegram</option>
+                  </select>
+                  <select class="select-input js-edit-account">
+                    ${state.accounts.map((a) => `<option value="${a.id}" ${(client.accountId || state.accounts[0].id) === a.id ? 'selected' : ''}>🎮 ${escapeHtml(a.name)}</option>`).join('')}
+                  </select>
+                  <input type="number" class="input js-edit-amount" value="${Number(client.amount) || 0}" min="0" step="1" placeholder="₽" />
+                </div>
+                <div class="edit-row-sub">
+                  <input type="text" class="input js-edit-comment" value="${escapeHtml(client.comment || '')}" placeholder="Время очереди / Консоль / Комментарий" />
+                  <input type="text" class="input js-edit-url" value="${escapeHtml(client.url || '')}" placeholder="Ссылка на профиль / чат (URL)" />
+                </div>
+              </td>
+              <td>
+                <div class="row-actions">
+                  <button type="button" class="icon-btn js-save-edit" title="Сохранить" style="border-color:var(--green); color:#86efac;">✓</button>
+                  <button type="button" class="icon-btn js-cancel-edit" title="Отмена">✕</button>
+                </div>
+              </td>
+            `;
+
+            const saveEdit = () => {
+              const nameVal = tr.querySelector('.js-edit-name').value.trim();
+              if (!nameVal) {
+                showToast('Укажите имя клиента', 'warn');
+                return;
+              }
+              client.name = nameVal;
+              client.platform = tr.querySelector('.js-edit-platform').value;
+              client.accountId = tr.querySelector('.js-edit-account').value;
+              client.amount = Math.max(0, Number(tr.querySelector('.js-edit-amount').value) || 0);
+              client.comment = tr.querySelector('.js-edit-comment').value.trim();
+              client.url = normalizeSafeUrl(tr.querySelector('.js-edit-url').value);
+              editingClientId = null;
+              saveState();
+              renderAllData();
+              renderAccountsBar();
+              showToast('Запись клиента обновлена');
+            };
+
+            tr.querySelector('.js-save-edit').addEventListener('click', saveEdit);
+            tr.querySelector('.js-cancel-edit').addEventListener('click', () => {
+              editingClientId = null;
+              renderClientsTable();
+            });
+            tr.querySelectorAll('input').forEach((inp) => {
+              inp.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  saveEdit();
+                } else if (e.key === 'Escape') {
+                  editingClientId = null;
+                  renderClientsTable();
+                }
+              });
+            });
+          } else {
+            const amt = Number(client.amount) || 0;
+            const safeUrl = normalizeSafeUrl(client.url);
+            const accTagHtml = activeAccId === 'all'
+              ? `<span class="acc-tag" title="Профиль: ${escapeHtml(clientAcc.name)}">🎮 ${escapeHtml(clientAcc.name)}</span>`
+              : '';
+
+            tr.innerHTML = `
+              <td class="slot-num">#${slotIndex}</td>
+              <td>
+                <div class="client-name">
+                  <span>${escapeHtml(client.name)}</span>
+                  <span class="platform-badge plat-${escapeHtml(client.platform)}">${escapeHtml(client.platform)}</span>
+                  ${accTagHtml}
+                  ${safeUrl ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" class="chat-link-btn" title="${escapeHtml(safeUrl)}">🔗 Чат / Профиль</a>` : ''}
+                </div>
+                ${client.comment ? `<div class="client-comment">${escapeHtml(client.comment)}</div>` : ''}
+              </td>
+              <td class="amount-cell ${amt === 0 ? 'zero' : ''}">${amt > 0 ? formatRub(amt) : '0 ₽'}</td>
+              <td>
+                <div class="status-switcher">
+                  ${Object.entries(STATUS_META).map(([stKey, meta]) => `
+                    <button type="button"
+                            class="st-btn ${client.status === stKey ? 'active' : ''}"
+                            data-st="${stKey}"
+                            title="${meta.full}">
+                      <span>${meta.icon}</span><span>${meta.short}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </td>
+              <td>
+                <div class="row-actions">
+                  <button type="button" class="icon-btn js-edit-client" title="Редактировать">✏️</button>
+                  <button type="button" class="icon-btn del js-del-client" title="Удалить клиента">🗑️</button>
+                </div>
+              </td>
+            `;
+
+            tr.querySelectorAll('.st-btn').forEach((btn) => {
+              btn.addEventListener('click', () => {
+                client.status = btn.dataset.st;
+                saveState();
+                renderAllData();
+                renderAccountsBar();
+              });
+            });
+
+            tr.querySelector('.js-edit-client').addEventListener('click', () => {
+              editingClientId = client.id;
+              renderClientsTable();
+            });
+
+            tr.querySelector('.js-del-client').addEventListener('click', () => {
+              if (confirm(`Удалить клиента "${client.name}" из базы?`)) {
+                state.clients = state.clients.filter((x) => x.id !== client.id);
+                saveState();
+                renderAllData();
+                renderAccountsBar();
+                showToast('Клиент удалён');
+              }
+            });
+          }
+
+          clientsTableBodyEl.appendChild(tr);
+        });
+      }
+
+      function updateBookingsCounters() {
+        const count = state.bookings.length;
+        document.querySelectorAll('.js-bookings-count').forEach((el) => {
+          el.textContent = String(count);
+        });
+      }
+
+      function renderBookings() {
+        updateBookingsCounters();
+        bookingsListEl.innerHTML = '';
+
+        if (state.bookings.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.style.padding = '18px 12px';
+          empty.textContent = 'Список бронирований пока пуст. Добавьте первого клиента по времени выше!';
+          bookingsListEl.appendChild(empty);
+          return;
+        }
+
+        state.bookings.forEach((bk) => {
+          const item = document.createElement('div');
+          item.className = `booking-item st-${bk.status || 'waiting_time'}`;
+          const safeUrl = normalizeSafeUrl(bk.url);
+
+          item.innerHTML = `
+            <div class="booking-inline-top">
+              <input type="text" class="inline-input time-input js-bk-time" value="${escapeHtml(bk.time || '')}" placeholder="Время / Дата" title="Время / Дата" />
+              <input type="text" class="inline-input js-bk-name" value="${escapeHtml(bk.name || '')}" placeholder="Имя клиента" title="Имя клиента" style="font-weight:700;" />
+              <select class="select-input js-bk-platform" style="padding:5px 7px; font-size:12.5px;">
+                <option value="Авито" ${bk.platform === 'Авито' ? 'selected' : ''}>Авито</option>
+                <option value="FunPay" ${bk.platform === 'FunPay' ? 'selected' : ''}>FunPay</option>
+                <option value="Playerok" ${bk.platform === 'Playerok' ? 'selected' : ''}>Playerok</option>
+                <option value="Telegram" ${bk.platform === 'Telegram' ? 'selected' : ''}>Telegram</option>
+              </select>
+              <input type="number" class="inline-input js-bk-amount" value="${Number(bk.amount) || 0}" min="0" step="1" placeholder="₽" title="Сумма в ₽" style="font-family:var(--font-mono);" />
+              <div class="booking-status-pills">
+                ${Object.entries(BOOKING_STATUS_META).map(([stKey, meta]) => `
+                  <button type="button" class="bk-st-btn ${bk.status === stKey ? 'active' : ''}" data-bkst="${stKey}">
+                    ${meta.label}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="booking-inline-bottom">
+              <div style="display:flex; gap:6px; align-items:center;">
+                <input type="text" class="inline-input js-bk-url" value="${escapeHtml(bk.url || '')}" placeholder="Ссылка на чат (URL)" />
+                <a href="${escapeHtml(safeUrl || '#')}" target="_blank" rel="noopener noreferrer" class="chat-link-btn js-bk-open-url" style="${safeUrl ? '' : 'display:none;'} padding:5px 9px; white-space:nowrap;">🔗 Чат</a>
+              </div>
+              <input type="text" class="inline-input js-bk-note" value="${escapeHtml(bk.note || '')}" placeholder="Заметка..." />
+              <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end;">
+                <button type="button" class="btn-transfer js-bk-transfer">➡ Перенести в клиенты</button>
+                <button type="button" class="icon-btn del js-bk-delete" title="Удалить бронь">🗑️</button>
+              </div>
+            </div>
+          `;
+
+          // Inline auto-save handlers
+          item.querySelector('.js-bk-time').addEventListener('input', (e) => {
+            bk.time = e.target.value;
+            saveState();
+          });
+          item.querySelector('.js-bk-name').addEventListener('input', (e) => {
+            bk.name = e.target.value;
+            saveState();
+          });
+          item.querySelector('.js-bk-platform').addEventListener('change', (e) => {
+            bk.platform = e.target.value;
+            saveState();
+          });
+          item.querySelector('.js-bk-amount').addEventListener('input', (e) => {
+            bk.amount = Math.max(0, Number(e.target.value) || 0);
+            saveState();
+          });
+          item.querySelector('.js-bk-note').addEventListener('input', (e) => {
+            bk.note = e.target.value;
+            saveState();
+          });
+
+          const urlInput = item.querySelector('.js-bk-url');
+          const urlOpenBtn = item.querySelector('.js-bk-open-url');
+          urlInput.addEventListener('input', (e) => {
+            bk.url = e.target.value.trim();
+            const normalized = normalizeSafeUrl(bk.url);
+            if (normalized) {
+              urlOpenBtn.href = normalized;
+              urlOpenBtn.style.display = 'inline-flex';
+            } else {
+              urlOpenBtn.style.display = 'none';
+            }
+            saveState();
+          });
+
+          item.querySelectorAll('.bk-st-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              bk.status = btn.dataset.bkst;
+              saveState();
+              renderBookings();
+            });
+          });
+
+          item.querySelector('.js-bk-transfer').addEventListener('click', () => {
+            const clientName = (bk.name || '').trim() || 'Клиент из брони';
+            const timePart = (bk.time || '').trim();
+            const notePart = (bk.note || '').trim();
+            const combinedComment = [timePart ? `Бронь: ${timePart}` : '', notePart].filter(Boolean).join(' · ');
+            const targetAccId = state.activeAccountId !== 'all' ? state.activeAccountId : state.accounts[0].id;
+
+            const newClient = {
+              id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+              name: clientName,
+              platform: bk.platform || 'Авито',
+              accountId: targetAccId,
+              amount: Math.max(0, Number(bk.amount) || 0),
+              comment: combinedComment,
+              url: normalizeSafeUrl(bk.url),
+              status: 'waiting',
+              createdAt: Date.now()
+            };
+
+            state.clients.push(newClient);
+            state.bookings = state.bookings.filter((x) => x.id !== bk.id);
+            saveState();
+            renderAllData();
+            renderAccountsBar();
+            renderBookings();
+            showToast(`"${clientName}" перенесён в основную таблицу клиентов!`);
+          });
+
+          item.querySelector('.js-bk-delete').addEventListener('click', () => {
+            if (confirm(`Удалить бронь "${bk.name || bk.time}"?`)) {
+              state.bookings = state.bookings.filter((x) => x.id !== bk.id);
+              saveState();
+              renderBookings();
+              showToast('Бронь удалена');
+            }
+          });
+
+          bookingsListEl.appendChild(item);
+        });
+      }
+
+      function openBookingsModal() {
+        bookingsModalEl.classList.add('open');
+        bookingsModalEl.setAttribute('aria-hidden', 'false');
+        bookingNotesTextareaEl.value = state.bookingNotes || '';
+        renderBookings();
+      }
+
+      function closeBookingsModal() {
+        bookingsModalEl.classList.remove('open');
+        bookingsModalEl.setAttribute('aria-hidden', 'true');
+      }
+
+      document.querySelectorAll('.js-open-bookings').forEach((btn) => {
+        btn.addEventListener('click', openBookingsModal);
+      });
+
+      document.getElementById('btnCloseBookings').addEventListener('click', closeBookingsModal);
+
+      bookingsModalEl.addEventListener('click', (e) => {
+        if (e.target === bookingsModalEl) {
+          closeBookingsModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && bookingsModalEl.classList.contains('open')) {
+          closeBookingsModal();
+        }
+      });
+
+      bookingAddForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const time = bkTimeEl.value.trim();
+        const name = bkNameEl.value.trim();
+        if (!time || !name) {
+          showToast('Укажите время и имя клиента', 'warn');
+          return;
+        }
+        const newBk = {
+          id: 'bk_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          time,
+          name,
+          platform: bkPlatformEl.value,
+          amount: Math.max(0, Number(bkAmountEl.value) || 0),
+          url: bkUrlEl.value.trim(),
+          note: bkNoteEl.value.trim(),
+          status: bkStatusEl.value,
+          createdAt: Date.now()
+        };
+        state.bookings.push(newBk);
+        saveState();
+        renderBookings();
+
+        bkTimeEl.value = '';
+        bkNameEl.value = '';
+        bkAmountEl.value = '';
+        bkUrlEl.value = '';
+        bkNoteEl.value = '';
+        bkTimeEl.focus();
+        showToast(`Бронь добавлена: ${time} — ${name}`);
+      });
+
+      bookingNotesTextareaEl.addEventListener('input', () => {
+        state.bookingNotes = bookingNotesTextareaEl.value;
+        saveState();
+      });
+
+      function renderAllData() {
+        renderStats();
+        renderClientsTable();
+        updateBookingsCounters();
+      }
+
+      // Wire SBP inputs
+      sbpPhoneEl.value = state.sbpPhone;
+      sbpBankEl.value = state.sbpBank;
+
+      sbpPhoneEl.addEventListener('input', () => {
+        state.sbpPhone = sbpPhoneEl.value;
+        saveState();
+      });
+
+      sbpBankEl.addEventListener('input', () => {
+        state.sbpBank = sbpBankEl.value;
+        saveState();
+      });
+
+      // Wire Quick Add Form
+      document.querySelectorAll('[data-fill-amount]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          addAmountEl.value = btn.dataset.fillAmount;
+          addAmountEl.focus();
+        });
+      });
+
+      document.querySelectorAll('#addPlatformGroup .seg-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#addPlatformGroup .seg-pill').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedAddPlatform = btn.dataset.platform;
+        });
+      });
+
+      document.querySelectorAll('#addStatusGroup .seg-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#addStatusGroup .seg-pill').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedAddStatus = btn.dataset.status;
+        });
+      });
+
+      quickAddForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = addNameEl.value.trim();
+        if (!name) {
+          addNameEl.focus();
+          return;
+        }
+        const amount = Math.max(0, Number(addAmountEl.value) || 0);
+        const comment = addCommentEl.value.trim();
+        const url = normalizeSafeUrl(addUrlEl.value);
+        const accountId = (addAccountSelect && addAccountSelect.value)
+          || (state.activeAccountId !== 'all' ? state.activeAccountId : state.accounts[0].id);
+
+        const newClient = {
+          id: 'c_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          name,
+          platform: selectedAddPlatform,
+          accountId,
+          amount,
+          comment,
+          url,
+          status: selectedAddStatus,
+          createdAt: Date.now()
+        };
+
+        state.clients.push(newClient);
+        saveState();
+        renderAllData();
+        renderAccountsBar();
+
+        addNameEl.value = '';
+        addAmountEl.value = '';
+        addCommentEl.value = '';
+        addUrlEl.value = '';
+        addNameEl.focus();
+        showToast(`Добавлен клиент: ${name}`);
+      });
+
+      // Wire Filters & Search
+      document.querySelectorAll('#filterPills .filter-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#filterPills .filter-pill').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.dataset.filter;
+          renderClientsTable();
+        });
+      });
+
+      clientSearchEl.addEventListener('input', () => {
+        searchQuery = clientSearchEl.value;
+        renderClientsTable();
+      });
+
+      // ==========================================
+      // CLOUD AUTO-SYNC ENGINE (KeyVal REST)
+      // ==========================================
+      function getSyncPayload() {
+        return {
+          updatedAt: state.updatedAt || Date.now(),
+          sbpPhone: state.sbpPhone || '',
+          sbpBank: state.sbpBank || '',
+          accounts: state.accounts,
+          clients: state.clients,
+          bookings: state.bookings,
+          bookingNotes: state.bookingNotes || '',
+          timer: state.timer
+        };
+      }
+
+      function setCloudStatus(type, label) {
+        if (!btnCloudSync || !cloudStatusLabel) return;
+        btnCloudSync.classList.remove('online', 'syncing', 'error');
+        if (type === 'online') {
+          btnCloudSync.classList.add('online');
+          cloudStatusLabel.textContent = label || 'Облако: Онлайн';
+        } else if (type === 'syncing') {
+          btnCloudSync.classList.add('syncing');
+          cloudStatusLabel.textContent = label || 'Облако: Синхронизация...';
+        } else if (type === 'error') {
+          btnCloudSync.classList.add('error');
+          cloudStatusLabel.textContent = label || 'Облако: Ошибка сети';
+        } else {
+          cloudStatusLabel.textContent = 'Облако: Автономно';
+        }
+      }
+
+      function scheduleCloudPush() {
+        if (!state.sync || !state.sync.enabled || !state.sync.key) return;
+        clearTimeout(pushDebounceTimer);
+        pushDebounceTimer = setTimeout(() => {
+          pushToCloud();
+        }, 900);
+      }
+
+      async function pushToCloud() {
+        if (!state.sync || !state.sync.enabled || !state.sync.key) return;
+        try {
+          setCloudStatus('syncing', 'Облако: Сохранение...');
+          const payload = getSyncPayload();
+          const encodedKey = encodeURIComponent(state.sync.key.trim());
+          const encodedVal = encodeURIComponent(JSON.stringify(payload));
+          const url = `https://api.keyval.org/set/${encodedKey}/${encodedVal}`;
+
+          const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (data && data.status === 'SUCCESS') {
+            state.sync.lastSyncTime = Date.now();
+            const timeStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            setCloudStatus('online', `Облако: Онлайн (${timeStr})`);
+          } else {
+            throw new Error('Sync fail');
+          }
+        } catch (err) {
+          console.warn('Cloud push error:', err);
+          setCloudStatus('error', 'Облако: Ошибка сети');
+        }
+      }
+
+      async function pullFromCloud(isManual) {
+        if (!state.sync || !state.sync.enabled || !state.sync.key) return;
+        try {
+          if (isManual) setCloudStatus('syncing', 'Облако: Загрузка...');
+          const encodedKey = encodeURIComponent(state.sync.key.trim());
+          const url = `https://api.keyval.org/get/${encodedKey}`;
+
+          const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          if (data && data.status === 'SUCCESS' && data.val) {
+            const remote = JSON.parse(data.val);
+            if (remote && remote.updatedAt && remote.updatedAt > (state.updatedAt || 0)) {
+              if (Array.isArray(remote.accounts) && remote.accounts.length > 0) state.accounts = remote.accounts;
+              if (Array.isArray(remote.clients)) state.clients = remote.clients;
+              if (Array.isArray(remote.bookings)) state.bookings = remote.bookings;
+              if (typeof remote.bookingNotes === 'string') state.bookingNotes = remote.bookingNotes;
+              if (typeof remote.sbpPhone === 'string') state.sbpPhone = remote.sbpPhone;
+              if (typeof remote.sbpBank === 'string') state.sbpBank = remote.sbpBank;
+              state.updatedAt = remote.updatedAt;
+
+              sbpPhoneEl.value = state.sbpPhone;
+              sbpBankEl.value = state.sbpBank;
+              bookingNotesTextareaEl.value = state.bookingNotes;
+
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+              renderAllData();
+              renderAccountsBar();
+              if (bookingsModalEl.classList.contains('open')) renderBookings();
+              showToast('🔄 Данные обновлены из облака!');
+            }
+            const timeStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            setCloudStatus('online', `Облако: Онлайн (${timeStr})`);
+          }
+        } catch (err) {
+          if (isManual) {
+            console.warn('Cloud pull error:', err);
+            setCloudStatus('error', 'Облако: Ошибка сети');
+            showToast('Не удалось подключиться к облаку (проверьте интернет)', 'warn');
+          }
+        }
+      }
+
+      function updatePhoneLinkUI(key) {
+        if (!syncPhoneLinkBox || !syncPhoneLinkInput) return;
+        if (key) {
+          const base = window.location.href.split('#')[0];
+          syncPhoneLinkInput.value = `${base}#sync=${encodeURIComponent(key)}`;
+          syncPhoneLinkBox.style.display = 'block';
+        } else {
+          syncPhoneLinkBox.style.display = 'none';
+        }
+      }
+
+      function openCloudModal() {
+        if (!cloudSyncModal) return;
+        syncKeyInput.value = (state.sync && state.sync.key) || '';
+        updatePhoneLinkUI(syncKeyInput.value.trim());
+        cloudSyncModal.classList.add('open');
+        cloudSyncModal.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeCloudModal() {
+        if (!cloudSyncModal) return;
+        cloudSyncModal.classList.remove('open');
+        cloudSyncModal.setAttribute('aria-hidden', 'true');
+      }
+
+      if (btnCloudSync) btnCloudSync.addEventListener('click', openCloudModal);
+      document.querySelectorAll('.js-close-cloud-modal').forEach((btn) => {
+        btn.addEventListener('click', closeCloudModal);
+      });
+      if (cloudSyncModal) {
+        cloudSyncModal.addEventListener('click', (e) => {
+          if (e.target === cloudSyncModal) closeCloudModal();
+        });
+      }
+
+      if (btnGenSyncKey) {
+        btnGenSyncKey.addEventListener('click', () => {
+          const randKey = 'gta6_vip_' + Math.random().toString(36).slice(2, 7) + Math.floor(Math.random() * 899 + 100);
+          syncKeyInput.value = randKey;
+          updatePhoneLinkUI(randKey);
+          showToast('Ключ сгенерирован! Нажмите «Включить авто-синхронизацию»');
+        });
+      }
+
+      if (syncKeyInput) {
+        syncKeyInput.addEventListener('input', () => {
+          updatePhoneLinkUI(syncKeyInput.value.trim());
+        });
+      }
+
+      if (btnCopyPhoneLink) {
+        btnCopyPhoneLink.addEventListener('click', async () => {
+          const link = syncPhoneLinkInput.value.trim();
+          if (link) {
+            const ok = await copyTextToClipboard(link);
+            if (ok) showToast('Ссылка для телефона скопирована в буфер!');
+          }
+        });
+      }
+
+      if (btnSaveCloudSync) {
+        btnSaveCloudSync.addEventListener('click', async () => {
+          const key = syncKeyInput.value.trim();
+          if (!key) {
+            showToast('Впишите или сгенерируйте секретный ключ', 'warn');
+            return;
+          }
+          state.sync = { enabled: true, key, lastSyncTime: null };
+          saveState(true);
+          closeCloudModal();
+          showToast('Облачная синхронизация активирована!');
+          await pushToCloud();
+          await pullFromCloud(true);
+        });
+      }
+
+      if (btnDisableSync) {
+        btnDisableSync.addEventListener('click', () => {
+          state.sync = { enabled: false, key: '', lastSyncTime: null };
+          saveState(true);
+          setCloudStatus('offline', 'Облако: Автономно');
+          closeCloudModal();
+          showToast('Облачная синхронизация отключена (данные сохранены локально)');
+        });
+      }
+
+      if (btnManualSyncNow) {
+        btnManualSyncNow.addEventListener('click', async () => {
+          const key = syncKeyInput.value.trim();
+          if (key) {
+            state.sync.key = key;
+            state.sync.enabled = true;
+            await pushToCloud();
+            await pullFromCloud(true);
+            showToast('Синхронизация завершена!');
+          }
+        });
+      }
+
+      // Check URL Hash for #sync=KEY (auto-connect smartphone)
+      (function checkHashSync() {
+        const hash = window.location.hash || '';
+        const match = hash.match(/sync=([^&]+)/);
+        if (match && match[1]) {
+          const incomingKey = decodeURIComponent(match[1]).trim();
+          if (incomingKey) {
+            state.sync = { enabled: true, key: incomingKey, lastSyncTime: null };
+            saveState(true);
+            pullFromCloud(true);
+            setCloudStatus('online', 'Облако: Онлайн');
+            showToast('📱 Телефон успешно подключён к вашей облачной базе!');
+          }
+        }
+      })();
+
+      // Background Polling & Window Focus Sync
+      setInterval(() => {
+        if (state.sync && state.sync.enabled && state.sync.key) {
+          pullFromCloud(false);
+        }
+      }, 8000);
+
+      window.addEventListener('focus', () => {
+        if (state.sync && state.sync.enabled && state.sync.key) {
+          pullFromCloud(false);
+        }
+      });
+
+      // Export / Import JSON & Reset Templates
+      document.getElementById('btnExportJson').addEventListener('click', () => {
+        const payload = {
+          app: 'Pult_Prodavca_GTA6',
+          version: 3,
+          exportedAt: new Date().toISOString(),
+          data: state
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const dateStr = new Date().toISOString().slice(0, 10);
+        a.href = url;
+        a.download = `pult_prodavca_backup_${dateStr}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Резервная копия JSON скачана!');
+      });
+
+      const importFileInput = document.getElementById('importFileInput');
+      document.getElementById('btnImportJson').addEventListener('click', () => {
+        importFileInput.value = '';
+        importFileInput.click();
+      });
+
+      importFileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const parsed = JSON.parse(String(reader.result));
+            const imported = parsed && parsed.data ? parsed.data : parsed;
+            if (!imported || !Array.isArray(imported.clients)) {
+              throw new Error('Некорректный формат файла');
+            }
+            state = {
+              updatedAt: Number(imported.updatedAt) || Date.now(),
+              sbpPhone: typeof imported.sbpPhone === 'string' ? imported.sbpPhone : '',
+              sbpBank: typeof imported.sbpBank === 'string' ? imported.sbpBank : '',
+              activeTemplateTab: typeof imported.activeTemplateTab === 'string' ? imported.activeTemplateTab : 'all',
+              activeAccountId: typeof imported.activeAccountId === 'string' ? imported.activeAccountId : 'all',
+              accounts: Array.isArray(imported.accounts) && imported.accounts.length > 0 ? imported.accounts : JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS)),
+              customTemplates: imported.customTemplates && typeof imported.customTemplates === 'object' ? imported.customTemplates : {},
+              customUserTemplates: Array.isArray(imported.customUserTemplates) ? imported.customUserTemplates : [],
+              clients: imported.clients,
+              bookings: Array.isArray(imported.bookings) ? imported.bookings : [],
+              bookingNotes: typeof imported.bookingNotes === 'string' ? imported.bookingNotes : '',
+              timer: imported.timer && typeof imported.timer === 'object'
+                ? imported.timer
+                : { status: 'idle', endTime: null, remainingSec: TIMER_DURATION_SEC },
+              sync: imported.sync && typeof imported.sync === 'object'
+                ? imported.sync
+                : { enabled: false, key: '', lastSyncTime: null }
+            };
+            sbpPhoneEl.value = state.sbpPhone;
+            sbpBankEl.value = state.sbpBank;
+            bookingNotesTextareaEl.value = state.bookingNotes;
+            saveState();
+            renderTemplates();
+            renderAccountsBar();
+            renderAllData();
+            if (bookingsModalEl.classList.contains('open')) renderBookings();
+            updateTimerUI();
+            if (state.timer.status === 'running') startTimerLoop();
+            else stopTimerLoop();
+            showToast(`Импортировано клиентов: ${state.clients.length}, профилей: ${state.accounts.length}`);
+          } catch (err) {
+            showToast('Ошибка импорта JSON: проверьте файл', 'warn');
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      document.getElementById('btnResetTemplates').addEventListener('click', () => {
+        if (confirm('Сбросить все изменённые тексты встроенных шаблонов к исходным? (База клиентов, профили, брони, свои шаблоны и СБП сохранятся)')) {
+          state.customTemplates = {};
+          openEditors.clear();
+          saveState();
+          renderTemplates();
+          showToast('Тексты шаблонов сброшены к исходным');
+        }
+      });
+
+      // Initialize App
+      saveState(true);
+      renderTemplates();
+      renderAccountsBar();
+      renderAllData();
+      updateTimerUI();
+      if (state.timer.status === 'running') {
+        startTimerLoop();
+      }
+
+      // Initial Cloud Sync Check
+      if (state.sync && state.sync.enabled && state.sync.key) {
+        setCloudStatus('online', 'Облако: Онлайн');
+        pullFromCloud(false);
+      }
+    })();
+  </script>
+
+
+  <!-- ACCOUNT EDIT/ADD MODAL -->
+  <div class="modal-backdrop" id="accountModal" aria-hidden="true">
+    <div class="modal-panel" style="max-width: 520px;" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title" id="accountModalTitle">🎮 Настройка профиля Xbox</div>
+        <button type="button" class="modal-close-btn js-close-account-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="accModalId" value="" />
+        <div>
+          <label class="field-label" for="accModalName">Название профиля *</label>
+          <input type="text" class="input" id="accModalName" placeholder="Напр. Основной (ViceBeach)" required />
+        </div>
+        <div>
+          <label class="field-label" for="accModalEmail">Почта для входа (Outlook / Hotmail) *</label>
+          <input type="email" class="input" id="accModalEmail" placeholder="vice_gta6_box@outlook.com" required />
+        </div>
+        <div>
+          <label class="field-label" for="accModalGamertag">Геймтег / Ник на Xbox</label>
+          <input type="text" class="input" id="accModalGamertag" placeholder="ViceBeach#5506" />
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div>
+            <label class="field-label" for="accModalCost">Стоимость покупки игры, ₽</label>
+            <input type="number" class="input" id="accModalCost" value="8198" min="0" step="1" />
+          </div>
+          <div>
+            <label class="field-label" for="accModalSlots">Максимум слотов</label>
+            <input type="number" class="input" id="accModalSlots" value="25" min="1" max="100" />
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+          <button type="button" class="btn-ghost danger" id="btnDeleteAccount" style="display:none;">🗑 Удалить профиль</button>
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button type="button" class="btn-sm js-close-account-modal">Отмена</button>
+            <button type="button" class="btn-sm primary" id="btnSaveAccount">💾 Сохранить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOUD SYNC MODAL -->
+  <div class="modal-backdrop" id="cloudSyncModal" aria-hidden="true">
+    <div class="modal-panel" style="max-width: 580px;" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title">☁️ Авто-синхронизация (ПК ⇄ Телефон)</div>
+        <button type="button" class="modal-close-btn js-close-cloud-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:14px; font-size:13px; line-height:1.5;">
+          <div style="font-weight:800; color:#67e8f9; margin-bottom:4px;">✨ Вариант 1: Облачный JSON-ящик</div>
+          <div>Изменения базы клиентов, кассы и статусов сохраняются в защищенном облаке в реальном времени. При изменении на ПК — телефон сразу видит обновление, и наоборот!</div>
+        </div>
+
+        <div>
+          <label class="field-label" for="syncKeyInput">Секретный ключ синхронизации (Sync Key)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" class="input" id="syncKeyInput" placeholder="Придумайте ключ (напр. vice_777) или нажмите Создать" style="font-family:var(--font-mono); font-size:13px;" />
+            <button type="button" class="btn-ghost primary" id="btnGenSyncKey" style="white-space:nowrap; font-weight:700;">⚡ Создать ключ в 1 клик</button>
+          </div>
+          <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;">Бесплатное безопасное облако KeyVal REST (без регистрации и без паролей).</div>
+        </div>
+
+        <div id="syncPhoneLinkBox" style="background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.3); border-radius:10px; padding:12px;">
+          <div style="font-size:12px; font-weight:700; color:#67e8f9; margin-bottom:4px;">📱 Ссылка для телефона (откройте на смартфоне):</div>
+          <div style="display:flex; gap:6px;">
+            <input type="text" class="input" id="syncPhoneLinkInput" readonly style="font-size:11.5px; color:#cbd5e1; font-family:var(--font-mono);" />
+            <button type="button" class="btn-ghost" id="btnCopyPhoneLink" style="white-space:nowrap;">📋 Скопировать</button>
+          </div>
+          <div style="font-size:11px; color:#94a3b8; margin-top:4px;">Откройте эту ссылку на телефоне — и он мгновенно подключится к вашей базе без ручного ввода ключа!</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); flex-wrap:wrap; gap:8px;">
+          <button type="button" class="btn-ghost danger" id="btnDisableSync">✕ Отключить синхронизацию</button>
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button type="button" class="btn-ghost" id="btnManualSyncNow">🔄 Синхронизировать сейчас</button>
+            <button type="button" class="btn-sm primary" id="btnSaveCloudSync">💾 Включить авто-синхронизацию</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+  (function initPinGate() {
+    var overlay = document.getElementById('pinGateOverlay');
+    var input = document.getElementById('pinInput');
+    var btn = document.getElementById('pinSubmitBtn');
+    var err = document.getElementById('pinError');
+    var DEFAULT_PIN = '7777';
+
+    if (sessionStorage.getItem('seller_pult_auth') === 'true') {
+      overlay.style.display = 'none';
+      return;
+    }
+
+    function verifyPin() {
+      var entered = (input.value || '').trim();
+      var savedPin = localStorage.getItem('seller_pult_pin') || DEFAULT_PIN;
+      if (entered === savedPin || entered === DEFAULT_PIN) {
+        sessionStorage.setItem('seller_pult_auth', 'true');
+        overlay.style.display = 'none';
+        err.textContent = '';
+      } else {
+        err.textContent = '✕ Неверный PIN-код';
+        input.value = '';
+        input.focus();
+        input.style.borderColor = '#ef4444';
+        setTimeout(function () { input.style.borderColor = '#334366'; }, 1000);
+      }
+    }
+
+    if (btn && input) {
+      btn.addEventListener('click', verifyPin);
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          verifyPin();
+        }
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>
