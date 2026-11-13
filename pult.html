@@ -2865,21 +2865,7 @@ As long as our profile stays saved on your console, the game will launch without
       const addCommentEl = document.getElementById('addComment');
       const addUrlEl = document.getElementById('addUrl');
       
-        // Sync clientAccountFilter dropdown in table toolbar
-        const clientAccountFilterEl = document.getElementById('clientAccountFilter');
-        if (clientAccountFilterEl) {
-          clientAccountFilterEl.innerHTML = `
-            <option value="all" ${activeAccId === 'all' ? 'selected' : ''}>🎮 Все профили Xbox</option>
-            ${state.accounts.map((a) => `<option value="${a.id}" ${activeAccId === a.id ? 'selected' : ''}>🎮 ${escapeHtml(a.name)}</option>`).join('')}
-          `;
-          clientAccountFilterEl.onchange = () => {
-            state.activeAccountId = clientAccountFilterEl.value;
-            saveState();
-            renderAccountsBar();
-            renderStats();
-            renderClientsTable();
-          };
-        }
+
     
         const clientsTableBodyEl = document.getElementById('clientsTableBody');
       const clientSearchEl = document.getElementById('clientSearch');
@@ -3578,13 +3564,15 @@ As long as our profile stays saved on your console, the game will launch without
         }
         if (!isUserCustom) {
           const resetBtn = editorBox.querySelector('.js-tpl-reset');
-          resetBtn.addEventListener('click', () => {
+          if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
             delete state.customTemplates[item.id];
             openEditors.delete(item.id);
             saveState();
             renderTemplates();
             showToast('Текст возвращён к исходному');
-          });
+            });
+          }
         }
 
         row.appendChild(copyBtn);
@@ -4143,6 +4131,21 @@ As long as our profile stays saved on your console, the game will launch without
         const q = searchQuery.trim().toLowerCase();
         const activeAccId = state.activeAccountId || 'all';
 
+        const clientAccountFilterEl = document.getElementById('clientAccountFilter');
+        if (clientAccountFilterEl) {
+          clientAccountFilterEl.innerHTML = `
+            <option value="all" ${activeAccId === 'all' ? 'selected' : ''}>🎮 Все профили Xbox</option>
+            ${state.accounts.map((a) => `<option value="${a.id}" ${activeAccId === a.id ? 'selected' : ''}>🎮 ${escapeHtml(a.name)}</option>`).join('')}
+          `;
+          clientAccountFilterEl.onchange = () => {
+            state.activeAccountId = clientAccountFilterEl.value;
+            saveState();
+            renderAccountsBar();
+            renderStats();
+            renderClientsTable();
+          };
+        }
+
         const filtered = state.clients.filter((c) => {
           if (activeAccId !== 'all' && (c.accountId || state.accounts[0].id) !== activeAccId) {
             return false;
@@ -4285,12 +4288,14 @@ As long as our profile stays saved on your console, the game will launch without
               });
             });
 
-            tr.querySelector('.js-edit-client').addEventListener('click', () => {
+            const btnEditClient = tr.querySelector('.js-edit-client');
+            if (btnEditClient) btnEditClient.addEventListener('click', () => {
               editingClientId = client.id;
               renderClientsTable();
             });
 
-            tr.querySelector('.js-del-client').addEventListener('click', () => {
+            const btnDelClient = tr.querySelector('.js-del-client');
+            if (btnDelClient) btnDelClient.addEventListener('click', () => {
               if (confirm(`Удалить клиента "${client.name}" из базы?`)) {
                 state.clients = state.clients.filter((x) => x.id !== client.id);
                 saveState();
