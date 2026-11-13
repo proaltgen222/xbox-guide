@@ -1905,12 +1905,14 @@
     <div class="topbar-actions">
       <a href="index.html" class="btn-ghost" style="text-decoration:none; color:var(--cyan); border-color:var(--cyan); font-weight:700;" title="Вернуться к сайту инструкции">← Инструкция</a>
       <button type="button" class="cloud-pill" id="btnCloudSync" title="Облачная авто-синхронизация ПК ⇄ Телефон">☁️ <span id="cloudStatusLabel">Облако: Автономно</span></button>
+      <button type="button" class="btn-sm" id="btnQuickCopyBase" style="background:#16a34a; color:#ffffff; font-weight:800; font-size:13px; padding:8px 14px; border-radius:8px; border:1px solid #4ade80; cursor:pointer; box-shadow:0 0 12px rgba(34,197,94,0.4); display:inline-flex; align-items:center; gap:6px;" title="Скопировать базу клиентов и профилей в буфер для Telegram">📋 Скопировать базу</button>
+      <button type="button" class="btn-sm" id="btnQuickPasteBase" style="background:#0284c7; color:#ffffff; font-weight:800; font-size:13px; padding:8px 14px; border-radius:8px; border:1px solid #38bdf8; cursor:pointer; box-shadow:0 0 12px rgba(2,132,199,0.4); display:inline-flex; align-items:center; gap:6px;" title="Вставить базу клиентов и профилей из Telegram">📥 Вставить базу</button>
       
       <button class="btn-bookings js-open-bookings" title="Открыть расписание и список бронирований">
         📅 Список бронирований (<span class="booking-count-badge js-bookings-count">0</span>)
       </button>
       <span class="save-pill" id="savePill">💾 Сохранено в браузере</span>
-      <button class="btn-ghost" id="btnExportJson" title="Скачать резервную копию базы и шаблонов в JSON">📤 Экспорт JSON</button>
+      <button class="btn-ghost" id="btnExportJson"  title="Скачать резервную копию базы и шаблонов в JSON">📤 Экспорт JSON</button>
       <button class="btn-ghost" id="btnImportJson" title="Восстановить данные из JSON файла">📥 Импорт JSON</button>
       <input type="file" id="importFileInput" accept=".json,application/json" style="display:none" />
       <button class="btn-ghost danger" id="btnResetTemplates" title="Вернуть тексты встроенных шаблонов к исходным">↺ Сброс шаблонов</button>
@@ -2201,21 +2203,7 @@
       </div>
 
       <div class="modal-body">
-        <!-- 100% RELIABLE INSTANT TELEGRAM TRANSFER -->
-        <div style="background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.3); border-radius:12px; padding:14px; margin-bottom:12px;">
-          <div style="font-size:13px; font-weight:800; color:#4ade80; margin-bottom:4px;">⚡ Мгновенный перенос (ПК ⇄ Телефон за 5 секунд):</div>
-          <div style="font-size:12px; color:#cbd5e1; line-height:1.45; margin-bottom:10px;">
-            100% надежный способ без ошибок сети и серверов. Скопируйте базу на ПК, отправьте себе в «Избранное» в Telegram, скопируйте на телефоне и нажмите «Вставить базу»!
-          </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-            <button type="button" class="btn-sm" id="btnCopyEntireBase" style="background:#16a34a; color:#fff; font-weight:700;">📋 1. Скопировать базу в буфер (на ПК)</button>
-            <button type="button" class="btn-sm" id="btnPasteEntireBase" style="background:#0284c7; color:#fff; font-weight:700;">📥 2. Вставить базу из буфера (на телефоне)</button>
-          </div>
-          <div style="display:flex; gap:6px;">
-            <input type="text" class="input" id="manualBaseInput" placeholder="Или вставьте скопированный текст базы сюда и нажмите Загрузить" style="font-size:11.5px; font-family:var(--font-mono);" />
-            <button type="button" class="btn-ghost" id="btnLoadManualBase" style="white-space:nowrap;">Загрузить</button>
-          </div>
-        </div>
+        
         <!-- Quick Add Booking -->
         <div class="booking-add-card">
           <div style="font-size:12px; font-weight:800; color:#cbd5e1; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">
@@ -2339,6 +2327,26 @@
         <button type="button" class="modal-close-btn js-close-cloud-modal">✕</button>
       </div>
       <div class="modal-body">
+        <!-- 100% RELIABLE INSTANT TELEGRAM TRANSFER (NOW PROPERLY INSIDE CLOUD MODAL) -->
+        <div style="background:rgba(34,197,94,0.12); border:2px solid #22c55e; border-radius:12px; padding:16px; margin-bottom:16px;">
+          <div style="font-size:14px; font-weight:800; color:#4ade80; margin-bottom:6px;">⚡ САМЫЙ ПРОСТОЙ СПОСОБ: перенос базы через Telegram</div>
+          <div style="font-size:12.5px; color:#cbd5e1; line-height:1.45; margin-bottom:12px;">
+            1. На ПК нажмите зелёную кнопку <strong>«Скопировать базу»</strong>.<br />
+            2. Отправьте скопированный текст себе в Telegram («Избранное»).<br />
+            3. На телефоне скопируйте это сообщение и нажмите синюю кнопку <strong>«Вставить базу»</strong>.
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+            <button type="button" class="btn-sm" id="btnCopyEntireBase" style="background:#16a34a; color:#fff; font-weight:800; padding:10px 16px; font-size:13px; border-radius:8px; border:none; cursor:pointer;">📋 1. Скопировать базу в буфер (на ПК)</button>
+            <button type="button" class="btn-sm" id="btnPasteEntireBase" style="background:#0284c7; color:#fff; font-weight:800; padding:10px 16px; font-size:13px; border-radius:8px; border:none; cursor:pointer;">📥 2. Вставить базу из буфера (на телефоне)</button>
+          </div>
+          <div>
+            <label class="field-label" style="color:#94a3b8; font-size:11.5px;">Или вручную вставьте скопированный текст базы сюда:</label>
+            <div style="display:flex; gap:6px;">
+              <input type="text" class="input" id="manualBaseInput" placeholder="Вставьте текст базы из Telegram..." style="font-size:12px; font-family:var(--font-mono);" />
+              <button type="button" class="btn-ghost primary" id="btnLoadManualBase" style="white-space:nowrap; font-weight:700;">Загрузить</button>
+            </div>
+          </div>
+        </div>
         <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:14px; font-size:13px; line-height:1.5;">
           <div style="font-weight:800; color:#67e8f9; margin-bottom:4px;">✨ Вариант 1: Облачный JSON-ящик</div>
           <div>Изменения базы клиентов, кассы и статусов сохраняются в защищенном облаке в реальном времени. При изменении на ПК — телефон сразу видит обновление, и наоборот!</div>
@@ -3140,9 +3148,6 @@ As long as our profile stays saved on your console, the game will launch without
       const btnCopyPhoneLink = document.getElementById('btnCopyPhoneLink');
       const btnDisableSync = document.getElementById('btnDisableSync');
       const btnManualSyncNow = document.getElementById('btnManualSyncNow');
-      const btnSaveCloudSync = document.getElementById('btnSaveCloudSync');
-
-      let pushDebounceTimer = null;
 
       function loadState() {
         try {
@@ -3154,28 +3159,21 @@ As long as our profile stays saved on your console, the game will launch without
               : JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS));
 
             let loadedClients = Array.isArray(parsed.clients) ? parsed.clients : [];
-            // If stored clients are fewer than 19, automatically restore all recovered clients!
+            // If stored clients are fewer than the 19 recovered clients, restore full database!
             if (loadedClients.length < RECOVERED_CLIENTS.length) {
-              loadedClients = JSON.parse(JSON.stringify(RECOVERED_CLIENTS));
+              const existingIds = new Set(loadedClients.map((c) => c.id));
+              const missing = RECOVERED_CLIENTS.filter((c) => !existingIds.has(c.id));
+              loadedClients = loadedClients.concat(JSON.parse(JSON.stringify(missing)));
             }
 
             const primaryAccId = loadedAccounts[0].id;
             loadedClients.forEach((c) => {
               if (!c.accountId) c.accountId = primaryAccId;
+              c.status = normalizeClientStatus(c.status);
             });
 
             const sbpP = typeof parsed.sbpPhone === 'string' && parsed.sbpPhone.trim() ? parsed.sbpPhone : RECOVERED_PHONE;
             const sbpB = typeof parsed.sbpBank === 'string' && parsed.sbpBank.trim() ? parsed.sbpBank : RECOVERED_BANK;
-
-            loadedClients.forEach((c) => {
-              c.status = normalizeClientStatus(c.status);
-            });
-
-            const loadedQuickPrices = Array.isArray(parsed.quickPrices) && parsed.quickPrices.length > 0
-              ? parsed.quickPrices
-              : [767, 390];
-            const loadedDeletedTplIds = Array.isArray(parsed.deletedTemplateIds) ? parsed.deletedTemplateIds : [];
-            const loadedDeletedTplTabs = Array.isArray(parsed.deletedTemplateTabs) ? parsed.deletedTemplateTabs : [];
 
             return {
               updatedAt: Number(parsed.updatedAt) || Date.now(),
@@ -3183,9 +3181,6 @@ As long as our profile stays saved on your console, the game will launch without
               sbpBank: sbpB,
               activeTemplateTab: typeof parsed.activeTemplateTab === 'string' ? parsed.activeTemplateTab : 'all',
               activeAccountId: typeof parsed.activeAccountId === 'string' ? parsed.activeAccountId : 'all',
-              quickPrices: loadedQuickPrices,
-              deletedTemplateIds: loadedDeletedTplIds,
-              deletedTemplateTabs: loadedDeletedTplTabs,
               accounts: loadedAccounts,
               clients: loadedClients,
               bookings: Array.isArray(parsed.bookings) ? parsed.bookings : [],
@@ -3194,12 +3189,18 @@ As long as our profile stays saved on your console, the game will launch without
                 ? parsed.customTemplates
                 : JSON.parse(JSON.stringify(RECOVERED_CUSTOM_TEMPLATES)),
               customUserTemplates: Array.isArray(parsed.customUserTemplates) ? parsed.customUserTemplates : [],
+              deletedTemplateIds: Array.isArray(parsed.deletedTemplateIds) ? parsed.deletedTemplateIds : [],
+              deletedTemplateTabs: Array.isArray(parsed.deletedTemplateTabs) ? parsed.deletedTemplateTabs : [],
+              quickPrices: Array.isArray(parsed.quickPrices) && parsed.quickPrices.length > 0 ? parsed.quickPrices : [767, 390],
               timer: parsed.timer && typeof parsed.timer === 'object'
                 ? parsed.timer
                 : { status: 'idle', endTime: null, remainingSec: TIMER_DURATION_SEC },
               sync: parsed.sync && typeof parsed.sync === 'object'
                 ? parsed.sync
-                : { enabled: false, key: '', lastSyncTime: null }
+                : { enabled: false, key: '', lastSyncTime: null },
+              cash: parsed.cash && typeof parsed.cash === 'object'
+                ? parsed.cash
+                : { totalRevenue: 0, ordersCount: 0, initialInvestment: GAME_COST, paybackPercent: 0 }
             };
           }
         } catch (e) {
@@ -3217,8 +3218,12 @@ As long as our profile stays saved on your console, the game will launch without
           bookingNotes: '',
           customTemplates: JSON.parse(JSON.stringify(RECOVERED_CUSTOM_TEMPLATES)),
           customUserTemplates: [],
+          deletedTemplateIds: [],
+          deletedTemplateTabs: [],
+          quickPrices: [767, 390],
           timer: { status: 'idle', endTime: null, remainingSec: TIMER_DURATION_SEC },
-          sync: { enabled: false, key: '', lastSyncTime: null }
+          sync: { enabled: false, key: '', lastSyncTime: null },
+          cash: { totalRevenue: 0, ordersCount: 0, initialInvestment: GAME_COST, paybackPercent: 0 }
         };
       }
 
@@ -4857,6 +4862,129 @@ As long as our profile stays saved on your console, the game will launch without
           pullFromCloud(false);
         }
       });
+
+      // ==========================================
+      // INSTANT TELEGRAM BASE TRANSFER (COPY & PASTE)
+      // ==========================================
+      async function exportEntireBaseToClipboard() {
+        const payload = {
+          app: 'Pult_Prodavca_GTA6',
+          version: 3,
+          exportedAt: new Date().toISOString(),
+          data: state
+        };
+        const jsonStr = JSON.stringify(payload);
+        const ok = await copyTextToClipboard(jsonStr);
+        if (ok) {
+          showToast('📋 База скопирована в буфер! Отправьте её себе в Telegram (в «Избранное»)');
+        } else {
+          prompt('Скопируйте базу вручную (Ctrl+C):', jsonStr);
+        }
+        ['btnQuickCopyBase', 'btnCopyEntireBase'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            const orig = el.innerHTML;
+            el.innerHTML = '✅ Скопировано в буфер!';
+            setTimeout(() => { el.innerHTML = orig; }, 3000);
+          }
+        });
+      }
+
+      async function importEntireBaseFromClipboard(textInput) {
+        let text = textInput;
+        if (!text) {
+          if (navigator.clipboard && navigator.clipboard.readText) {
+            try {
+              text = await navigator.clipboard.readText();
+            } catch (err) {
+              console.warn('Clipboard readText restricted', err);
+            }
+          }
+        }
+        if (!text || !text.trim()) {
+          text = prompt('Вставьте скопированный текст базы из Telegram (Ctrl+V):');
+        }
+        if (!text || !text.trim()) {
+          showToast('Буфер обмена пуст или действие отменено', 'warn');
+          return;
+        }
+        try {
+          const parsed = JSON.parse(text.trim());
+          const imported = parsed && parsed.data ? parsed.data : parsed;
+          if (!imported || !Array.isArray(imported.clients)) {
+            throw new Error('Некорректный формат базы');
+          }
+          state = {
+            updatedAt: Number(imported.updatedAt) || Date.now(),
+            sbpPhone: typeof imported.sbpPhone === 'string' ? imported.sbpPhone : (state.sbpPhone || ''),
+            sbpBank: typeof imported.sbpBank === 'string' ? imported.sbpBank : (state.sbpBank || ''),
+            activeTemplateTab: typeof imported.activeTemplateTab === 'string' ? imported.activeTemplateTab : 'all',
+            activeAccountId: typeof imported.activeAccountId === 'string' ? imported.activeAccountId : 'all',
+            accounts: Array.isArray(imported.accounts) && imported.accounts.length > 0 ? imported.accounts : (state.accounts || JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS))),
+            customTemplates: imported.customTemplates && typeof imported.customTemplates === 'object' ? imported.customTemplates : (state.customTemplates || {}),
+            customUserTemplates: Array.isArray(imported.customUserTemplates) ? imported.customUserTemplates : (state.customUserTemplates || []),
+            deletedTemplateIds: Array.isArray(imported.deletedTemplateIds) ? imported.deletedTemplateIds : (state.deletedTemplateIds || []),
+            quickPrices: Array.isArray(imported.quickPrices) ? imported.quickPrices : (state.quickPrices || [350, 400, 500, 600, 1000, 1200]),
+            sync: imported.sync && typeof imported.sync === 'object' ? imported.sync : (state.sync || { enabled: false, key: '', lastSyncTime: null }),
+            clients: imported.clients.map((c) => ({
+              id: c.id || ('client_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)),
+              name: c.name || '',
+              phone: c.phone || '',
+              platform: c.platform || '',
+              amount: Number(c.amount) || 0,
+              status: normalizeClientStatus(c.status),
+              consoleSerial: c.consoleSerial || '',
+              comment: c.comment || '',
+              accountId: c.accountId || 'acc_1',
+              createdAt: Number(c.createdAt) || Date.now(),
+              bookedSlots: Array.isArray(c.bookedSlots) ? c.bookedSlots : []
+            })),
+            cash: Object.assign({ totalRevenue: 0, ordersCount: 0, initialInvestment: GAME_COST, paybackPercent: 0 }, imported.cash || {})
+          };
+          saveState(true);
+          recalcCash();
+          renderAccounts();
+          renderClientsTable();
+          renderTemplates();
+          updateQuickPriceButtons();
+          if (typeof renderStats === 'function') renderStats();
+          showToast(`✅ База успешно загружена! Клиентов: ${state.clients.length}`);
+          ['btnQuickPasteBase', 'btnPasteEntireBase'].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) {
+              const orig = el.innerHTML;
+              el.innerHTML = '✅ База загружена!';
+              setTimeout(() => { el.innerHTML = orig; }, 3000);
+            }
+          });
+          if (typeof closeCloudModal === 'function') closeCloudModal();
+        } catch (err) {
+          alert('Ошибка при импорте базы: некорректный формат текста. Убедитесь, что скопировали полное сообщение целиком из Telegram.');
+        }
+      }
+
+      const btnQuickCopyBase = document.getElementById('btnQuickCopyBase');
+      const btnQuickPasteBase = document.getElementById('btnQuickPasteBase');
+      const btnCopyEntireBase = document.getElementById('btnCopyEntireBase');
+      const btnPasteEntireBase = document.getElementById('btnPasteEntireBase');
+      const btnLoadManualBase = document.getElementById('btnLoadManualBase');
+      const manualBaseInput = document.getElementById('manualBaseInput');
+
+      if (btnQuickCopyBase) btnQuickCopyBase.addEventListener('click', exportEntireBaseToClipboard);
+      if (btnCopyEntireBase) btnCopyEntireBase.addEventListener('click', exportEntireBaseToClipboard);
+      if (btnQuickPasteBase) btnQuickPasteBase.addEventListener('click', () => importEntireBaseFromClipboard());
+      if (btnPasteEntireBase) btnPasteEntireBase.addEventListener('click', () => importEntireBaseFromClipboard());
+      if (btnLoadManualBase && manualBaseInput) {
+        btnLoadManualBase.addEventListener('click', () => {
+          const val = manualBaseInput.value.trim();
+          if (val) {
+            importEntireBaseFromClipboard(val);
+            manualBaseInput.value = '';
+          } else {
+            showToast('Вставьте текст базы в поле', 'warn');
+          }
+        });
+      }
 
       // Export / Import JSON & Reset Templates
       document.getElementById('btnExportJson').addEventListener('click', () => {
