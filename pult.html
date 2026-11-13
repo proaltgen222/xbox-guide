@@ -1819,6 +1819,56 @@
       color: #f87171;
     }
 
+  
+    .seg-pill.active[data-status="queue"] {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+    .seg-pill.active[data-status="paid"] {
+      background: rgba(6, 182, 212, 0.18);
+      border-color: #06b6d4;
+      color: #67e8f9;
+    }
+    .seg-pill.active[data-status="done"] {
+      background: rgba(34, 197, 94, 0.18);
+      border-color: #22c55e;
+      color: #86efac;
+    }
+
+    .st-btn.active[data-st="queue"] {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+    .st-btn.active[data-st="paid"] {
+      background: rgba(6, 182, 212, 0.22);
+      border-color: #06b6d4;
+      color: #67e8f9;
+    }
+    .st-btn.active[data-st="done"] {
+      background: rgba(34, 197, 94, 0.22);
+      border-color: #22c55e;
+      color: #86efac;
+    }
+
+    .del-tab-icon {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-radius: 4px;
+      padding: 0 4px;
+      transition: all 0.15s;
+    }
+    .del-tab-icon:hover {
+      background: rgba(239, 68, 68, 0.25);
+      color: #ef4444;
+    }
+    
   </style>
 </head>
 <body>
@@ -2060,10 +2110,10 @@
             </div>
             <div>
               <label class="field-label" for="addAmount">Сумма в ₽</label>
-              <div class="amount-wrap">
+              <div class="amount-wrap" id="quickPriceWrap">
                 <input type="number" class="input" id="addAmount" placeholder="767" min="0" step="1" />
-                <button type="button" class="chip-btn" data-fill-amount="767">767</button>
-                <button type="button" class="chip-btn" data-fill-amount="390">390</button>
+                <div id="quickPriceChips" style="display:inline-flex; gap:4px; align-items:center;"></div>
+                <button type="button" class="chip-btn" id="btnEditQuickPrices" title="Редактировать кнопки быстрых цен (добавить/изменить суммы)" style="padding:4px 8px; font-size:12px;">⚙️ Цены</button>
               </div>
             </div>
             <div>
@@ -2092,10 +2142,9 @@
                 <button type="button" class="seg-pill" data-platform="Telegram">Telegram</button>
               </div>
               <div class="pill-group" id="addStatusGroup">
-                <button type="button" class="seg-pill active" data-status="waiting">🟡 В очереди</button>
-                <button type="button" class="seg-pill" data-status="downloading">🔵 Качает</button>
-                <button type="button" class="seg-pill" data-status="done">🟢 Завершен</button>
-                <button type="button" class="seg-pill" data-status="review">⭐ Отзыв</button>
+                <button type="button" class="seg-pill active" data-status="queue">⏳ В очереди</button>
+                <button type="button" class="seg-pill" data-status="paid">💳 Оплачено</button>
+                <button type="button" class="seg-pill" data-status="done">🟢 Завершено</button>
               </div>
             </div>
 
@@ -2109,11 +2158,13 @@
         <div class="table-toolbar">
           <div class="filter-pills" id="filterPills">
             <button class="filter-pill active" data-filter="all">Все</button>
-            <button class="filter-pill" data-filter="waiting">🟡 В очереди</button>
-            <button class="filter-pill" data-filter="downloading">🔵 Качают</button>
-            <button class="filter-pill" data-filter="done">🟢 Завершены</button>
-            <button class="filter-pill" data-filter="review">⭐ Отзыв</button>
+            <button class="filter-pill" data-filter="queue">⏳ В очереди</button>
+            <button class="filter-pill" data-filter="paid">💳 Оплачено</button>
+            <button class="filter-pill" data-filter="done">🟢 Завершено</button>
           </div>
+          <select class="select-input" id="clientAccountFilter" style="width:auto; padding:5px 10px; font-size:12px; font-weight:700; border-radius:8px;" title="Фильтр списка клиентов по выбранному профилю Xbox">
+            <option value="all">🎮 Все профили Xbox</option>
+          </select>
           <input type="text" class="input search-input" id="clientSearch" placeholder="🔍 Поиск по нику/коду..." />
         </div>
 
@@ -2732,11 +2783,25 @@ As long as our profile stays saved on your console, the game will launch without
       ];
 
       const STATUS_META = {
-        waiting:     { icon: '🟡', short: 'Ждет',     full: '🟡 В очереди (Ждет)' },
-        downloading: { icon: '🔵', short: 'Качает',   full: '🔵 Качает (Внутри аккаунта)' },
-        done:        { icon: '🟢', short: 'Завершен', full: '🟢 Завершен (Вышел + Оплатил)' },
-        review:      { icon: '⭐', short: 'Отзыв',    full: '⭐ Отзыв оставлен' }
+        queue: { icon: '⏳', short: 'В очереди', full: '⏳ В очереди' },
+        paid:  { icon: '💳', short: 'Оплачено',  full: '💳 Оплачено' },
+        done:  { icon: '🟢', short: 'Завершено', full: '🟢 Завершено' }
       };
+
+      function normalizeClientStatus(st) {
+        if (!st || st === 'waiting') return 'queue';
+        if (st === 'downloading') return 'paid';
+        if (st === 'review') return 'done';
+        if (STATUS_META[st]) return st;
+        return 'queue';
+      }
+
+      const TEMPLATE_CATEGORY_TABS = [
+        { id: 'avito', label: '🟦 Авито' },
+        { id: 'fp', label: '🟣 FunPay / Playerok' },
+        { id: 'support', label: '🛠 Настройка и Ошибки' },
+        { id: 'all', label: '📋 Все' }
+      ];
 
       const BOOKING_STATUS_META = {
         waiting_time: { icon: '⏳', label: '⏳ Ждет времени' },
@@ -2756,7 +2821,7 @@ As long as our profile stays saved on your console, the game will launch without
 
       // Form selections
       let selectedAddPlatform = 'Авито';
-      let selectedAddStatus = 'waiting';
+      let selectedAddStatus = 'queue';
 
       // DOM Refs
       const sbpPhoneEl = document.getElementById('sbpPhone');
@@ -2799,7 +2864,24 @@ As long as our profile stays saved on your console, the game will launch without
       const addAmountEl = document.getElementById('addAmount');
       const addCommentEl = document.getElementById('addComment');
       const addUrlEl = document.getElementById('addUrl');
-      const clientsTableBodyEl = document.getElementById('clientsTableBody');
+      
+        // Sync clientAccountFilter dropdown in table toolbar
+        const clientAccountFilterEl = document.getElementById('clientAccountFilter');
+        if (clientAccountFilterEl) {
+          clientAccountFilterEl.innerHTML = `
+            <option value="all" ${activeAccId === 'all' ? 'selected' : ''}>🎮 Все профили Xbox</option>
+            ${state.accounts.map((a) => `<option value="${a.id}" ${activeAccId === a.id ? 'selected' : ''}>🎮 ${escapeHtml(a.name)}</option>`).join('')}
+          `;
+          clientAccountFilterEl.onchange = () => {
+            state.activeAccountId = clientAccountFilterEl.value;
+            saveState();
+            renderAccountsBar();
+            renderStats();
+            renderClientsTable();
+          };
+        }
+    
+        const clientsTableBodyEl = document.getElementById('clientsTableBody');
       const clientSearchEl = document.getElementById('clientSearch');
 
       const bookingsModalEl = document.getElementById('bookingsModal');
@@ -3099,12 +3181,25 @@ As long as our profile stays saved on your console, the game will launch without
             const sbpP = typeof parsed.sbpPhone === 'string' && parsed.sbpPhone.trim() ? parsed.sbpPhone : RECOVERED_PHONE;
             const sbpB = typeof parsed.sbpBank === 'string' && parsed.sbpBank.trim() ? parsed.sbpBank : RECOVERED_BANK;
 
+            loadedClients.forEach((c) => {
+              c.status = normalizeClientStatus(c.status);
+            });
+
+            const loadedQuickPrices = Array.isArray(parsed.quickPrices) && parsed.quickPrices.length > 0
+              ? parsed.quickPrices
+              : [767, 390];
+            const loadedDeletedTplIds = Array.isArray(parsed.deletedTemplateIds) ? parsed.deletedTemplateIds : [];
+            const loadedDeletedTplTabs = Array.isArray(parsed.deletedTemplateTabs) ? parsed.deletedTemplateTabs : [];
+
             return {
               updatedAt: Number(parsed.updatedAt) || Date.now(),
               sbpPhone: sbpP,
               sbpBank: sbpB,
               activeTemplateTab: typeof parsed.activeTemplateTab === 'string' ? parsed.activeTemplateTab : 'all',
               activeAccountId: typeof parsed.activeAccountId === 'string' ? parsed.activeAccountId : 'all',
+              quickPrices: loadedQuickPrices,
+              deletedTemplateIds: loadedDeletedTplIds,
+              deletedTemplateTabs: loadedDeletedTplTabs,
               accounts: loadedAccounts,
               clients: loadedClients,
               bookings: Array.isArray(parsed.bookings) ? parsed.bookings : [],
@@ -3290,8 +3385,52 @@ As long as our profile stays saved on your console, the game will launch without
       // Render Left Column Templates & Tabs
       function updateTemplateTabsUI() {
         const currentTab = state.activeTemplateTab || 'all';
-        document.querySelectorAll('#tplTabs .tpl-tab-btn').forEach((btn) => {
-          btn.classList.toggle('active', btn.dataset.tab === currentTab);
+        const tplTabsContainer = document.getElementById('tplTabs');
+        if (!tplTabsContainer) return;
+
+        state.deletedTemplateTabs = Array.isArray(state.deletedTemplateTabs) ? state.deletedTemplateTabs : [];
+        const visibleTabs = TEMPLATE_CATEGORY_TABS.filter((t) => !state.deletedTemplateTabs.includes(t.id));
+
+        tplTabsContainer.innerHTML = '';
+        visibleTabs.forEach((tab) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `tpl-tab-btn ${currentTab === tab.id ? 'active' : ''}`;
+          btn.dataset.tab = tab.id;
+
+          if (tab.id === 'all') {
+            btn.textContent = '📋 Все';
+          } else {
+            btn.innerHTML = `<span>${tab.label}</span><span class="del-tab-icon" data-del-tab="${tab.id}" title="Удалить группу «${tab.label}»">✕</span>`;
+          }
+
+          btn.addEventListener('click', (e) => {
+            const delTarget = e.target.closest('.del-tab-icon');
+            if (delTarget) {
+              e.stopPropagation();
+              const tabIdToDel = delTarget.dataset.delTab;
+              const tabObj = TEMPLATE_CATEGORY_TABS.find((x) => x.id === tabIdToDel);
+              const label = tabObj ? tabObj.label : tabIdToDel;
+              if (confirm(`Удалить группу шаблонов «${label}» и скрыть её шаблоны?`)) {
+                if (!state.deletedTemplateTabs.includes(tabIdToDel)) {
+                  state.deletedTemplateTabs.push(tabIdToDel);
+                }
+                if (state.activeTemplateTab === tabIdToDel) {
+                  state.activeTemplateTab = 'all';
+                }
+                saveState();
+                renderTemplates();
+                showToast(`Группа «${label}» удалена`);
+              }
+              return;
+            }
+
+            state.activeTemplateTab = tab.id;
+            saveState();
+            renderTemplates();
+          });
+
+          tplTabsContainer.appendChild(btn);
         });
       }
 
@@ -3343,6 +3482,34 @@ As long as our profile stays saved on your console, the game will launch without
           ${isUserCustom ? '<span class="edited-dot" style="color:#67e8f9;">• свой</span>' : ''}
         `;
 
+        const delTplBtn = document.createElement('button');
+        delTplBtn.type = 'button';
+        delTplBtn.className = 'icon-btn del';
+        delTplBtn.title = 'Удалить этот шаблон';
+        delTplBtn.style.padding = '0 9px';
+        delTplBtn.style.fontSize = '12px';
+        delTplBtn.style.height = '32px';
+        delTplBtn.innerHTML = '🗑️';
+
+        const doDeleteTemplate = () => {
+          if (confirm(`Удалить шаблон "${item.title}"?`)) {
+            if (isUserCustom) {
+              state.customUserTemplates = (state.customUserTemplates || []).filter((x) => x.id !== item.id);
+            } else {
+              state.deletedTemplateIds = Array.isArray(state.deletedTemplateIds) ? state.deletedTemplateIds : [];
+              if (!state.deletedTemplateIds.includes(item.id)) {
+                state.deletedTemplateIds.push(item.id);
+              }
+            }
+            openEditors.delete(item.id);
+            saveState();
+            renderTemplates();
+            showToast(`Шаблон "${item.title}" удалён`);
+          }
+        };
+
+        delTplBtn.addEventListener('click', doDeleteTemplate);
+
         const editorBox = document.createElement('div');
         editorBox.className = `tpl-editor ${isEditorOpen ? 'open' : ''}`;
         editorBox.innerHTML = `
@@ -3361,10 +3528,8 @@ As long as our profile stays saved on your console, the game will launch without
           <div class="tpl-editor-footer">
             <span class="tpl-editor-hint">${item.usesSbp ? 'Плейсхолдеры: {телефон}, {банк}, {почта}, {геймтег}' : 'Плейсхолдеры: {почта}, {геймтег}, {телефон}, {банк}'}</span>
             <div class="tpl-editor-actions">
-              ${isUserCustom
-                ? `<button type="button" class="btn-sm danger js-tpl-delete">🗑️ Удалить</button>`
-                : `<button type="button" class="btn-sm js-tpl-reset">↺ Оригинал</button>`
-              }
+              ${!isUserCustom ? `<button type="button" class="btn-sm js-tpl-reset">↺ Оригинал</button>` : ''}
+              <button type="button" class="btn-sm danger js-tpl-delete">🗑️ Удалить шаблон</button>
               <button type="button" class="btn-sm primary js-tpl-save">💾 Сохранить</button>
             </div>
           </div>
@@ -3403,21 +3568,15 @@ As long as our profile stays saved on your console, the game will launch without
           openEditors.delete(item.id);
           saveState();
           renderTemplates();
+      renderQuickPriceChips();
           showToast('Шаблон сохранён');
         });
 
-        if (isUserCustom) {
-          const delBtn = editorBox.querySelector('.js-tpl-delete');
-          delBtn.addEventListener('click', () => {
-            if (confirm(`Удалить шаблон "${item.title}"?`)) {
-              state.customUserTemplates = state.customUserTemplates.filter((x) => x.id !== item.id);
-              openEditors.delete(item.id);
-              saveState();
-              renderTemplates();
-              showToast('Шаблон удалён');
-            }
-          });
-        } else {
+        const delBtn = editorBox.querySelector('.js-tpl-delete');
+        if (delBtn) {
+          delBtn.addEventListener('click', doDeleteTemplate);
+        }
+        if (!isUserCustom) {
           const resetBtn = editorBox.querySelector('.js-tpl-reset');
           resetBtn.addEventListener('click', () => {
             delete state.customTemplates[item.id];
@@ -3430,6 +3589,7 @@ As long as our profile stays saved on your console, the game will launch without
 
         row.appendChild(copyBtn);
         row.appendChild(editBtn);
+        row.appendChild(delTplBtn);
         rowWrap.appendChild(row);
         rowWrap.appendChild(editorBox);
         return rowWrap;
@@ -3440,7 +3600,13 @@ As long as our profile stays saved on your console, the game will launch without
         tplListEl.innerHTML = '';
         const currentTab = state.activeTemplateTab || 'all';
 
+        state.deletedTemplateIds = Array.isArray(state.deletedTemplateIds) ? state.deletedTemplateIds : [];
+        state.deletedTemplateTabs = Array.isArray(state.deletedTemplateTabs) ? state.deletedTemplateTabs : [];
+
         const filteredBuiltins = DEFAULT_TEMPLATES.filter((tpl) => {
+          if (state.deletedTemplateIds.includes(tpl.id)) return false;
+          // Hide if all its tabs are deleted
+          if (tpl.tabs && tpl.tabs.every((t) => state.deletedTemplateTabs.includes(t))) return false;
           if (currentTab === 'all') return true;
           return tpl.tabs && tpl.tabs.includes(currentTab);
         });
@@ -3559,7 +3725,7 @@ As long as our profile stays saved on your console, the game will launch without
             const totalEarned = state.clients.reduce((s, c) => s + (Number(c.amount) || 0), 0);
             const totalCost = state.accounts.reduce((s, a) => s + (Number(a.cost) || 8198), 0);
             const totalMaxSlots = state.accounts.reduce((s, a) => s + (Number(a.maxSlots) || 25), 0);
-            const overallPct = totalCost > 0 ? Math.min(100, Math.round((totalEarned / totalCost) * 100)) : 0;
+            const overallPct = totalCost > 0 ? Math.round((totalEarned / totalCost) * 100) : 0;
 
             activeAccountPillsEl.innerHTML = `
               <span class="acc-meta-pill">👥 Всего клиентов: <strong>${state.clients.length} / ${totalMaxSlots}</strong></span>
@@ -3571,7 +3737,7 @@ As long as our profile stays saved on your console, the game will launch without
             const accClients = state.clients.filter((c) => (c.accountId || state.accounts[0].id) === acc.id);
             const accEarned = accClients.reduce((s, c) => s + (Number(c.amount) || 0), 0);
             const accCost = Number(acc.cost) || 8198;
-            const paybackPct = accCost > 0 ? Math.min(100, Math.round((accEarned / accCost) * 100)) : 0;
+            const paybackPct = accCost > 0 ? Math.round((accEarned / accCost) * 100) : 0;
 
             activeAccountPillsEl.innerHTML = `
               <span class="acc-meta-pill">📧 <strong>${escapeHtml(acc.email)}</strong></span>
@@ -3780,9 +3946,9 @@ As long as our profile stays saved on your console, the game will launch without
           ? `Всего заработано: ${formatRub(totalEarned)}`
           : `Заработано с профиля: ${formatRub(totalEarned)}`;
 
-        const pctPayback = gameCost > 0 ? Math.min(100, Math.round((totalEarned / gameCost) * 100)) : 100;
+        const pctPayback = gameCost > 0 ? Math.round((totalEarned / gameCost) * 100) : 0;
         paybackPercentLabelEl.textContent = `${pctPayback}% от ${gameCost.toLocaleString('ru-RU')} ₽`;
-        paybackProgressBarEl.style.width = `${pctPayback}%`;
+        paybackProgressBarEl.style.width = `${Math.min(100, pctPayback)}%`;
 
         if (totalEarned >= gameCost) {
           const netProfit = totalEarned - gameCost;
