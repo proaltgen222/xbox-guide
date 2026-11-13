@@ -2223,6 +2223,132 @@
 
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- ACCOUNT EDIT/ADD MODAL -->
+  <div class="modal-backdrop" id="accountModal" aria-hidden="true">
+    <div class="modal-panel" style="max-width: 520px;" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title" id="accountModalTitle">🎮 Настройка профиля Xbox</div>
+        <button type="button" class="modal-close-btn js-close-account-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="accModalId" value="" />
+        <div>
+          <label class="field-label" for="accModalName">Название профиля *</label>
+          <input type="text" class="input" id="accModalName" placeholder="Напр. Основной (ViceBeach)" required />
+        </div>
+        <div>
+          <label class="field-label" for="accModalEmail">Почта для входа (Outlook / Hotmail) *</label>
+          <input type="email" class="input" id="accModalEmail" placeholder="vice_gta6_box@outlook.com" required />
+        </div>
+        <div>
+          <label class="field-label" for="accModalGamertag">Геймтег / Ник на Xbox</label>
+          <input type="text" class="input" id="accModalGamertag" placeholder="ViceBeach#5506" />
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div>
+            <label class="field-label" for="accModalCost">Стоимость покупки игры, ₽</label>
+            <input type="number" class="input" id="accModalCost" value="8198" min="0" step="1" />
+          </div>
+          <div>
+            <label class="field-label" for="accModalSlots">Максимум слотов</label>
+            <input type="number" class="input" id="accModalSlots" value="25" min="1" max="100" />
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+          <button type="button" class="btn-ghost danger" id="btnDeleteAccount" style="display:none;">🗑 Удалить профиль</button>
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button type="button" class="btn-sm js-close-account-modal">Отмена</button>
+            <button type="button" class="btn-sm primary" id="btnSaveAccount">💾 Сохранить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOUD SYNC MODAL -->
+  <div class="modal-backdrop" id="cloudSyncModal" aria-hidden="true">
+    <div class="modal-panel" style="max-width: 580px;" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title">☁️ Авто-синхронизация (ПК ⇄ Телефон)</div>
+        <button type="button" class="modal-close-btn js-close-cloud-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:14px; font-size:13px; line-height:1.5;">
+          <div style="font-weight:800; color:#67e8f9; margin-bottom:4px;">✨ Вариант 1: Облачный JSON-ящик</div>
+          <div>Изменения базы клиентов, кассы и статусов сохраняются в защищенном облаке в реальном времени. При изменении на ПК — телефон сразу видит обновление, и наоборот!</div>
+        </div>
+
+        <div>
+          <label class="field-label" for="syncKeyInput">Секретный ключ синхронизации (Sync Key)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" class="input" id="syncKeyInput" placeholder="Придумайте ключ (напр. vice_777) или нажмите Создать" style="font-family:var(--font-mono); font-size:13px;" />
+            <button type="button" class="btn-ghost primary" id="btnGenSyncKey" style="white-space:nowrap; font-weight:700;">⚡ Создать ключ в 1 клик</button>
+          </div>
+          <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;">Бесплатное безопасное облако KeyVal REST (без регистрации и без паролей).</div>
+        </div>
+
+        <div id="syncPhoneLinkBox" style="background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.3); border-radius:10px; padding:12px;">
+          <div style="font-size:12px; font-weight:700; color:#67e8f9; margin-bottom:4px;">📱 Ссылка для телефона (откройте на смартфоне):</div>
+          <div style="display:flex; gap:6px;">
+            <input type="text" class="input" id="syncPhoneLinkInput" readonly style="font-size:11.5px; color:#cbd5e1; font-family:var(--font-mono);" />
+            <button type="button" class="btn-ghost" id="btnCopyPhoneLink" style="white-space:nowrap;">📋 Скопировать</button>
+          </div>
+          <div style="font-size:11px; color:#94a3b8; margin-top:4px;">Откройте эту ссылку на телефоне — и он мгновенно подключится к вашей базе без ручного ввода ключа!</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); flex-wrap:wrap; gap:8px;">
+          <button type="button" class="btn-ghost danger" id="btnDisableSync">✕ Отключить синхронизацию</button>
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button type="button" class="btn-ghost" id="btnManualSyncNow">🔄 Синхронизировать сейчас</button>
+            <button type="button" class="btn-sm primary" id="btnSaveCloudSync">💾 Включить авто-синхронизацию</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+  (function initPinGate() {
+    var overlay = document.getElementById('pinGateOverlay');
+    var input = document.getElementById('pinInput');
+    var btn = document.getElementById('pinSubmitBtn');
+    var err = document.getElementById('pinError');
+    var DEFAULT_PIN = '7777';
+
+    if (sessionStorage.getItem('seller_pult_auth') === 'true') {
+      overlay.style.display = 'none';
+      return;
+    }
+
+    function verifyPin() {
+      var entered = (input.value || '').trim();
+      var savedPin = localStorage.getItem('seller_pult_pin') || DEFAULT_PIN;
+      if (entered === savedPin || entered === DEFAULT_PIN) {
+        sessionStorage.setItem('seller_pult_auth', 'true');
+        overlay.style.display = 'none';
+        err.textContent = '';
+      } else {
+        err.textContent = '✕ Неверный PIN-код';
+        input.value = '';
+        input.focus();
+        input.style.borderColor = '#ef4444';
+        setTimeout(function () { input.style.borderColor = '#334366'; }, 1000);
+      }
+    }
+
+    if (btn && input) {
+      btn.addEventListener('click', verifyPin);
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          verifyPin();
+        }
+      });
+    }
+  })();
+  </script>
+
   <script>
     (function () {
       'use strict';
@@ -3468,7 +3594,8 @@ As long as our profile stays saved on your console, the game will launch without
       }
 
       function openAccountModal(accToEdit) {
-        if (!accountModal) return;
+        const modal = accountModal || document.getElementById("accountModal");
+        if (!modal) return;
         if (accToEdit) {
           accountModalTitle.textContent = `⚙️ Настройка профиля: ${accToEdit.name}`;
           accModalId.value = accToEdit.id;
@@ -4416,7 +4543,10 @@ As long as our profile stays saved on your console, the game will launch without
       function updatePhoneLinkUI(key) {
         if (!syncPhoneLinkBox || !syncPhoneLinkInput) return;
         if (key) {
-          const base = window.location.href.split('#')[0];
+          let base = window.location.href.split('#')[0];
+          if (base.startsWith('file:') || base.includes('localhost') || base.includes('127.0.0.1')) {
+            base = 'https://proaltgen222.github.io/xbox-guide/pult.html';
+          }
           syncPhoneLinkInput.value = `${base}#sync=${encodeURIComponent(key)}`;
           syncPhoneLinkBox.style.display = 'block';
         } else {
@@ -4425,7 +4555,8 @@ As long as our profile stays saved on your console, the game will launch without
       }
 
       function openCloudModal() {
-        if (!cloudSyncModal) return;
+        const modal = cloudSyncModal || document.getElementById("cloudSyncModal");
+        if (!modal) return;
         syncKeyInput.value = (state.sync && state.sync.key) || '';
         updatePhoneLinkUI(syncKeyInput.value.trim());
         cloudSyncModal.classList.add('open');
@@ -4646,131 +4777,5 @@ As long as our profile stays saved on your console, the game will launch without
   </script>
 
 
-  <!-- ACCOUNT EDIT/ADD MODAL -->
-  <div class="modal-backdrop" id="accountModal" aria-hidden="true">
-    <div class="modal-panel" style="max-width: 520px;" role="dialog" aria-modal="true">
-      <div class="modal-header">
-        <div class="modal-title" id="accountModalTitle">🎮 Настройка профиля Xbox</div>
-        <button type="button" class="modal-close-btn js-close-account-modal">✕</button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="accModalId" value="" />
-        <div>
-          <label class="field-label" for="accModalName">Название профиля *</label>
-          <input type="text" class="input" id="accModalName" placeholder="Напр. Основной (ViceBeach)" required />
-        </div>
-        <div>
-          <label class="field-label" for="accModalEmail">Почта для входа (Outlook / Hotmail) *</label>
-          <input type="email" class="input" id="accModalEmail" placeholder="vice_gta6_box@outlook.com" required />
-        </div>
-        <div>
-          <label class="field-label" for="accModalGamertag">Геймтег / Ник на Xbox</label>
-          <input type="text" class="input" id="accModalGamertag" placeholder="ViceBeach#5506" />
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-          <div>
-            <label class="field-label" for="accModalCost">Стоимость покупки игры, ₽</label>
-            <input type="number" class="input" id="accModalCost" value="8198" min="0" step="1" />
-          </div>
-          <div>
-            <label class="field-label" for="accModalSlots">Максимум слотов</label>
-            <input type="number" class="input" id="accModalSlots" value="25" min="1" max="100" />
-          </div>
-        </div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-          <button type="button" class="btn-ghost danger" id="btnDeleteAccount" style="display:none;">🗑 Удалить профиль</button>
-          <div style="display:flex; gap:8px; margin-left:auto;">
-            <button type="button" class="btn-sm js-close-account-modal">Отмена</button>
-            <button type="button" class="btn-sm primary" id="btnSaveAccount">💾 Сохранить</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CLOUD SYNC MODAL -->
-  <div class="modal-backdrop" id="cloudSyncModal" aria-hidden="true">
-    <div class="modal-panel" style="max-width: 580px;" role="dialog" aria-modal="true">
-      <div class="modal-header">
-        <div class="modal-title">☁️ Авто-синхронизация (ПК ⇄ Телефон)</div>
-        <button type="button" class="modal-close-btn js-close-cloud-modal">✕</button>
-      </div>
-      <div class="modal-body">
-        <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:14px; font-size:13px; line-height:1.5;">
-          <div style="font-weight:800; color:#67e8f9; margin-bottom:4px;">✨ Вариант 1: Облачный JSON-ящик</div>
-          <div>Изменения базы клиентов, кассы и статусов сохраняются в защищенном облаке в реальном времени. При изменении на ПК — телефон сразу видит обновление, и наоборот!</div>
-        </div>
-
-        <div>
-          <label class="field-label" for="syncKeyInput">Секретный ключ синхронизации (Sync Key)</label>
-          <div style="display:flex; gap:8px;">
-            <input type="text" class="input" id="syncKeyInput" placeholder="Придумайте ключ (напр. vice_777) или нажмите Создать" style="font-family:var(--font-mono); font-size:13px;" />
-            <button type="button" class="btn-ghost primary" id="btnGenSyncKey" style="white-space:nowrap; font-weight:700;">⚡ Создать ключ в 1 клик</button>
-          </div>
-          <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;">Бесплатное безопасное облако KeyVal REST (без регистрации и без паролей).</div>
-        </div>
-
-        <div id="syncPhoneLinkBox" style="background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.3); border-radius:10px; padding:12px;">
-          <div style="font-size:12px; font-weight:700; color:#67e8f9; margin-bottom:4px;">📱 Ссылка для телефона (откройте на смартфоне):</div>
-          <div style="display:flex; gap:6px;">
-            <input type="text" class="input" id="syncPhoneLinkInput" readonly style="font-size:11.5px; color:#cbd5e1; font-family:var(--font-mono);" />
-            <button type="button" class="btn-ghost" id="btnCopyPhoneLink" style="white-space:nowrap;">📋 Скопировать</button>
-          </div>
-          <div style="font-size:11px; color:#94a3b8; margin-top:4px;">Откройте эту ссылку на телефоне — и он мгновенно подключится к вашей базе без ручного ввода ключа!</div>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); flex-wrap:wrap; gap:8px;">
-          <button type="button" class="btn-ghost danger" id="btnDisableSync">✕ Отключить синхронизацию</button>
-          <div style="display:flex; gap:8px; margin-left:auto;">
-            <button type="button" class="btn-ghost" id="btnManualSyncNow">🔄 Синхронизировать сейчас</button>
-            <button type="button" class="btn-sm primary" id="btnSaveCloudSync">💾 Включить авто-синхронизацию</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <script>
-  (function initPinGate() {
-    var overlay = document.getElementById('pinGateOverlay');
-    var input = document.getElementById('pinInput');
-    var btn = document.getElementById('pinSubmitBtn');
-    var err = document.getElementById('pinError');
-    var DEFAULT_PIN = '7777';
-
-    if (sessionStorage.getItem('seller_pult_auth') === 'true') {
-      overlay.style.display = 'none';
-      return;
-    }
-
-    function verifyPin() {
-      var entered = (input.value || '').trim();
-      var savedPin = localStorage.getItem('seller_pult_pin') || DEFAULT_PIN;
-      if (entered === savedPin || entered === DEFAULT_PIN) {
-        sessionStorage.setItem('seller_pult_auth', 'true');
-        overlay.style.display = 'none';
-        err.textContent = '';
-      } else {
-        err.textContent = '✕ Неверный PIN-код';
-        input.value = '';
-        input.focus();
-        input.style.borderColor = '#ef4444';
-        setTimeout(function () { input.style.borderColor = '#334366'; }, 1000);
-      }
-    }
-
-    if (btn && input) {
-      btn.addEventListener('click', verifyPin);
-      input.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          verifyPin();
-        }
-      });
-    }
-  })();
-  </script>
-
-</body>
+  </body>
 </html>
