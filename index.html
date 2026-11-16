@@ -872,24 +872,7 @@
         btn.addEventListener('click', function () { copyVal(btn.getAttribute('data-copy'), btn); });
       });
 
-      // Secret seller panel access
-      function checkSellerHash() {
-        if (window.location.hash === '#pult' || window.location.hash === '#seller') {
-          window.location.href = 'pult.html';
-        }
-      }
-      checkSellerHash();
-      window.addEventListener('hashchange', checkSellerHash);
-
-      // Admin entrance via direct URL pult.html or hash (#pult)
-
-      // Secret hotkey Ctrl+Shift+P
-      document.addEventListener('keydown', function (e) {
-        if (e.ctrlKey && e.shiftKey && (e.key === 'P' || e.key === 'p' || e.key === 'З' || e.key === 'з')) {
-          e.preventDefault();
-          window.location.href = 'pult.html';
-        }
-      });
+      // No secret shortcuts in buyer guide
     })();
   </script>
 </body>
