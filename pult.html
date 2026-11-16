@@ -2058,9 +2058,246 @@
       color: #ef4444;
     }
     
-  </style>
+  
+
+    /* ==========================================
+       PIN LOCK SCREEN (SECURITY)
+       ========================================== */
+    body.is-locked .workspace,
+    body.is-locked .accounts-bar,
+    body.is-locked .topbar-actions {
+      display: none !important;
+    }
+    body.is-locked {
+      overflow: hidden !important;
+    }
+
+    .pin-lock-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: radial-gradient(circle at 50% 25%, #111a2e 0%, #060911 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: inherit;
+      backdrop-filter: blur(14px);
+      user-select: none;
+    }
+
+    .pin-card {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 24px;
+      padding: 32px 24px 28px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(6, 182, 212, 0.15);
+      position: relative;
+      animation: pinCardFadeIn 0.25s ease-out;
+    }
+
+    @keyframes pinCardFadeIn {
+      from { opacity: 0; transform: scale(0.96) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes pinShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+
+    .pin-card.shake {
+      animation: pinShake 0.4s ease-in-out;
+      border-color: #ef4444;
+      box-shadow: 0 0 35px rgba(239, 68, 68, 0.35);
+    }
+
+    .pin-icon-wrap {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(236, 72, 153, 0.2));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+    }
+
+    .pin-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .pin-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    .pin-dots-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      background: rgba(0, 0, 0, 0.4);
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .pin-dot.filled {
+      background: var(--cyan);
+      border-color: #38bdf8;
+      box-shadow: 0 0 14px var(--cyan);
+      transform: scale(1.15);
+    }
+
+    .pin-error-text {
+      color: #f87171;
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 20px;
+      margin-bottom: 14px;
+    }
+
+    .pin-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .pin-key {
+      height: 56px;
+      background: rgba(30, 41, 59, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s ease;
+      font-family: inherit;
+    }
+
+    .pin-key:hover {
+      background: rgba(51, 65, 85, 0.85);
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .pin-key:active {
+      transform: scale(0.95);
+      background: rgba(6, 182, 212, 0.25);
+      border-color: var(--cyan);
+    }
+
+    .pin-key.key-action {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: rgba(15, 23, 42, 0.5);
+    }
+    .pin-key.key-action:hover {
+      color: #ffffff;
+      background: rgba(30, 41, 59, 0.8);
+    }
+
+    .pin-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+</style>
 </head>
 <body>
+
+  <!-- PIN LOCK SCREEN OVERLAY -->
+  <div class="pin-lock-overlay" id="pinLockOverlay">
+    <div class="pin-card" id="pinCard">
+      <div class="pin-icon-wrap">🔒</div>
+      <div class="pin-title">ПУЛЬТ ПРОДАВЦА — GTA VI</div>
+      <div class="pin-subtitle">База клиентов и касса защищены.<br/>Введите 4-значный PIN-код:</div>
+
+      <div class="pin-dots-wrap" id="pinDots">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <div class="pin-error-text" id="pinErrorMsg"></div>
+
+      <input type="password" id="pinHiddenInput" inputmode="numeric" maxlength="4" style="position:absolute; opacity:0; pointer-events:none; width:1px; height:1px;" />
+
+      <div class="pin-keypad" id="pinKeypad">
+        <button type="button" class="pin-key" data-digit="1">1</button>
+        <button type="button" class="pin-key" data-digit="2">2</button>
+        <button type="button" class="pin-key" data-digit="3">3</button>
+        <button type="button" class="pin-key" data-digit="4">4</button>
+        <button type="button" class="pin-key" data-digit="5">5</button>
+        <button type="button" class="pin-key" data-digit="6">6</button>
+        <button type="button" class="pin-key" data-digit="7">7</button>
+        <button type="button" class="pin-key" data-digit="8">8</button>
+        <button type="button" class="pin-key" data-digit="9">9</button>
+        <button type="button" class="pin-key key-action" id="btnPinClear" title="Очистить">⌫</button>
+        <button type="button" class="pin-key" data-digit="0">0</button>
+        <button type="button" class="pin-key key-action" id="btnPinSubmit" style="color:var(--cyan); font-weight:800;" title="Войти">⏎</button>
+      </div>
+
+      <div class="pin-hint">PIN по умолчанию: <strong>2026</strong> (можно сменить в пульте)</div>
+    </div>
+  </div>
+
+  <!-- CHANGE PIN MODAL -->
+  <div class="modal-overlay" id="changePinModal">
+    <div class="modal-card" style="max-width: 420px;">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ Настройка PIN-кода</div>
+        <button type="button" class="modal-close" id="btnCloseChangePinModal">✕</button>
+      </div>
+      <form id="changePinForm" style="display:flex; flex-direction:column; gap:14px; margin-top:10px;">
+        <div class="form-group">
+          <label class="form-label">Текущий PIN-код (по умолчанию 2026):</label>
+          <input type="password" class="text-input" id="inputOldPin" maxlength="8" inputmode="numeric" required placeholder="Введите текущий PIN" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Новый PIN-код (4 цифры):</label>
+          <input type="password" class="text-input" id="inputNewPin" maxlength="8" inputmode="numeric" required placeholder="Например: 7777" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Повторите новый PIN-код:</label>
+          <input type="password" class="text-input" id="inputNewPinConfirm" maxlength="8" inputmode="numeric" required placeholder="Повторите новый PIN" />
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+          <button type="button" class="btn-ghost" id="btnCancelChangePin">Отмена</button>
+          <button type="submit" class="btn-primary" style="padding:8px 18px;">💾 Сохранить новый PIN</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
 
   <!-- TOP HEADER -->
   <header class="topbar">
@@ -2076,6 +2313,9 @@
     </div>
 
     <div class="topbar-actions">
+      <button type="button" class="btn-ghost" id="btnLockApp" style="color:#f87171; border-color:rgba(239,68,68,0.4);" title="Заблокировать пульт">🔒 Заблокировать</button>
+      <button type="button" class="btn-ghost" id="btnChangePin" title="Сменить 4-значный PIN-код">⚙️ PIN: 2026</button>
+
       <a href="index.html" class="btn-ghost" style="text-decoration:none; color:var(--cyan); border-color:var(--cyan); font-weight:700;" title="Вернуться к сайту инструкции">← Инструкция</a>
       <button type="button" class="cloud-pill" id="btnCloudSync" title="Облачная авто-синхронизация ПК ⇄ Телефон">☁️ <span id="cloudStatusLabel">Облако: Автономно</span></button>
       <button type="button" class="btn-sm" id="btnQuickCopyBase" style="background:#16a34a; color:#ffffff; font-weight:800; font-size:12.5px; padding:7px 12px; border-radius:8px; border:1px solid #4ade80; cursor:pointer; box-shadow:0 0 10px rgba(34,197,94,0.35); display:inline-flex; align-items:center; gap:5px;" title="Скопировать всю базу (клиенты + шаблоны)">📋 Скопировать базу</button>
@@ -2636,6 +2876,7 @@
       'use strict';
 
       const STORAGE_KEY = 'pult_prodavca_gta6_v1';
+      const DEFAULT_PIN = '2026';
       const GAME_COST = 8198;
       const MAX_SLOTS = 25;
       const TIMER_DURATION_SEC = 20 * 60;
@@ -2955,217 +3196,7 @@ As long as our profile stays saved on your console, the game will launch without
       ];
 
       // Initial clients imported directly from sell/client.txt
-      const INITIAL_CLIENTS = [
-        {
-                "id": "c_init_1",
-                "name": "daniel4920494",
-                "platform": "FunPay",
-                "amount": 390,
-                "comment": "Series S / 0F34JW324333PC",
-                "status": "done",
-                "createdAt": 1700000001000,
-                "url": "https://funpay.com/chat/?node=301071265",
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_init_2",
-                "name": "NoNam37",
-                "platform": "FunPay",
-                "amount": 390,
-                "comment": "Series X / 101818222917",
-                "status": "done",
-                "createdAt": 1700000002000,
-                "url": "https://funpay.com/chat/?node=301106820",
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_init_3",
-                "name": "Fassseq",
-                "platform": "FunPay",
-                "amount": 390,
-                "comment": "Series S / 139052214917",
-                "status": "done",
-                "createdAt": 1700000003000,
-                "url": "https://funpay.com/chat/?node=301121150",
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_init_4",
-                "name": "Артем(зел ава)",
-                "platform": "Авито",
-                "amount": 630,
-                "comment": "Series S / 110983203417",
-                "status": "done",
-                "createdAt": 1700000004000,
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-1aQQhdpxhOOZ4bv3bdrGMg",
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794399678639_vj5e",
-                "name": "Никита",
-                "platform": "Авито",
-                "amount": 650,
-                "comment": "Вход 15.18  / Series S / 227781222817",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-eTufROjD_cgSJxaPO1t69g",
-                "status": "done",
-                "createdAt": 1794399678639,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794402851984_a26c",
-                "name": "Влад",
-                "platform": "Авито",
-                "amount": 750,
-                "comment": "Вход 16.20 / Series S / 143023221717",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-EvVLUERfLvQrve7O1D0hfg",
-                "status": "done",
-                "createdAt": 1794402851984,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794407194540_1feg",
-                "name": "FanMag",
-                "platform": "FunPay",
-                "amount": 390,
-                "comment": "Seies S / 034121215017",
-                "url": "https://funpay.com/chat/?node=301212863",
-                "status": "done",
-                "createdAt": 1794407194540,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794422071326_r88n",
-                "name": "godfeature",
-                "platform": "Playerok",
-                "amount": 373,
-                "comment": "Series S / 052259243117",
-                "url": "https://playerok.com/chats/1f1dde7f-867e-6ba0-8675-b0c4d4e9d612",
-                "status": "done",
-                "createdAt": 1794422071326,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794427678820_pesn",
-                "name": "Я",
-                "platform": "Telegram",
-                "amount": 0,
-                "comment": "041790220817",
-                "url": "https://041790220817",
-                "status": "done",
-                "createdAt": 1794427678820,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794495760238_0rtb",
-                "name": "Николай",
-                "platform": "Авито",
-                "amount": 840,
-                "comment": "Series S / 062022221617",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-h48PYYThPCEtRIyBq9KbHw",
-                "status": "done",
-                "createdAt": 1794495760238,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794496714297_280h",
-                "name": "Егор",
-                "platform": "Авито",
-                "amount": 849,
-                "comment": "Series S / 006844234117",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-kKRH2A6VohALx9d_6rpAMA",
-                "status": "done",
-                "createdAt": 1794496714297,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794501622848_ujx9",
-                "name": "nik",
-                "platform": "Авито",
-                "amount": 800,
-                "comment": "Series X / 124172220817",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-KtaBwQVubm2WJhGil3ghdg",
-                "status": "done",
-                "createdAt": 1794501622848,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794501862516_m9t5",
-                "name": "Geek Devices",
-                "platform": "Авито",
-                "amount": 852,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-OT0IPdrnfTe~5YCxtxTyTA",
-                "status": "done",
-                "createdAt": 1794501862516,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794511665581_fkdh",
-                "name": "Виктор",
-                "platform": "Авито",
-                "amount": 855,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-wzFkkVQnzdJVIY9jtzElqQ",
-                "status": "done",
-                "createdAt": 1794511665581,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794513823614_hmlc",
-                "name": "иван",
-                "platform": "Авито",
-                "amount": 1050,
-                "comment": "23.40",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-AMGzYUSaXyj_aKHmXsgeeA",
-                "status": "done",
-                "createdAt": 1794513823614,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794513928996_uw9y",
-                "name": "Сергей",
-                "platform": "Авито",
-                "amount": 1000,
-                "comment": "23.10",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-FhcowVjmRWWZiPsgTNCNJw",
-                "status": "done",
-                "createdAt": 1794513928996,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794575761644_0kpp",
-                "name": "Дмитрий",
-                "platform": "Авито",
-                "amount": 1050,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-_vOQvIXnuk4qc8sAs9i3Ng",
-                "status": "done",
-                "createdAt": 1794575761644,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794575783403_i9uf",
-                "name": "Иван",
-                "platform": "Авито",
-                "amount": 1050,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-IheXboLP55LP7U5sEfVhhw",
-                "status": "done",
-                "createdAt": 1794575783403,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794575793887_7dvq",
-                "name": "Вадим",
-                "platform": "Авито",
-                "amount": 1050,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-hYIT3xjNmH955v6QpKtF7A",
-                "status": "done",
-                "createdAt": 1794575793887,
-                "accountId": "acc_1"
-        }
-];
+      const INITIAL_CLIENTS = [];
 
       const STATUS_META = {
         queue: { icon: '⏳', short: 'В очереди', full: '⏳ В очереди' },
@@ -3356,224 +3387,14 @@ As long as our profile stays saved on your console, the game will launch without
         }
       ];
 
-      const RECOVERED_PHONE = "7 966 176 7321";
-      const RECOVERED_BANK = "Т-Банк";
+      const RECOVERED_PHONE = "";
+      const RECOVERED_BANK = "";
       const RECOVERED_CUSTOM_TEMPLATES = {
         "tpl_2": "Отлично! Цена - 767 ₽:\n\n📱 Карта: {телефон}\n🏦 Банк: {банк}\n\nПосле, пришлите, пожалуйста, скриншот чека (или имя отправителя).\nСразу после оплаты поставлю вас в очередь и выдам почту для входа — настройка займёт 3–5 минут 🤝",
         "tpl_4": "На экране настройки входа нажимайте так:\n• «Мы обнаружили параметры вашей...» -> нажмите «СПАСИБО, НЕ НАДО»\n• На предложения сбора данных / рекламы / подписок -> «Спасибо, не надо» / «Далее».\n• «Войти сразу?« -> нажмите «ПРОПУСТИТЬ»\n• «Параметры входа и безопасности» -> обязательно выберите «Без ограничений».\n• «Связать геймпад» -> нажмите «Пропустить».\n• ⚠️ На экране «Сделать моей домашней консолью Xbox?» -> ОБЯЗАТЕЛЬНО нажмите «НЕ ИЗМЕНЯТЬ»! (Трогать домашнюю консоль запрещено).",
         "tpl_5": "Нажимайте на консоли строго по этим шагам:\n\n1. НАСТРОЙКИ ПРИ ВХОДЕ (ВАЖНО!):\n• «Мы обнаружили параметры вашей...» -> нажмите «СПАСИБО, НЕ НАДО»\n• На предложения сбора данных / рекламы / подписок -> «Спасибо, не надо» / «Далее».\n• «Войти сразу?« -> нажмите «ПРОПУСТИТЬ»\n• «Параметры входа и безопасности» -> обязательно выберите «Без ограничений».\n• «Связать геймпад» -> нажмите «Пропустить».\n• ⚠️ На экране «Сделать моей домашней консолью Xbox?» -> ОБЯЗАТЕЛЬНО нажмите «НЕ ИЗМЕНЯТЬ»! (Трогать домашнюю консоль запрещено).\n\n2. КАК ПОСТАВИТЬ ПРЕДЗАГРУЗКУ GTA6:\n1) Проверьте регион консоли: «Параметры» -> «Система» -> «Язык и местонахождение» -> поставьте «Новая Зеландия» (чтобы игра открылась вам на сутки раньше — 18 ноября в 14:00 МСК!).\n2) Зайдите в «Мои игры и приложения» -> «Полная библиотека» -> «Все собственные игры».\n3) Наведите на Grand Theft Auto VI -> нажмите кнопку «Меню» (три полоски на геймпаде) -> «Управление игрой и дополнениями».\n4) Нажмите на игру -> «Выбрать всех» (игра 209,9 ГБ + улучшение до Ultimate Edition + пак Vintage Vice City) -> нажмите «Установить / Сохранить изменения».\n5) Перейдите в «Очередь» и подождите 1–2 минуты, пока скачается первые 200–300 МБ игры.\n6) ⚠️ КРИТИЧЕСКИЙ МОМЕНТ: Как только первые 200 МБ пошли качаться — нажмите кнопку Xbox, наведите на наш профиль (vice_gta6_box) и нажмите «Выйти», оставшись на своем личном аккаунте! Игра спокойно докачает все 210 ГБ в фоне на вашем профиле.\n\nКак только поставите игру в очередь загрузки и выйдете на свой профиль (Пункт 2) — отпишитесь, пожалуйста."
 };
-      const RECOVERED_CLIENTS = [
-        {
-                "id": "c_init_1",
-                "name": "daniel4920494",
-                "platform": "FunPay",
-                "amount": 390,
-                "comment": "Series S / 0F34JW324333PC",
-                "status": "done",
-                "createdAt": 1700000001000,
-                "url": "https://funpay.com/chat/?node=301071265",
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_init_2",
-                "name": "NoNam37",
-                "platform": "FunPay",
-                "amount": 390,
-                "comment": "Series X / 101818222917",
-                "status": "done",
-                "createdAt": 1700000002000,
-                "url": "https://funpay.com/chat/?node=301106820",
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_init_3",
-                "name": "Fassseq",
-                "platform": "FunPay",
-                "amount": 390,
-                "comment": "Series S / 139052214917",
-                "status": "done",
-                "createdAt": 1700000003000,
-                "url": "https://funpay.com/chat/?node=301121150",
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_init_4",
-                "name": "Артем(зел ава)",
-                "platform": "Авито",
-                "amount": 630,
-                "comment": "Series S / 110983203417",
-                "status": "done",
-                "createdAt": 1700000004000,
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-1aQQhdpxhOOZ4bv3bdrGMg",
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794399678639_vj5e",
-                "name": "Никита",
-                "platform": "Авито",
-                "amount": 650,
-                "comment": "Вход 15.18  / Series S / 227781222817",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-eTufROjD_cgSJxaPO1t69g",
-                "status": "done",
-                "createdAt": 1794399678639,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794402851984_a26c",
-                "name": "Влад",
-                "platform": "Авито",
-                "amount": 750,
-                "comment": "Вход 16.20 / Series S / 143023221717",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-EvVLUERfLvQrve7O1D0hfg",
-                "status": "done",
-                "createdAt": 1794402851984,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794407194540_1feg",
-                "name": "FanMag",
-                "platform": "FunPay",
-                "amount": 390,
-                "comment": "Seies S / 034121215017",
-                "url": "https://funpay.com/chat/?node=301212863",
-                "status": "done",
-                "createdAt": 1794407194540,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794422071326_r88n",
-                "name": "godfeature",
-                "platform": "Playerok",
-                "amount": 373,
-                "comment": "Series S / 052259243117",
-                "url": "https://playerok.com/chats/1f1dde7f-867e-6ba0-8675-b0c4d4e9d612",
-                "status": "done",
-                "createdAt": 1794422071326,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794427678820_pesn",
-                "name": "Я",
-                "platform": "Telegram",
-                "amount": 0,
-                "comment": "041790220817",
-                "url": "https://041790220817",
-                "status": "done",
-                "createdAt": 1794427678820,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794495760238_0rtb",
-                "name": "Николай",
-                "platform": "Авито",
-                "amount": 840,
-                "comment": "Series S / 062022221617",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-h48PYYThPCEtRIyBq9KbHw",
-                "status": "done",
-                "createdAt": 1794495760238,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794496714297_280h",
-                "name": "Егор",
-                "platform": "Авито",
-                "amount": 849,
-                "comment": "Series S / 006844234117",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-kKRH2A6VohALx9d_6rpAMA",
-                "status": "done",
-                "createdAt": 1794496714297,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794501622848_ujx9",
-                "name": "nik",
-                "platform": "Авито",
-                "amount": 800,
-                "comment": "Series X / 124172220817",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-KtaBwQVubm2WJhGil3ghdg",
-                "status": "done",
-                "createdAt": 1794501622848,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794501862516_m9t5",
-                "name": "Geek Devices",
-                "platform": "Авито",
-                "amount": 852,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-OT0IPdrnfTe~5YCxtxTyTA",
-                "status": "done",
-                "createdAt": 1794501862516,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794511665581_fkdh",
-                "name": "Виктор",
-                "platform": "Авито",
-                "amount": 855,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-wzFkkVQnzdJVIY9jtzElqQ",
-                "status": "done",
-                "createdAt": 1794511665581,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794513823614_hmlc",
-                "name": "иван",
-                "platform": "Авито",
-                "amount": 1050,
-                "comment": "23.40",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-AMGzYUSaXyj_aKHmXsgeeA",
-                "status": "done",
-                "createdAt": 1794513823614,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794513928996_uw9y",
-                "name": "Сергей",
-                "platform": "Авито",
-                "amount": 1000,
-                "comment": "23.10",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-FhcowVjmRWWZiPsgTNCNJw",
-                "status": "done",
-                "createdAt": 1794513928996,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794575761644_0kpp",
-                "name": "Дмитрий",
-                "platform": "Авито",
-                "amount": 1050,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-_vOQvIXnuk4qc8sAs9i3Ng",
-                "status": "done",
-                "createdAt": 1794575761644,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794575783403_i9uf",
-                "name": "Иван",
-                "platform": "Авито",
-                "amount": 1050,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-IheXboLP55LP7U5sEfVhhw",
-                "status": "done",
-                "createdAt": 1794575783403,
-                "accountId": "acc_1"
-        },
-        {
-                "id": "c_1794575793887_7dvq",
-                "name": "Вадим",
-                "platform": "Авито",
-                "amount": 1050,
-                "comment": "",
-                "url": "https://www.avito.ru/profile/messenger/channel/u2i-hYIT3xjNmH955v6QpKtF7A",
-                "status": "done",
-                "createdAt": 1794575793887,
-                "accountId": "acc_1"
-        }
-];
+      const RECOVERED_CLIENTS = [];
 
       // New DOM references
       const accountsTabsEl = document.getElementById('accountsTabs');
@@ -3633,6 +3454,7 @@ As long as our profile stays saved on your console, the game will launch without
 
             return {
               updatedAt: Number(parsed.updatedAt) || Date.now(),
+              authPin: typeof parsed.authPin === 'string' && parsed.authPin.length >= 4 ? parsed.authPin : DEFAULT_PIN,
               sbpPhone: sbpP,
               sbpBank: sbpB,
               activeTemplateTab: typeof parsed.activeTemplateTab === 'string' ? parsed.activeTemplateTab : 'all',
@@ -3664,6 +3486,7 @@ As long as our profile stays saved on your console, the game will launch without
         }
         return {
           updatedAt: Date.now(),
+          authPin: DEFAULT_PIN,
           sbpPhone: RECOVERED_PHONE,
           sbpBank: RECOVERED_BANK,
           activeTemplateTab: 'all',
@@ -5920,7 +5743,193 @@ As long as our profile stays saved on your console, the game will launch without
         }
       });
 
-            // Initialize App
+            
+
+      // ==========================================
+      // PIN LOCK & SECURITY SYSTEM
+      // ==========================================
+      // DEFAULT_PIN declared at top
+      let enteredPin = '';
+      const pinOverlayEl = document.getElementById('pinLockOverlay');
+      const pinCardEl = document.getElementById('pinCard');
+      const pinDotsEl = document.getElementById('pinDots');
+      const pinErrorMsgEl = document.getElementById('pinErrorMsg');
+      const pinHiddenInput = document.getElementById('pinHiddenInput');
+      const btnLockApp = document.getElementById('btnLockApp');
+      const btnChangePin = document.getElementById('btnChangePin');
+      const changePinModal = document.getElementById('changePinModal');
+      const changePinForm = document.getElementById('changePinForm');
+
+      function isUnlocked() {
+        return sessionStorage.getItem('seller_pult_unlocked') === 'true';
+      }
+
+      function updatePinDots() {
+        if (!pinDotsEl) return;
+        const dots = pinDotsEl.querySelectorAll('.pin-dot');
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('filled', idx < enteredPin.length);
+        });
+      }
+
+      function lockDashboard() {
+        sessionStorage.removeItem('seller_pult_unlocked');
+        document.body.classList.add('is-locked');
+        if (pinOverlayEl) pinOverlayEl.style.display = 'flex';
+        enteredPin = '';
+        if (pinErrorMsgEl) pinErrorMsgEl.textContent = '';
+        updatePinDots();
+        if (pinHiddenInput) {
+          pinHiddenInput.value = '';
+          try { pinHiddenInput.focus(); } catch (_) {}
+        }
+      }
+
+      function unlockDashboard() {
+        sessionStorage.setItem('seller_pult_unlocked', 'true');
+        document.body.classList.remove('is-locked');
+        if (pinOverlayEl) pinOverlayEl.style.display = 'none';
+        enteredPin = '';
+        if (pinErrorMsgEl) pinErrorMsgEl.textContent = '';
+        updatePinDots();
+      }
+
+      function checkPinMatch() {
+        const targetPin = (state.authPin && String(state.authPin).trim()) || DEFAULT_PIN;
+        if (enteredPin === targetPin) {
+          unlockDashboard();
+          showToast('Доступ разрешен ✅');
+        } else {
+          if (pinCardEl) {
+            pinCardEl.classList.add('shake');
+            setTimeout(() => pinCardEl.classList.remove('shake'), 450);
+          }
+          if (pinErrorMsgEl) pinErrorMsgEl.textContent = '❌ Неверный PIN-код! Попробуйте снова.';
+          setTimeout(() => {
+            enteredPin = '';
+            if (pinHiddenInput) pinHiddenInput.value = '';
+            updatePinDots();
+          }, 350);
+        }
+      }
+
+      function handlePinDigit(digit) {
+        if (enteredPin.length >= 4) return;
+        enteredPin += digit;
+        if (pinErrorMsgEl) pinErrorMsgEl.textContent = '';
+        updatePinDots();
+        if (enteredPin.length === 4) {
+          setTimeout(checkPinMatch, 80);
+        }
+      }
+
+      function handlePinBackspace() {
+        if (enteredPin.length > 0) {
+          enteredPin = enteredPin.slice(0, -1);
+          if (pinErrorMsgEl) pinErrorMsgEl.textContent = '';
+          updatePinDots();
+        }
+      }
+
+      // Wire Keypad
+      document.querySelectorAll('#pinKeypad [data-digit]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          handlePinDigit(btn.dataset.digit);
+        });
+      });
+
+      const btnPinClear = document.getElementById('btnPinClear');
+      if (btnPinClear) {
+        btnPinClear.addEventListener('click', (e) => {
+          e.preventDefault();
+          handlePinBackspace();
+        });
+      }
+
+      const btnPinSubmit = document.getElementById('btnPinSubmit');
+      if (btnPinSubmit) {
+        btnPinSubmit.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (enteredPin.length > 0) checkPinMatch();
+        });
+      }
+
+      // Wire Keyboard
+      window.addEventListener('keydown', (e) => {
+        if (!isUnlocked()) {
+          if (e.key >= '0' && e.key <= '9') {
+            e.preventDefault();
+            handlePinDigit(e.key);
+          } else if (e.key === 'Backspace') {
+            e.preventDefault();
+            handlePinBackspace();
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (enteredPin.length > 0) checkPinMatch();
+          } else if (e.key === 'Escape') {
+            enteredPin = '';
+            updatePinDots();
+          }
+        }
+      });
+
+      if (btnLockApp) {
+        btnLockApp.addEventListener('click', lockDashboard);
+      }
+
+      function updatePinButtonLabel() {
+        if (btnChangePin) {
+          const currentPin = (state.authPin && String(state.authPin).trim()) || DEFAULT_PIN;
+          btnChangePin.textContent = `⚙️ PIN: ${currentPin}`;
+        }
+      }
+
+      if (btnChangePin) {
+        btnChangePin.addEventListener('click', () => {
+          if (changePinModal) changePinModal.classList.add('open');
+        });
+      }
+
+      const btnCloseChangePinModal = document.getElementById('btnCloseChangePinModal');
+      const btnCancelChangePin = document.getElementById('btnCancelChangePin');
+      function closeChangePinModal() {
+        if (changePinModal) changePinModal.classList.remove('open');
+        if (changePinForm) changePinForm.reset();
+      }
+      if (btnCloseChangePinModal) btnCloseChangePinModal.addEventListener('click', closeChangePinModal);
+      if (btnCancelChangePin) btnCancelChangePin.addEventListener('click', closeChangePinModal);
+
+      if (changePinForm) {
+        changePinForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const oldPin = document.getElementById('inputOldPin').value.trim();
+          const newPin = document.getElementById('inputNewPin').value.trim();
+          const confirmPin = document.getElementById('inputNewPinConfirm').value.trim();
+
+          const currentTarget = (state.authPin && String(state.authPin).trim()) || DEFAULT_PIN;
+          if (oldPin !== currentTarget) {
+            showToast('Текущий PIN введен неверно!', 'warn');
+            return;
+          }
+          if (newPin.length < 4) {
+            showToast('Новый PIN должен содержать минимум 4 цифры!', 'warn');
+            return;
+          }
+          if (newPin !== confirmPin) {
+            showToast('Новые PIN-коды не совпадают!', 'warn');
+            return;
+          }
+
+          state.authPin = newPin;
+          saveState();
+          updatePinButtonLabel();
+          closeChangePinModal();
+          showToast(`Новый PIN сохранен: ${newPin} ✅`);
+        });
+      }
+
+      // Initialize App
       saveState(true);
       renderTemplates();
       renderAccountsBar();
