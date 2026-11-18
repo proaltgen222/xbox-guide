@@ -498,6 +498,110 @@
       font-weight: 600;
     }
 
+    /* Memo / Callout Card */
+    .memo-card {
+      background: linear-gradient(180deg, rgba(255, 184, 77, 0.08) 0%, rgba(19, 17, 32, 0.98) 100%);
+      border: 1px solid rgba(255, 184, 77, 0.38);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(255, 184, 77, 0.09);
+      border-radius: 20px;
+      padding: 22px 24px;
+      margin-top: 24px;
+    }
+
+    .memo-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .memo-header-icon {
+      font-size: 1.45rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(255, 184, 77, 0.5));
+    }
+
+    .memo-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .memo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .memo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 13px 16px;
+      background: var(--card-inner);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-left: 3px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      font-size: 0.94rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .memo-item strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .memo-item-icon {
+      font-size: 1.25rem;
+      line-height: 1.25;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .memo-item-text {
+      flex: 1 1 auto;
+    }
+
+    .memo-item--danger {
+      border-left-color: var(--red);
+      background: linear-gradient(90deg, rgba(255, 84, 112, 0.10) 0%, var(--card-inner) 100%);
+    }
+    .memo-item--danger strong {
+      color: #ff99ab;
+    }
+
+    .memo-item--warning {
+      border-left-color: var(--amber);
+      background: linear-gradient(90deg, rgba(255, 184, 77, 0.10) 0%, var(--card-inner) 100%);
+    }
+    .memo-item--warning strong {
+      color: #ffd080;
+    }
+
+    .memo-item--accent {
+      border-left-color: var(--cyan);
+      background: linear-gradient(90deg, rgba(0, 224, 245, 0.10) 0%, var(--card-inner) 100%);
+    }
+    .memo-item--accent strong {
+      color: #7ef2ff;
+    }
+
+    .memo-item--success {
+      border-left-color: var(--green);
+      background: linear-gradient(90deg, rgba(31, 209, 118, 0.10) 0%, var(--card-inner) 100%);
+    }
+    .memo-item--success strong {
+      color: #8bf5b5;
+    }
+
     @media (max-width: 560px) {
       .wrap {
         padding: 14px 12px 0;
@@ -518,6 +622,27 @@
       .step-top {
         flex-wrap: wrap;
         gap: 7px;
+      }
+      .memo-card {
+        padding: 16px 14px;
+        border-radius: 16px;
+        margin-top: 18px;
+      }
+      .memo-header {
+        gap: 10px;
+        margin-bottom: 13px;
+        padding-bottom: 11px;
+      }
+      .memo-title {
+        font-size: 1.02rem;
+      }
+      .memo-item {
+        padding: 10px 12px;
+        gap: 10px;
+        font-size: 0.88rem;
+      }
+      .memo-item-icon {
+        font-size: 1.15rem;
       }
     }
   </style>
@@ -764,11 +889,43 @@
       </div>
     </section>
 
-    <aside class="info-card" aria-label="Важная информация">
-      <span class="info-icon" aria-hidden="true">ℹ️</span>
-      <div>
-        Пока вы не перезагружаете и не выключаете консоль полностью, игру можно закрывать и запускать заново <strong>без повторения инструкции</strong>. После перезагрузки приставки просто повторите <strong>шаги со 2-го по 9-й</strong>.
+    <aside class="memo-card" aria-label="Важная памятка перед запуском и по сохранениям">
+      <div class="memo-header">
+        <span class="memo-header-icon" aria-hidden="true">⚠️</span>
+        <h3 class="memo-title">Важная памятка перед запуском и по сохранениям</h3>
       </div>
+      <ol class="memo-list">
+        <li class="memo-item memo-item--danger">
+          <span class="memo-item-icon" aria-hidden="true">👤</span>
+          <div class="memo-item-text">
+            <strong>Выбор профиля при старте:</strong> В окне «Кто играет?» выбирайте ТОЛЬКО свой личный профиль. Если выбрать купленный аккаунт — игру сразу выкинет через 2 секунды.
+          </div>
+        </li>
+        <li class="memo-item memo-item--warning">
+          <span class="memo-item-icon" aria-hidden="true">💾</span>
+          <div class="memo-item-text">
+            <strong>Сохранение сюжета:</strong> Делайте ручное сохранение каждые 20–30 минут или после важных миссий (<span class="path">Меню паузы → Игра → Сохранить игру</span>), чтобы прогресс не откатился при случайном вылете. Перед выключением приставки закройте игру через «Меню (≡) → Выйти» и подождите 15 секунд в сети для синхронизации с облаком.
+          </div>
+        </li>
+        <li class="memo-item">
+          <span class="memo-item-icon" aria-hidden="true">🌙</span>
+          <div class="memo-item-text">
+            <strong>Запуск ночью (01:00–04:00 по вашему местному времени):</strong> На шаге возврата времени перед включением интернета не ставьте свой пояс — выберите дневной/вечерний (например, Лондон UTC+0), иначе не вылезет окно экранного времени. Свой пояс вернёте уже внутри игры.
+          </div>
+        </li>
+        <li class="memo-item memo-item--accent">
+          <span class="memo-item-icon" aria-hidden="true">📺</span>
+          <div class="memo-item-text">
+            <strong>Вылет на чёрный экран без ошибки:</strong> Это обычный вылет самой игры по памяти (актуально для Series S). Перезагрузите консоль и повторите шаги запуска со 2-го шага (занимает 40 секунд).
+          </div>
+        </li>
+        <li class="memo-item memo-item--success">
+          <span class="memo-item-icon" aria-hidden="true">🔄</span>
+          <div class="memo-item-text">
+            <strong>Повторный запуск:</strong> После полного выключения или перезагрузки приставки просто повторите шаги запуска — повторно привязывать аккаунт по коду не нужно.
+          </div>
+        </li>
+      </ol>
     </aside>
   </main>
 
