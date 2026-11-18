@@ -901,11 +901,33 @@
               <span style="color:var(--muted); font-size:0.9rem;">Когда напишет «сбой сети» — просто нажмите кнопку <strong>«B» (Назад)</strong> и вернитесь в игру (если сама игра спросит про синхронизацию — нажмите <strong>«Использовать автономно»</strong>).</span>
             </div>
           </div>
+
+          <div class="alert warn" style="margin: 4px 0; border-width: 2px; border-color: rgba(255, 184, 77, 0.75); background: rgba(255, 184, 77, 0.13);">
+            <strong class="atitle">💡 ЕСЛИ С 0.0.0.0 НЕ ВЫДАЕТ СБОЙ СЕТИ И ПИШЕТ «ПОДКЛЮЧЕНО К ИНТЕРНЕТУ»</strong>
+            <p style="margin-bottom: 8px;">Некоторые домашние роутеры (<strong>TP-Link, Keenetic, Ростелеком</strong>) при вводе нулей <code>0.0.0.0</code> автоматически подставляют свой рабочий интернет в обход нулей!</p>
+            <p style="margin-bottom: 8px;">• <strong>Что делать:</strong> Если после ввода <code>0.0.0.0</code> консоль не написала «сбой сети» (или вас всё равно выбило в игре), введите в <span class="pill">Параметры DNS → Вручную</span> вместо нулей эти адреса:</p>
+            <div style="display:flex; flex-direction:column; gap:7px; margin: 8px 0 10px 6px;">
+              <div>👉 <strong>Основной DNS:</strong> <span class="mono-pill">192.168.254.254</span> <button class="copy-inline" type="button" data-copy="192.168.254.254">Копировать</button></div>
+              <div>👉 <strong>Дополнительный DNS:</strong> <span class="mono-pill">192.168.254.253</span> <button class="copy-inline" type="button" data-copy="192.168.254.253">Копировать</button></div>
+            </div>
+            <p style="font-size: 0.9rem; color: #ffe7bf;"><em>(Примечание: иногда в самом меню сети консоль по старой памяти ещё пишет «Подключено к интернету», хотя доступ к серверам проверки уже заблокирован — просто вернитесь в игру и проверьте!).</em></p>
+          </div>
+
           <div class="t-step" style="border-color: rgba(22, 209, 106, 0.5); background: rgba(22, 209, 106, 0.09);">
             <div class="step-badge" style="background: linear-gradient(135deg, #16d16a, #00c48c);">4</div>
             <div>
               <strong>Кнопку «Автономный режим» НЕ нажимайте и из нашего профиля ViceCity НЕ ВЫХОДИТЕ</strong> (оба профиля остаются включенными!). Держите игру в <strong>Quick Resume (Спящий режим)</strong>, а после завершения игровой сессии верните <span class="pill">Параметры DNS → Автоматически</span>.
             </div>
+          </div>
+        </div>
+
+        <div class="alert ok" style="border-width: 2px; border-color: rgba(22, 209, 106, 0.72); background: rgba(22, 209, 106, 0.13);">
+          <strong class="atitle">✅ ЧТО НАЖИМАТЬ ПРИ ВОЗВРАТЕ В ИГРУ (СИНХРОНИЗАЦИЯ И СОХРАНЕНИЯ)</strong>
+          <p style="margin-bottom: 8px;">Когда вы прописали DNS (<code>0.0.0.0</code> или <code>192.168.254.254</code>) и вернулись в игру:</p>
+          <div style="display:flex; flex-direction:column; gap:7px;">
+            <div><strong>1)</strong> Игра может показать системное окошко синхронизации и предложить кнопку <strong>«Использовать автономно» (или «Автономный режим» внутри самой игры)</strong> — смело нажимайте её! Так и должно быть!</div>
+            <div><strong>2)</strong> Помните: кнопку «Автономный режим» нельзя нажимать <strong>только в самих Настройках приставки Xbox</strong>, а внутри окошка самой игры при старте нажимать <strong>«Использовать автономно» — НУЖНО!</strong></div>
+            <div><strong>3)</strong> Все ваши сохранения пишутся на ваш личный профиль на SSD консоли. Когда закончите играть и вернете <span class="pill">Параметры DNS → Автоматически</span>, приставка сама подтянет и синхронизирует ваши сохранения с облаком Xbox!</div>
           </div>
         </div>
 
