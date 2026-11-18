@@ -247,6 +247,142 @@
       background: #07060d;
     }
 
+    /* Collapsible Text Under Video */
+    .video-details {
+      margin-top: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 14px;
+      background: var(--card-inner);
+      overflow: hidden;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .video-details[open] {
+      border-color: rgba(0, 224, 245, 0.32);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .video-summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 16px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .video-summary::-webkit-details-marker,
+    .video-summary::marker {
+      display: none;
+    }
+
+    .video-summary:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .summary-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .summary-icon {
+      font-size: 1.15rem;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .summary-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .summary-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .summary-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      transition: all 0.2s ease;
+    }
+
+    .summary-action::after {
+      content: "Развернуть";
+    }
+
+    .video-details[open] .summary-action::after {
+      content: "Свернуть";
+    }
+
+    .video-details[open] .summary-action {
+      color: var(--cyan);
+      background: rgba(0, 224, 245, 0.10);
+      border-color: rgba(0, 224, 245, 0.32);
+    }
+
+    .summary-badge--important {
+      color: #ffd080;
+      background: rgba(255, 184, 77, 0.10);
+      border-color: rgba(255, 184, 77, 0.32);
+    }
+
+    .summary-chevron {
+      display: inline-block;
+      font-size: 1rem;
+      color: var(--muted);
+      transition: transform 0.22s ease, color 0.22s ease;
+      line-height: 1;
+    }
+
+    .video-details[open] .summary-chevron {
+      transform: rotate(180deg);
+      color: var(--cyan);
+    }
+
+    .video-details-content {
+      padding: 16px 16px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      animation: detailsFadeIn 0.22s ease;
+    }
+
+    .video-details-content .cleanup-desc {
+      margin-top: 0;
+    }
+
+    .video-details-content .steps {
+      margin-top: 0;
+    }
+
+    @keyframes detailsFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* Rules list */
     .rules-list {
       list-style: none;
@@ -644,6 +780,23 @@
       .memo-item-icon {
         font-size: 1.15rem;
       }
+      .video-summary {
+        padding: 11px 12px;
+        gap: 8px;
+      }
+      .summary-title {
+        font-size: 0.88rem;
+      }
+      .summary-badge--important {
+        display: none;
+      }
+      .summary-badge {
+        font-size: 0.74rem;
+        padding: 2px 8px;
+      }
+      .video-details-content {
+        padding: 12px 10px 14px;
+      }
     }
   </style>
 </head>
@@ -687,22 +840,36 @@
         </video>
       </div>
 
-      <p class="cleanup-desc">Если у вас на консоли остался наш ранее выданный аккаунт, перед входом по новой инструкции <strong>обязательно удалите его</strong>:</p>
+      <details class="video-details" id="cleanup-text">
+        <summary class="video-summary">
+          <span class="summary-left">
+            <span class="summary-icon" aria-hidden="true">📖</span>
+            <span class="summary-title">Текстовая инструкция по удалению (3 шага)</span>
+          </span>
+          <span class="summary-right">
+            <span class="summary-badge summary-action"></span>
+            <span class="summary-chevron" aria-hidden="true">▾</span>
+          </span>
+        </summary>
+        <div class="video-details-content">
+          <p class="cleanup-desc">Если у вас на консоли остался наш ранее выданный аккаунт, перед входом по новой инструкции <strong>обязательно удалите его</strong>:</p>
 
-      <ol class="rules-list">
-        <li class="rule-item">
-          <span class="rule-num">1</span>
-          <div>Откройте <span class="path">Параметры → Учетная запись → Удалить учетные записи</span>.</div>
-        </li>
-        <li class="rule-item">
-          <span class="rule-num">2</span>
-          <div>Выберите старую учетную запись с игрой и подтвердите удаление.</div>
-        </li>
-        <li class="rule-item">
-          <span class="rule-num">3</span>
-          <div>Только после этого переходите к добавлению нового профиля по инструкции ниже!</div>
-        </li>
-      </ol>
+          <ol class="rules-list">
+            <li class="rule-item">
+              <span class="rule-num">1</span>
+              <div>Откройте <span class="path">Параметры → Учетная запись → Удалить учетные записи</span>.</div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num">2</span>
+              <div>Выберите старую учетную запись с игрой и подтвердите удаление.</div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num">3</span>
+              <div>Только после этого переходите к добавлению нового профиля по инструкции ниже!</div>
+            </li>
+          </ol>
+        </div>
+      </details>
     </section>
 
     <!-- Раздел: Вход в аккаунт (видео + шаги) -->
@@ -719,20 +886,34 @@
         </video>
       </div>
 
-      <ol class="rules-list">
-        <li class="rule-item">
-          <span class="rule-num">1</span>
-          <div>Нажмите кнопку <span class="kbd">Xbox</span> (Гид) → <span class="path">Профиль и система → Добавить или сменить → Добавить новое</span>.</div>
-        </li>
-        <li class="rule-item">
-          <span class="rule-num">2</span>
-          <div>Выберите <strong>«Использовать другое устройство»</strong> и отправьте появившийся код продавцу в чат.</div>
-        </li>
-        <li class="rule-item">
-          <span class="rule-num">3</span>
-          <div>После подтверждения входа продавцом нажмите <strong>«Далее»</strong>, обязательно выберите <strong>«Без ограничений»</strong> (чтобы не запрашивать пароль при входе) и пропустите привязку геймпада (кнопка <strong>«Пропустить»</strong>).</div>
-        </li>
-      </ol>
+      <details class="video-details" id="login-text">
+        <summary class="video-summary">
+          <span class="summary-left">
+            <span class="summary-icon" aria-hidden="true">📖</span>
+            <span class="summary-title">Текстовая инструкция по входу (3 шага)</span>
+          </span>
+          <span class="summary-right">
+            <span class="summary-badge summary-action"></span>
+            <span class="summary-chevron" aria-hidden="true">▾</span>
+          </span>
+        </summary>
+        <div class="video-details-content">
+          <ol class="rules-list">
+            <li class="rule-item">
+              <span class="rule-num">1</span>
+              <div>Нажмите кнопку <span class="kbd">Xbox</span> (Гид) → <span class="path">Профиль и система → Добавить или сменить → Добавить новое</span>.</div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num">2</span>
+              <div>Выберите <strong>«Использовать другое устройство»</strong> и отправьте появившийся код продавцу в чат.</div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num">3</span>
+              <div>После подтверждения входа продавцом нажмите <strong>«Далее»</strong>, обязательно выберите <strong>«Без ограничений»</strong> (чтобы не запрашивать пароль при входе) и пропустите привязку геймпада (кнопка <strong>«Пропустить»</strong>).</div>
+            </li>
+          </ol>
+        </div>
+      </details>
     </section>
 
     <!-- Раздел: Важные правила перед входом -->
@@ -772,7 +953,20 @@
         </video>
       </div>
 
-      <div class="steps">
+      <details class="video-details" id="launch-text" open>
+        <summary class="video-summary">
+          <span class="summary-left">
+            <span class="summary-icon" aria-hidden="true">📖</span>
+            <span class="summary-title">Пошаговая текстовая инструкция (9 шагов + подбор пояса)</span>
+          </span>
+          <span class="summary-right">
+            <span class="summary-badge summary-badge--important">⚠️ Содержит важные шаги</span>
+            <span class="summary-badge summary-action"></span>
+            <span class="summary-chevron" aria-hidden="true">▾</span>
+          </span>
+        </summary>
+        <div class="video-details-content">
+          <div class="steps">
         <article class="step">
           <div class="step-top">
             <span class="step-num">Шаг 1</span>
@@ -887,6 +1081,8 @@
           </div>
         </article>
       </div>
+        </div>
+      </details>
     </section>
 
     <aside class="memo-card" aria-label="Важная памятка перед запуском и по сохранениям">
@@ -982,6 +1178,7 @@
             var dist = Math.abs(localMin - 135);
             if (dist < bestDist) {
               bestDist = dist;
+              best = { z: z, localMin: localMin };
             }
           }
         }
