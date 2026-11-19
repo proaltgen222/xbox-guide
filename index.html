@@ -3,24 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>GTA VI (Xbox Series X|S) — Оформление возврата</title>
-  <meta name="description" content="Оформление возврата средств за GTA 6 для Xbox Series X|S." />
+  <title>GTA VI (Xbox Series X|S) — Ultimate Edition | Персональный доступ</title>
+  <meta name="description" content="GTA VI Ultimate Edition на Xbox Series X|S: запуск в один клик через кнопку ИГРАТЬ без муторных инструкций. Одно последнее место." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="GTA VI (Xbox Series X|S) — Оформление возврата" />
-  <meta property="og:description" content="Оформление возврата средств за покупку GTA 6." />
+  <meta property="og:title" content="GTA VI Ultimate Edition — Персональный доступ" />
+  <meta property="og:description" content="Запуск в один клик без муторных инструкций. Одно последнее место на аккаунт." />
   <style>
     :root {
-      --bg: #0a0912;
-      --card: #131120;
-      --card-inner: #1a172b;
+      --bg: #090812;
+      --card: #12101e;
+      --card-inner: #191629;
       --border: rgba(255, 255, 255, 0.09);
       --text: #f5f4fb;
       --muted: #b8b3cf;
-      --dim: #8a84a8;
+      --dim: #827c9e;
       --pink: #ff2e97;
       --cyan: #00e0f5;
       --amber: #ffb84d;
+      --gold: #ffd700;
       --green: #1fd176;
+      --red: #ff5470;
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
@@ -46,281 +48,380 @@
       justify-content: center;
       padding: 24px 14px;
       background:
-        radial-gradient(circle at 85% 8%, rgba(255, 46, 151, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 15% 15%, rgba(0, 224, 245, 0.10) 0%, transparent 40%),
+        radial-gradient(circle at 85% 8%, rgba(255, 46, 151, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 15% 15%, rgba(0, 224, 245, 0.14) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(255, 184, 77, 0.08) 0%, transparent 50%),
         var(--bg);
     }
 
-    .card {
+    .wrap {
       width: 100%;
       max-width: 620px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 32px 26px;
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
     }
 
-    .badge {
+    /* Main VIP Offer Card */
+    .offer-card {
+      background: linear-gradient(180deg, rgba(25, 22, 41, 0.95) 0%, rgba(18, 16, 30, 0.98) 100%);
+      border: 1.5px solid rgba(255, 184, 77, 0.45);
+      border-radius: 24px;
+      padding: 32px 26px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(255, 184, 77, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--pink), var(--amber), var(--cyan));
+    }
+
+    /* Top Scarcity Badge */
+    .top-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .badge-hot {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       font-size: 0.82rem;
-      font-weight: 600;
-      color: #ff99ab;
-      background: rgba(255, 84, 112, 0.12);
-      border: 1px solid rgba(255, 84, 112, 0.32);
-      padding: 5px 13px;
-      border-radius: 999px;
-      margin-bottom: 18px;
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #ff5470;
-    }
-
-    h1 {
-      font-size: clamp(1.4rem, 4.2vw, 1.8rem);
-      line-height: 1.25;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 14px;
-      letter-spacing: -0.01em;
-    }
-
-    .lead {
-      color: var(--text);
-      font-size: 1.02rem;
-      line-height: 1.6;
-      margin-bottom: 22px;
-    }
-
-    /* Fields to send box */
-    .refund-box {
-      background: var(--card-inner);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      border-radius: 16px;
-      padding: 20px 22px;
-      margin-bottom: 22px;
-    }
-
-    .refund-box-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .refund-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .refund-item {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 10px;
-      padding: 9px 13px;
-      font-size: 0.93rem;
-      color: var(--text);
-    }
-
-    .refund-item-icon {
-      font-size: 1.15rem;
-      line-height: 1;
-      flex: 0 0 auto;
-    }
-
-    .refund-item strong {
-      color: #ffffff;
-      font-weight: 600;
-    }
-
-    .copy-btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: rgba(0, 224, 245, 0.12);
-      border: 1px solid rgba(0, 224, 245, 0.35);
-      border-radius: 12px;
-      padding: 11px 16px;
-      color: var(--cyan);
-      font-size: 0.92rem;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all 0.18s ease;
-    }
-
-    .copy-btn:hover {
-      background: rgba(0, 224, 245, 0.20);
-      border-color: var(--cyan);
-      color: #ffffff;
-    }
-
-    .copy-btn.copied {
-      background: rgba(31, 209, 118, 0.16);
-      border-color: rgba(31, 209, 118, 0.45);
-      color: #8bf5b5;
-    }
-
-    /* Big Highlight Box (ВЫДЕЛЕНИЕ) */
-    .highlight-card {
-      background: linear-gradient(135deg, rgba(255, 184, 77, 0.12) 0%, rgba(255, 46, 151, 0.08) 100%);
-      border: 1.5px solid rgba(255, 184, 77, 0.45);
-      border-radius: 18px;
-      padding: 22px 20px;
-      margin-bottom: 22px;
-      box-shadow: 0 8px 24px rgba(255, 184, 77, 0.07);
-    }
-
-    .highlight-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       color: #000000;
-      background: #ffb84d;
-      padding: 3px 10px;
-      border-radius: 6px;
-      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ffb84d, #ffd700);
+      padding: 5px 12px;
+      border-radius: 999px;
+      box-shadow: 0 0 16px rgba(255, 184, 77, 0.4);
     }
 
-    .highlight-text {
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #000000;
+      animation: pulseDot 1.4s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    .badge-edition {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--cyan);
+      background: rgba(0, 224, 245, 0.10);
+      border: 1px solid rgba(0, 224, 245, 0.28);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      font-size: clamp(1.45rem, 4.5vw, 1.85rem);
+      line-height: 1.25;
+      font-weight: 800;
       color: #ffffff;
-      font-size: 1rem;
-      font-weight: 600;
-      line-height: 1.55;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
     }
 
-    .highlight-text span {
-      color: #ffd080;
-    }
-
-    .footer-note {
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
+    .offer-sub {
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.98rem;
+      line-height: 1.55;
+      margin-bottom: 22px;
+    }
+
+    /* Benefits Grid / List */
+    .benefits-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-bottom: 24px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-left: 3px solid var(--cyan);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.94rem;
+      color: var(--muted);
       line-height: 1.5;
+    }
+
+    .benefit-item--gold {
+      border-left-color: var(--amber);
+      background: linear-gradient(90deg, rgba(255, 184, 77, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    }
+
+    .benefit-item--green {
+      border-left-color: var(--green);
+      background: linear-gradient(90deg, rgba(31, 209, 118, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    }
+
+    .benefit-icon {
+      font-size: 1.25rem;
+      line-height: 1.2;
+      flex: 0 0 auto;
+    }
+
+    .benefit-text strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Price Callout */
+    .price-box {
+      background: linear-gradient(135deg, rgba(255, 184, 77, 0.14) 0%, rgba(255, 46, 151, 0.10) 100%);
+      border: 1.5px solid rgba(255, 184, 77, 0.5);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .price-left-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+
+    .price-value {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #ffd700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
+    }
+
+    .price-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .price-right {
+      text-align: right;
+    }
+
+    .price-edition-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(255, 46, 151, 0.25);
+      border: 1px solid rgba(255, 46, 151, 0.45);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Main Action Banner */
+    .cta-banner {
+      background: linear-gradient(90deg, #ff2e97 0%, #ff8c00 100%);
+      border-radius: 14px;
+      padding: 15px 18px;
+      text-align: center;
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      box-shadow: 0 10px 30px rgba(255, 46, 151, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .cta-banner-icon {
+      font-size: 1.25rem;
+    }
+
+    /* Warning / Outdated notice Card */
+    .status-card {
+      background: var(--card);
+      border: 1px solid rgba(255, 84, 112, 0.30);
+      border-radius: 20px;
+      padding: 22px 24px;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .status-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .status-header-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .status-title {
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: #ff99ab;
+      letter-spacing: -0.01em;
+    }
+
+    .status-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .refund-callout {
+      background: rgba(255, 84, 112, 0.10);
+      border: 1px solid rgba(255, 84, 112, 0.35);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .refund-callout-text {
+      font-size: 1.08rem;
+      font-weight: 900;
+      color: #ff5470;
+      letter-spacing: 0.04em;
+    }
+
+    .refund-callout-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 4px;
     }
 
     @media (max-width: 520px) {
       body {
         padding: 16px 10px;
       }
-      .card {
-        padding: 22px 16px;
-        border-radius: 18px;
+      .offer-card {
+        padding: 24px 18px;
+        border-radius: 20px;
       }
-      .refund-box {
+      .price-box {
         padding: 16px 14px;
       }
-      .highlight-card {
-        padding: 18px 16px;
+      .price-value {
+        font-size: 1.6rem;
       }
-      .highlight-text {
+      .cta-banner {
         font-size: 0.95rem;
+        padding: 13px 14px;
+      }
+      .status-card {
+        padding: 18px 16px;
       }
     }
   </style>
 </head>
 <body>
-  <main class="card">
-    <div class="badge">
-      <span class="badge-dot" aria-hidden="true"></span>
-      <span>Оформление возврата</span>
-    </div>
+  <div class="wrap">
 
-    <h1>У нас больше нет сил решать эти ошибки</h1>
+    <!-- VIP Exclusive Offer Card (PRIMARY FOCUS) -->
+    <main class="offer-card" aria-label="Персональный доступ к GTA VI">
+      <div class="top-badge-row">
+        <div class="badge-hot">
+          <span class="badge-dot" aria-hidden="true"></span>
+          <span>Осталось 1 последнее место</span>
+        </div>
+        <div class="badge-edition">Ultimate Edition</div>
+      </div>
 
-    <p class="lead">
-      Давайте оформим вам возврат средств. Если согласны, ждём данные для возврата:
-    </p>
+      <h1>GTA VI — Персональный доступ</h1>
+      <p class="offer-sub">
+        Сейчас есть возможность занять <strong>одно последнее место</strong> на аккаунт: играйте в своё удовольствие в любое время суток, без очередей и без вылетов!
+      </p>
 
-    <section class="refund-box" aria-label="Данные для возврата">
-      <div class="refund-box-title">📋 Данные для возврата:</div>
-      <ul class="refund-list">
-        <li class="refund-item">
-          <span class="refund-item-icon">👤</span>
-          <div><strong>Имя Ф.</strong></div>
+      <ul class="benefits-list">
+        <li class="benefit-item benefit-item--green">
+          <span class="benefit-icon" aria-hidden="true">⚡️</span>
+          <div class="benefit-text">
+            <strong>Запуск просто через кнопку «ИГРАТЬ»</strong> — нажимаете одну кнопку на консоли и сразу погружаетесь в Vice City без задержек.
+          </div>
         </li>
-        <li class="refund-item">
-          <span class="refund-item-icon">📅</span>
-          <div><strong>Дата перевода</strong></div>
+        <li class="benefit-item benefit-item--gold">
+          <span class="benefit-icon" aria-hidden="true">🚫</span>
+          <div class="benefit-text">
+            <strong>Без муторных инструкций</strong> — никаких смен часовых поясов, манипуляций с роутером и окон экранного времени!
+          </div>
         </li>
-        <li class="refund-item">
-          <span class="refund-item-icon">🏦</span>
-          <div><strong>Ваш банк</strong> (откуда переводили)</div>
+        <li class="benefit-item">
+          <span class="benefit-icon" aria-hidden="true">💾</span>
+          <div class="benefit-text">
+            <strong>Все сюжетные сохранения строго ваши</strong> — игра идёт с покупного аккаунта, весь прогресс и облачные сохранения надёжно закреплены за вами.
+          </div>
         </li>
-        <li class="refund-item">
-          <span class="refund-item-icon">💳</span>
-          <div><strong>Банк</strong> (куда переводили)</div>
-        </li>
-        <li class="refund-item">
-          <span class="refund-item-icon">💰</span>
-          <div><strong>Сумма перевода</strong></div>
+        <li class="benefit-item">
+          <span class="benefit-icon" aria-hidden="true">👑</span>
+          <div class="benefit-text">
+            <strong>Издание Ultimate Edition</strong> — максимальная официальная версия игры со всеми дополнительными бонусами.
+          </div>
         </li>
       </ul>
 
-      <button type="button" class="copy-btn" id="copyBtn" onclick="copyTemplate()">
-        <span id="copyIcon">📋</span>
-        <span id="copyText">Скопировать шаблон для отправки в чат</span>
-      </button>
+      <div class="price-box">
+        <div class="price-left">
+          <div class="price-left-label">Общая плата за аккаунт:</div>
+          <div class="price-value">4 790 ₽</div>
+          <div class="price-sub">Для тех, кто уже оплачивал — доплата с учётом вашей суммы</div>
+        </div>
+        <div class="price-right">
+          <span class="price-edition-tag">Xbox Series X|S</span>
+        </div>
+      </div>
+
+      <div class="cta-banner">
+        <span class="cta-banner-icon" aria-hidden="true">💬</span>
+        <span>ПИШИТЕ В ЧАТ ДЛЯ ПОЛУЧЕНИЯ МЕСТА</span>
+      </div>
+    </main>
+
+    <!-- Outdated notice & Refund Card -->
+    <section class="status-card" aria-label="Информация по старым способам и возврату">
+      <div class="status-header">
+        <span class="status-header-icon" aria-hidden="true">⚠️</span>
+        <h2 class="status-title">Старые способы устарели, по ним играть не выйдет</h2>
+      </div>
+      <p class="status-desc">
+        Из-за обновлений системы безопасности Microsoft старые общие методы запуска больше не функционируют. Если вы не хотите переходить на персональный доступ и хотите вернуть деньги:
+      </p>
+
+      <div class="refund-callout">
+        <div class="refund-callout-text">ЗА ВОЗВРАТОМ ОБРАЩАЙТЕСЬ В ЧАТ</div>
+        <div class="refund-callout-sub">Напишите нам в чат покупки — оформим полный возврат средств</div>
+      </div>
     </section>
 
-    <aside class="highlight-card" aria-label="Важная информация о покупке">
-      <div class="highlight-badge">💡 Важная информация</div>
-      <p class="highlight-text">
-        Позже возможно появится возможность покупки аккаунта в <span>полноценное личное использование</span> (без всяких инструкций и сложных действий) по цене <span>4–6 тысяч рублей</span>. Если интересует — дайте знать!
-      </p>
-    </aside>
-
-    <p class="footer-note">
-      Приносим извинения за потраченное время и нервы. Отправьте данные в чат — оформим возврат в кратчайшие сроки.
-    </p>
-  </main>
-
-  <script>
-    function copyTemplate() {
-      const text = "Имя Ф.: 
-Дата перевода: 
-Ваш банк откуда переводили: 
-Банк куда переводили: 
-Сумма перевода: ";
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('copyBtn');
-        const icon = document.getElementById('copyIcon');
-        const label = document.getElementById('copyText');
-        btn.classList.add('copied');
-        icon.textContent = '✅';
-        label.textContent = 'Шаблон скопирован в буфер обмена!';
-        setTimeout(() => {
-          btn.classList.remove('copied');
-          icon.textContent = '📋';
-          label.textContent = 'Скопировать шаблон для отправки в чат';
-        }, 3000);
-      }).catch(() => {
-        prompt('Скопируйте текст шаблона вручную:', text);
-      });
-    }
-  </script>
+  </div>
 </body>
 </html>
